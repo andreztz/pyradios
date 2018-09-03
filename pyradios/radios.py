@@ -5,7 +5,7 @@ from xml.etree import ElementTree
 
 
 _base = "http://www.radio-browser.info/webservice/"
-_headers = {"content-type": "application/json", "User-Agent": "zradio/dev"}
+_headers = {"content-type": "application/json", "User-Agent": "pyradio/dev"}
 
 
 def request(url, **kwargs):
