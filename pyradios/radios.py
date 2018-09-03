@@ -5,12 +5,14 @@ from xml.etree import ElementTree
 
 
 _base = "http://www.radio-browser.info/webservice/"
+_headers = {"content-type": "application/json", "User-Agent": "zradio/dev"}
 
 
 def request(url, **kwargs):
+    _params = {}
     # https://stackoverflow.com/questions/18308529/python-requests-package-handling-xml-response
     formats = kwargs.get("formats")
-    resp = requests.get(url)
+    resp = requests.get(url, headers=_headers, params=_params)
     if resp.status_code == 200:
         if formats == "xml":  # TODO
             tree = ElementTree.fromstring(resp.content)
@@ -52,79 +54,80 @@ class RadioBrowser:
         return request(url, **kwargs)
 
     def stations_byid(self, id, **kwargs):
-        id = kwargs.get("id")
+        id = kwargs.get("id", id)
         endpoint = f"/stations/byid/{id}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_byuuid(self, uuid, **kwargs):
-        name = kwargs.get("uuid")
+        name = kwargs.get("uuid", uuid)
         endpoint = f"/stations/byuuid/{uuid}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_byname(self, name, **kwargs):
-        name = kwargs.get("name")
+        name = kwargs.get("name", name)
         endpoint = f"/stations/byname/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bynameexact(self, name, **kwargs):
-        name = kwargs.get("name")
+        name = kwargs.get("name", name)
         endpoint = f"/stations/bynameexact/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bycodec(self, name, **kwargs):
-        name = kwargs.get("name")
+        name = kwargs.get("name", name)
         endpoint = f"/stations/bycodec/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bycodecexact(self, name, **kwargs):
-        name = kwargs.get("name")
+        name = kwargs.get("name", name)
         endpoint = f"/stations/bycodecexact/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bycountry(self, name, **kwargs):
-        name = kwargs.get("name")
+        name = kwargs.get("name", name)
         endpoint = f"/stations/bycountry/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bycountryexact(self, name, **kwargs):
-        name = kwargs.get("name")
+        name = kwargs.get("name", name)
         endpoint = f"/stations/bycountryexact/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bystateexact(self, name, **kwargs):
-        name = kwargs.get("name")
+        name = kwargs.get("name", name)
         endpoint = f"/stations/bystateexact/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bylanguage(self, name, **kwargs):
-        name = kwargs.get("name")
+        name = kwargs.get("name", name)
         endpoint = f"/stations/bylanguage/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bylanguageexact(self, name, **kwargs):
-        name = kwargs.get("name")
+        name = kwargs.get("name", name)
         endpoint = f"/stations/bylanguageexact/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bytag(self, name, **kwargs):
-        name = kwargs.get("name")
+        name = kwargs.get("name", name)
         endpoint = f"/stations/bytag/{name}"
         url = build_url(endpoint)
+        print(url)
         return request(url)
 
     def stations_bytagexact(self, name, **kwargs):
-        name = kwargs.get("name")
+        name = kwargs.get("name", name)
         endpoint = f"/stations/bytagexact/{name}"
         url = build_url(endpoint)
         return request(url)
@@ -141,3 +144,15 @@ class RadioBrowser:
         endpoint = f"/{formats}/url/{stationid}"
         url = build_url(endpoint)
         return request(url)
+
+
+def main():
+    from pprint import pprint
+
+    rb = RadioBrowser()
+    rb.stations_bytag("trance")
+    pprint(rb.stations_bytag(name="trance"))
+
+
+if __name__ == "__main__":
+    main()
