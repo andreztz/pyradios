@@ -47,83 +47,84 @@ class RadioBrowser:
 
     def stations(self, searchterm=None, **kwargs):
         # TODO implementar advanced search params = {}
-        endpoint = f"/stations"  # TODO ta faltando??
-        return request(url, **kwargs)  ## TODO ainda não faz request
+        endpoint = f"/stations"
+        url = build_url(endpoint)
+        return request(url, **kwargs)
 
     def stations_byid(self, id, **kwargs):
-        id = kwargs.get("id")  # TODO testar se é string?
+        id = kwargs.get("id")
         endpoint = f"/stations/byid/{id}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_byuuid(self, uuid, **kwargs):
-        name = kwargs.get("uuid")  # TODO testar se é string?
+        name = kwargs.get("uuid")
         endpoint = f"/stations/byuuid/{uuid}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_byname(self, name, **kwargs):
-        name = kwargs.get("name")  # TODO testar se é string?
+        name = kwargs.get("name")
         endpoint = f"/stations/byname/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bynameexact(self, name, **kwargs):
-        name = kwargs.get("name")  # TODO testar se é string?
+        name = kwargs.get("name")
         endpoint = f"/stations/bynameexact/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bycodec(self, name, **kwargs):
-        name = kwargs.get("name")  # TODO testar se é string?
+        name = kwargs.get("name")
         endpoint = f"/stations/bycodec/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bycodecexact(self, name, **kwargs):
-        name = kwargs.get("name")  # TODO testar se é string?
+        name = kwargs.get("name")
         endpoint = f"/stations/bycodecexact/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bycountry(self, name, **kwargs):
-        name = kwargs.get("name")  # TODO testar se é string?
+        name = kwargs.get("name")
         endpoint = f"/stations/bycountry/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bycountryexact(self, name, **kwargs):
-        name = kwargs.get("name")  # TODO testar se é string?
+        name = kwargs.get("name")
         endpoint = f"/stations/bycountryexact/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bystateexact(self, name, **kwargs):
-        name = kwargs.get("name")  # TODO testar se é string?
+        name = kwargs.get("name")
         endpoint = f"/stations/bystateexact/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bylanguage(self, name, **kwargs):
-        name = kwargs.get("name")  # TODO testar se é string?
+        name = kwargs.get("name")
         endpoint = f"/stations/bylanguage/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bylanguageexact(self, name, **kwargs):
-        name = kwargs.get("name")  # TODO testar se é string?
+        name = kwargs.get("name")
         endpoint = f"/stations/bylanguageexact/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bytag(self, name, **kwargs):
-        name = kwargs.get("name")  # TODO testar se é string?
+        name = kwargs.get("name")
         endpoint = f"/stations/bytag/{name}"
         url = build_url(endpoint)
         return request(url)
 
     def stations_bytagexact(self, name, **kwargs):
-        name = kwargs.get("name")  # TODO testar se é string?
+        name = kwargs.get("name")
         endpoint = f"/stations/bytagexact/{name}"
         url = build_url(endpoint)
         return request(url)
@@ -140,12 +141,3 @@ class RadioBrowser:
         endpoint = f"/{formats}/url/{stationid}"
         url = build_url(endpoint)
         return request(url)
-
-
-def main():
-    rb = RadioBrowser()
-    print(rb.stations_byname("DNB Radio Brazil"))
-
-
-if __name__ == "__main__":
-    main()
