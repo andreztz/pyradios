@@ -20,5 +20,11 @@ setup(
     license="MIT",
     packages=find_packages(),
     install_requires=["requests"],
-    classifiers=["Programming Language :: Python :: 3", "Operating System :: OS Independent"],
+    classifiers=[
+        "Development Status :: 1 - Planning",
+        "Environment :: Console",
+        "Programming Language :: Python :: 3",
+        "Operating System :: OS Independent",
+        "Intended Audience :: Developers",
+    ],
 )

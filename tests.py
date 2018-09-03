@@ -1,6 +1,6 @@
 import unittest
 
-from radios.api import RadioBrowser
+from pyradios.radios import RadioBrowser
 
 
 class TestRadioBrowser(unittest.TestCase):
