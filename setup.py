@@ -8,20 +8,17 @@ def readme():
 
 
 setup(
-    name="pyradios",
+    name="python-radios",
     version="0.0.1",
     description="A Python wrapper for the http://www.radio-browser.info/webservice",
     long_description=readme(),
-    keywords="pyradios radios",
+    long_description_content_type="text/markdown",
+    keywords="python-radios wrapper radios api",
     author="André P. Santos",
     author_email="andreztz@gmail.com",
-    url="https://github.com/andreztz/pyradios",
+    url="https://github.com/andreztz/python-radios",
     license="MIT",
     packages=find_packages(),
     install_requires=["requests"],
-    classifiers=[
-        "Development Status :: 1 - Alpha",
-        "Programming Language :: Python :: 3",
-        "Operating System :: OS Independent",
-    ],
+    classifiers=["Programming Language :: Python :: 3", "Operating System :: OS Independent"],
 )
