@@ -13,11 +13,15 @@ setup(
     description="A Python wrapper for the http://www.radio-browser.info/webservice",
     long_description=readme(),
     keywords="pyradios radios",
-    platforms=["Linux"],
     author="André P. Santos",
     author_email="andreztz@gmail.com",
     url="https://github.com/andreztz/pyradios",
     license="MIT",
     packages=find_packages(),
     install_requires=["requests"],
+    classifiers=[
+        "Development Status :: 1 - Alpha",
+        "Programming Language :: Python :: 3",
+        "Operating System :: OS Independent",
+    ],
 )
