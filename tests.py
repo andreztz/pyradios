@@ -65,6 +65,21 @@ class TestRadioBrowser(unittest.TestCase):
         expected_keys = codecs_aac[0].keys()
         self.assertEqual(self.rb.codecs(filters="aac")[0].keys(), expected_keys)
 
+    def test_playable_station(self):
+        playable_station = [
+            {
+                "id": "87019",
+                "message": "retrieved station url successfully",
+                "name": "TrancePulse FM",
+                "ok": "true",
+                "url": "http://sirius.shoutca.st:8878/stream",
+            }
+        ]
+        self.assertEqual(self.rb.playable_station("87019")[0].keys(), playable_station[0].keys())
+        self.assertEqual(
+            self.rb.playable_station(stationid="87019")[0].keys(), playable_station[0].keys()
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
