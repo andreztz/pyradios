@@ -148,9 +148,9 @@ def main():
     from pprint import pprint
 
     rb = RadioBrowser()
-    # rb.stations_bytag("trance")
-    # pprint(rb.stations_bytag(name="trance"))
-    # pprint(rb.playable_station("87019"))
+    rb.stations_bytag("trance")
+    pprint(rb.stations_bytag(name="trance"))
+    pprint(rb.playable_station("87019"))
 
 
 if __name__ == "__main__":
