@@ -138,11 +138,12 @@ class RadioBrowser:
         url = build_url(endpoint)
         return request(url)
 
-    def playable_station(self, stationid, formats="json", **kwargs):
-        stationid = kwargs.get("stationid")
-        formats = kwargs.get("formats", formats)
-        endpoint = f"/{formats}/url/{stationid}"
-        url = build_url(endpoint)
+    def playable_station(self, stationid, **kwargs):
+        # FIX 404 Client Error: Not Found for url: http://www.radio-browser.info/webservice/json/json/url/None
+        stationid = kwargs.get("stationid", stationid)
+
+        endpoint = f"/url/{stationid}"
+        url = build_url(endpoint, **kwargs)
         return request(url)
 
 
@@ -150,8 +151,9 @@ def main():
     from pprint import pprint
 
     rb = RadioBrowser()
-    rb.stations_bytag("trance")
-    pprint(rb.stations_bytag(name="trance"))
+    # rb.stations_bytag("trance")
+    # pprint(rb.stations_bytag(name="trance"))
+    pprint(rb.playable_station("87019"))
 
 
 if __name__ == "__main__":
