@@ -35,7 +35,7 @@ class RadioBrowser:
         url = build_url(endpoint, **kwargs)
         return request(url, **kwargs)
 
-    def countries(self, filters=None, **kwrags):
+    def countries(self, filters=None, **kwargs):
         filters = kwargs.get("filters", filters)
         endpoint = f"/countries/{filters}" if filters else "/countries"
         url = build_url(endpoint)
@@ -123,7 +123,6 @@ class RadioBrowser:
         name = kwargs.get("name", name)
         endpoint = f"/stations/bytag/{name}"
         url = build_url(endpoint)
-        print(url)
         return request(url)
 
     def stations_bytagexact(self, name, **kwargs):
@@ -139,9 +138,7 @@ class RadioBrowser:
         return request(url)
 
     def playable_station(self, stationid, **kwargs):
-        # FIX 404 Client Error: Not Found for url: http://www.radio-browser.info/webservice/json/json/url/None
         stationid = kwargs.get("stationid", stationid)
-
         endpoint = f"/url/{stationid}"
         url = build_url(endpoint, **kwargs)
         return request(url)
@@ -153,7 +150,7 @@ def main():
     rb = RadioBrowser()
     # rb.stations_bytag("trance")
     # pprint(rb.stations_bytag(name="trance"))
-    pprint(rb.playable_station("87019"))
+    # pprint(rb.playable_station("87019"))
 
 
 if __name__ == "__main__":
