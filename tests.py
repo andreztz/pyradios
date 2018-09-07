@@ -1,84 +1,100 @@
 import unittest
 
-from pyradios.radios import RadioBrowser
+from pyradios.radios import RadioBrowser, build_mask, build_endpoint
+
+from collections import OrderedDict
 
 
 class TestRadioBrowser(unittest.TestCase):
     def setUp(self):
-        self.rb = RadioBrowser()
+        self.url_base = "http://www.radio-browser.info/webservice/"
 
-    def test_station_byname_response(self):
-        station = [
-            {
-                "id": "113234",
-                "changeuuid": "26b48bb1-a490-11e8-abb8-52543be04c81",
-                "stationuuid": "26b48b9d-a490-11e8-abb8-52543be04c81",
-                "name": "DNB Radio Brazil",
-                "url": "http://stm43.srvstm.com:21376/;",
-                "homepage": "https://dnbradio.com.br/",
-                "favicon": "https://dnbradio.com.br/wp/wp-content/uploads/2018/08/Sem-T%C3%ADtulo-3.png",
-                "tags": "drum and bass",
-                "country": "Brazil",
-                "state": "",
-                "language": "",
-                "votes": "10",
-                "negativevotes": "0",
-                "lastchangetime": "2018-08-20 17:46:07",
-                "ip": "78.18.215.141",
-                "codec": "AAC+",
-                "bitrate": "48",
-                "hls": "0",
-                "lastcheckok": "1",
-                "lastchecktime": "2018-09-02 17:48:04",
-                "lastcheckoktime": "2018-09-02 17:48:04",
-                "clicktimestamp": "2018-09-02 07:34:25",
-                "clickcount": "0",
-                "clicktrend": "0",
-            }
-        ]
-        expected_keys = station[0].keys()
-        self.assertEqual(self.rb.stations_byname("DNB Radio Brazil")[0].keys(), expected_keys)
+    def test_build_mask_one(self):
+        kwargs = {
+            "searchterm": "100",
+            "format": "json",
+            "endpoint": "stations/byid",
+        }
+        ordered = OrderedDict()
+        ordered["format"] = kwargs.get("format")
+        ordered["endpoint"] = kwargs.get("endpoint")
+        ordered["searchterm"] = kwargs.get("searchterm")
 
-    def test_codecs_response(self):
-        codecs = [
-            {"name": "AAC", "value": "AAC", "stationcount": "624"},
-            {"name": "AAC+", "value": "AAC+", "stationcount": "4062"},
-            {"name": "AAC,H.264", "value": "AAC,H.264", "stationcount": "64"},
-            {"name": "FLV", "value": "FLV", "stationcount": "3"},
-            {"name": "MP3", "value": "MP3", "stationcount": "13792"},
-            {"name": "MP3,H.264", "value": "MP3,H.264", "stationcount": "2"},
-            {"name": "OGG", "value": "OGG", "stationcount": "211"},
-            {"name": "UNKNOWN", "value": "UNKNOWN", "stationcount": "670"},
-        ]
-        expected_keys = codecs[0].keys()
-        self.assertEqual(self.rb.codecs()[0].keys(), expected_keys)
+        expected_result = "{format}/{endpoint}/{searchterm}/"
+        self.assertEqual(build_mask(ordered), expected_result)
 
-    def test_codecs_response_with_filters(self):
-        # filter example
-        # http://www.radio-browser.info/webservice/json/codecs/aac
-        # http://www.radio-browser.info/webservice/json/codecs/?reverse=true&hidebroken=true&order=stationcount
-        codecs_aac = [
-            {"name": "AAC", "value": "AAC", "stationcount": "624"},
-            {"name": "AAC+", "value": "AAC+", "stationcount": "4063"},
-            {"name": "AAC,H.264", "value": "AAC,H.264", "stationcount": "64"},
-        ]
-        expected_keys = codecs_aac[0].keys()
-        self.assertEqual(self.rb.codecs(filters="aac")[0].keys(), expected_keys)
+    def test_build_mask_two(self):
+        kwargs = {"format": "xml", "filter": "aac", "endpoint": "codecs"}
+        ordered = OrderedDict()
+        ordered["format"] = kwargs.get("format")
+        ordered["endpoint"] = kwargs.get("endpoint")
+        ordered["filter"] = kwargs.get("filter")
+        expected_result = "{format}/{endpoint}/{filter}/"
 
-    def test_playable_station(self):
-        playable_station = [
-            {
-                "id": "87019",
-                "message": "retrieved station url successfully",
-                "name": "TrancePulse FM",
-                "ok": "true",
-                "url": "http://sirius.shoutca.st:8878/stream",
-            }
-        ]
-        self.assertEqual(self.rb.playable_station("87019")[0].keys(), playable_station[0].keys())
-        self.assertEqual(
-            self.rb.playable_station(stationid="87019")[0].keys(), playable_station[0].keys()
+        self.assertEqual(build_mask(ordered), expected_result)
+
+    """ tests build endpoins """
+
+    def test_build_endpoint_with_codecs(self):
+        expected_result = self.url_base + "json/codecs"
+        url = build_endpoint(endpoint="codecs")
+        self.assertEqual(url, expected_result)
+
+    def test_build_endpoint_with_languages(self):
+        expected_result = self.url_base + "xml/languages"
+        url = build_endpoint(endpoint="languages", format="xml")
+        self.assertEqual(url, expected_result)
+
+    def test_build_endpoint_with_codecs_filter_format(self):
+        expected_result = self.url_base + "xml/codecs/aac"
+        url = build_endpoint(endpoint="codecs", format="xml", filter="aac")
+        self.assertEqual(url, expected_result)
+
+    def test_build_endpoint_with_codecs_filter(self):
+        expected_result = self.url_base + "json/codecs/mp3"
+        url = build_endpoint(endpoint="codecs", filter="mp3")
+        self.assertEqual(url, expected_result)
+
+    def test_build_endpoint_with_states(self):
+        expected_result = self.url_base + "json/states"
+        url = build_endpoint(endpoint="states")
+        self.assertEqual(url, expected_result)
+
+    def test_build_endpoint_with_states_format(self):
+        expected_result = self.url_base + "xml/states"
+        url = build_endpoint(endpoint="states", format="xml")
+        self.assertEqual(url, expected_result)
+
+    def test_build_endpoint_with_states_fomat_country(self):
+        expected_result = self.url_base + "xml/states/brasil/"
+        url = build_endpoint(endpoint="states", format="xml", country="brasil")
+        self.assertEqual(url, expected_result)
+
+    def test_build_endpoint_with_states_filter_coutry(self):
+        expected_result = self.url_base + "json/states/brazil/parana"
+        url = build_endpoint(
+            endpoint="states", country="brazil", filter="parana"
         )
+        self.assertEqual(url, expected_result)
+
+    """ stations by """
+
+    def test_build_endpoint_stations(self):
+        expected_result = self.url_base + "json/stations"
+        url = build_endpoint(endpoint="stations")
+        self.assertEqual(url, expected_result)
+
+    def test_build_endpoint_stations_byid(self):
+        expected_result = self.url_base + "json/stations/byid/87019"
+        url = build_endpoint(endpoint="stations/byid", by="87019")
+        self.assertEqual(url, expected_result)
+
+    """ playable station url """
+
+    def test_build_endpoint_playable_stations_url(self):
+        expected_result = self.url_base + "v2/json/url/87019"
+        url = build_endpoint(endpoint="url", by="87019", ver="v2")
+        self.assertEqual(url, expected_result)
 
 
 if __name__ == "__main__":
