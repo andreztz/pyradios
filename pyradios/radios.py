@@ -153,7 +153,7 @@ class RadioBrowser:
         )
         return request(url, **kwargs)
 
-    def playable_stations(self, stationid, **kwargs):
+    def playable_station(self, stationid, **kwargs):
         url = build_endpoint(endpoint="url", by=stationid, ver="v2", **kwargs)
         return request(url, **kwargs)
 
