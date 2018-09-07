@@ -74,6 +74,10 @@ class RadioBrowser:
         return request(url, **kwargs)
 
     def languages(self, name, **kwargs):
+        url = build_endpoint(endpoint="languages", filter=name, **kwargs)
+        return request(url, **kwargs)
+
+    def tags(self, name, **kwargs):
         url = build_endpoint(endpoint="tags", filter=name, **kwargs)
         return request(url, **kwargs)
 
