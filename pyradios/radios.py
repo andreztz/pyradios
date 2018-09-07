@@ -59,25 +59,25 @@ def build_endpoint(**kwargs):
 
 
 class RadioBrowser:
-    def countries(self, name, **kwargs):
+    def countries(self, name=None, **kwargs):
         url = build_endpoint(endpoint="countries", filter=name, **kwargs)
         return request(url, **kwargs)
 
-    def codecs(self, name, **kwargs):
+    def codecs(self, name=None, **kwargs):
         url = build_endpoint(endpoint="codecs", filter=name, **kwargs)
         return request(url, **kwargs)
 
-    def states(self, name, country=None, **kwargs):
+    def states(self, name=None, country=None, **kwargs):
         url = build_endpoint(
             endpoint="states", filter=name, coutry=country, **kwargs
         )
         return request(url, **kwargs)
 
-    def languages(self, name, **kwargs):
+    def languages(self, name=None, **kwargs):
         url = build_endpoint(endpoint="languages", filter=name, **kwargs)
         return request(url, **kwargs)
 
-    def tags(self, name, **kwargs):
+    def tags(self, name=None, **kwargs):
         url = build_endpoint(endpoint="tags", filter=name, **kwargs)
         return request(url, **kwargs)
 
@@ -171,11 +171,12 @@ class RadioBrowser:
 def main():
     rb = RadioBrowser()
     print(rb.codecs(format="xml"))
-    print(rb.playable_stations(stationid="87019", format="json"))
+    print(rb.playable_station(stationid="87019", format="json"))
     # print(rb.stations())
     print(rb.stations_byid(stationid="87019"))
     print(rb.stations_byid("87019"))
     print(rb.stations_byname("TrancePulse FM"))
+    print(rb.states())
 
 
 if __name__ == "__main__":
