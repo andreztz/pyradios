@@ -49,13 +49,9 @@ Out[3]:
   'clicktrend': '0'}]
 ```
 
-A few motivating and useful examples of how your product can be used. Spice this up with code blocks and potentially more screenshots.
-
-_For more examples and usage, please refer to the [Wiki][wiki]._
-
 ## Release History
 
-- 0.0.3
+- 0.0.5
   - Work in progress
 
 ## Meta
