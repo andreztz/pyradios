@@ -59,25 +59,25 @@ def build_endpoint(**kwargs):
 
 
 class RadioBrowser:
-    def countries(self, name, **kwargs):
+    def countries(self, name=None, **kwargs):
         url = build_endpoint(endpoint="countries", filter=name, **kwargs)
         return request(url, **kwargs)
 
-    def codecs(self, name, **kwargs):
+    def codecs(self, name=None, **kwargs):
         url = build_endpoint(endpoint="codecs", filter=name, **kwargs)
         return request(url, **kwargs)
 
-    def states(self, name, country=None, **kwargs):
+    def states(self, name=None, country=None, **kwargs):
         url = build_endpoint(
             endpoint="states", filter=name, coutry=country, **kwargs
         )
         return request(url, **kwargs)
 
-    def languages(self, name, **kwargs):
+    def languages(self, name=None, **kwargs):
         url = build_endpoint(endpoint="languages", filter=name, **kwargs)
         return request(url, **kwargs)
 
-    def tags(self, name, **kwargs):
+    def tags(self, name=None, **kwargs):
         url = build_endpoint(endpoint="tags", filter=name, **kwargs)
         return request(url, **kwargs)
 
