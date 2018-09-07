@@ -675,5 +675,35 @@ class TestRadioBrowser(unittest.TestCase):
         resp = self.rb.states("ber", country='Germany')
         self.assertEqual(resp[0].keys(), expected_result[0].keys())
 
+    def test_search(self):
+        expected_result = [{'id': '87019',
+            'changeuuid': '9615f296-0601-11e8-ae97-52543be04c81',
+            'stationuuid': '9615f293-0601-11e8-ae97-52543be04c81',
+            'name': 'TrancePulse FM',
+            'url': 'http://sirius.shoutca.st:8878/stream',
+            'homepage': 'http://www.trancepulsefm.com/',
+            'favicon': 'http://www.trancepulsefm.com/files/theme/favicon.ico',
+            'tags': 'edm,electronic,dance,trance',
+            'country': 'Ireland',
+            'state': '',
+            'language': 'English',
+            'votes': '46',
+            'negativevotes': '0',
+            'lastchangetime': '2017-11-15 11:04:06',
+            'ip': '195.39.210.66',
+            'codec': 'MP3',
+            'bitrate': '160',
+            'hls': '0',
+            'lastcheckok': '1',
+            'lastchecktime': '2018-09-06 11:04:53',
+            'lastcheckoktime': '2018-09-06 11:04:53',
+            'clicktimestamp': '2018-09-06 23:52:29',
+            'clickcount': '6',
+            'clicktrend': '5'}
+        ]
+
+        params = {'name': 'TrancePulse FM'}
+        resp = self.rb.station_search(params=params)
+        self.assertEqual(resp, expected_result)
 if __name__ == "__main__":
     unittest.main()
