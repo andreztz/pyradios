@@ -18,10 +18,10 @@ def request(url, **kwargs):
     else:
         content_type = f"application/{fmt}"
 
-    _headers = {"content-type": content_type, "User-Agent": "pyradios/dev"}
-    _params = {}
+    headers = {"content-type": content_type, "User-Agent": "pyradios/dev"}
+    params = kwargs.get("params", {})
 
-    resp = requests.get(url, headers=_headers, params=_params)
+    resp = requests.get(url, headers=headers, params=params)
     if resp.status_code == 200:
         if fmt == "xml":
             return resp.text
@@ -155,6 +155,12 @@ class RadioBrowser:
 
     def playable_stations(self, stationid, **kwargs):
         url = build_endpoint(endpoint="url", by=stationid, ver="v2", **kwargs)
+        return request(url, **kwargs)
+
+    def station_search(self, params, **kwargs):
+        assert isinstance(params, dict), "params is not a dict"
+        kwargs["params"] = params
+        url = build_endpoint(endpoint="stations", by="search", **kwargs)
         return request(url, **kwargs)
 
 
