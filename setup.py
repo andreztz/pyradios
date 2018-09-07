@@ -9,7 +9,7 @@ def readme():
 
 setup(
     name="pyradios",
-    version="0.0.7",
+    version="0.0.8",
     description="A Python wrapper for the http://www.radio-browser.info/webservice",
     long_description=readme(),
     long_description_content_type="text/markdown",
