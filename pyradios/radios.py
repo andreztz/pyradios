@@ -167,17 +167,3 @@ class RadioBrowser:
         url = build_endpoint(endpoint="stations", by="search", **kwargs)
         return request(url, **kwargs)
 
-
-def main():
-    rb = RadioBrowser()
-    print(rb.codecs(format="xml"))
-    print(rb.playable_station(stationid="87019", format="json"))
-    # print(rb.stations())
-    print(rb.stations_byid(stationid="87019"))
-    print(rb.stations_byid("87019"))
-    print(rb.stations_byname("TrancePulse FM"))
-    print(rb.states())
-
-
-if __name__ == "__main__":
-    main()
