@@ -3,7 +3,7 @@ import requests
 from xml.etree import ElementTree
 from urllib.parse import urljoin
 
-from collections import OrderedDict
+from pyradios.api import EndPoints
 
 
 base_url = "http://www.radio-browser.info/webservice/"
@@ -30,140 +30,101 @@ def request(url, **kwargs):
     return resp.raise_for_status()
 
 
-def build_mask(ordered):
-    mask = "".join("{" + key + "}/" for key in ordered if ordered[key])
-    return mask
-
-
-def build_endpoint(**kwargs):
-    ordered = OrderedDict()
-    ordered["ver"] = kwargs.get("ver", None)
-    ordered["format"] = kwargs.get("format", "json")
-    ordered["endpoint"] = kwargs.get("endpoint")
-    ordered["country"] = kwargs.get("country", None)
-    ordered["filter"] = kwargs.get("filter", None)
-    ordered["by"] = kwargs.get("by", None)
-
-    mask = build_mask(ordered)
-
-    endpoint = mask.format(**ordered)
-
-    if not ordered["filter"] and not ordered["country"]:
-        endpoint = endpoint[:-1]
-
-    if ordered["filter"]:
-        endpoint = endpoint[:-1]
-
-    url = urljoin(base_url, endpoint)
-    return url
-
-
 class RadioBrowser:
-    def countries(self, name=None, **kwargs):
-        url = build_endpoint(endpoint="countries", filter=name, **kwargs)
+    def __init__(self, fmt="json"):
+        self.fmt = fmt
+        self.endpoints = EndPoints(fmt=self.fmt)
+
+    def countries(self, filter_=""):
+        url = self.endpoints.countries(filter_)
+        return request(url)
+
+    def codecs(self, filter_=""):
+        url = self.endpoints.codecs(filter_)
+        return request(url)
+
+    def states(self, country="", filter_=""):
+        url = self.endpoints.states(country, filter_)
+        return request(url)
+
+    def languages(self, filter_=""):
+        url = self.endpoints.languages(filter_)
+        return request(url)
+
+    def tags(self, filter_=""):
+        url = self.endpoints.tags(filter_)
+        return request(url)
+
+    def stations(self, **params):
+        url = self.endpoints.stations()
+        kwargs = {}
+        if params:
+            kwargs.update({"params": params})
         return request(url, **kwargs)
 
-    def codecs(self, name=None, **kwargs):
-        url = build_endpoint(endpoint="codecs", filter=name, **kwargs)
-        return request(url, **kwargs)
+    def stations_byid(self, id):
+        url = self.endpoints.stations_byid(term=id)
+        return request(url)
 
-    def states(self, name=None, country=None, **kwargs):
-        url = build_endpoint(
-            endpoint="states", filter=name, coutry=country, **kwargs
-        )
-        return request(url, **kwargs)
+    def stations_byuuid(self, uuid):
+        url = self.endpoints.stations_byuuid(term=uuid)
+        return request(url)
 
-    def languages(self, name=None, **kwargs):
-        url = build_endpoint(endpoint="languages", filter=name, **kwargs)
-        return request(url, **kwargs)
+    def stations_byname(self, name):
+        url = self.endpoints.stations_byname(term=name)
+        return request(url)
 
-    def tags(self, name=None, **kwargs):
-        url = build_endpoint(endpoint="tags", filter=name, **kwargs)
-        return request(url, **kwargs)
+    def stations_bynameexact(self, nameexact):
+        url = self.endpoints.stations_bycodecexact(term=nameexact)
+        return request(url)
 
-    def stations(self, **kwargs):
-        url = build_endpoint(endpoint="stations", **kwargs)
-        return request(url, **kwargs)
+    def stations_bycodec(self, codec):
+        url = self.endpoints.stations_bycodec(term=codec)
+        return request(url)
 
-    def stations_byid(self, stationid, **kwargs):
-        url = build_endpoint(endpoint="stations/byid", by=stationid, **kwargs)
-        return request(url, **kwargs)
+    def stations_bycodecexact(self, codecexact):
+        url = self.endpoints.stations_bycodecexact(term=codecexact)
+        return request(url)
 
-    def stations_byuuid(self, uuid, **kwargs):
-        url = build_endpoint(endpoint="stations/byuuid", by=uuid, **kwargs)
-        return request(url, **kwargs)
+    def stations_bycountry(self, country):
+        url = self.endpoints.stations_bycountry(term=country)
+        return request(url)
 
-    def stations_byname(self, name, **kwargs):
-        url = build_endpoint(endpoint="stations/byname", by=name, **kwargs)
-        return request(url, **kwargs)
+    def stations_bycountryexact(self, countryexact):
+        url = self.endpoints.stations_bycountryexact(term=countryexact)
+        return request(url)
 
-    def stations_bynameexact(self, nameexact, **kwargs):
-        url = build_endpoint(
-            endpoint="stations/bynameexact", by=nameexact, **kwargs
-        )
-        return request(url, **kwargs)
+    def stations_bystate(self, state):
+        url = self.endpoints.stations_bystate(term=state)
+        return request(url)
 
-    def stations_bycodec(self, codec, **kwargs):
-        url = build_endpoint(endpoint="stations/bycodec", by=codec, **kwargs)
-        return request(url, **kwargs)
+    def stations_bystateexact(self, stateexact):
+        url = self.endpoints.stations_bystateexact(term=stateexact)
+        return request(url)
 
-    def stations_bycodecexact(self, codecexact, **kwargs):
-        url = build_endpoint(
-            endpoint="stations/bycodecexact", by=codecexact, **kwargs
-        )
-        return request(url, **kwargs)
+    def stations_bylanguage(self, language):
+        url = self.endpoints.stations_bylanguage(term=language)
+        return request(url)
 
-    def stations_bycountry(self, country, **kwargs):
-        url = build_endpoint(
-            endpoint="stations/bycountry", by=country, **kwargs
-        )
-        return request(url, **kwargs)
+    def stations_bylanguageexact(self, languageexact):
+        url = self.endpoints.stations_bylanguageexact(term=languageexact)
+        return request(url)
 
-    def stations_bycountryexact(self, countryexact, **kwargs):
-        url = build_endpoint(
-            endpoint="stations/bycountryexact", by=countryexact, **kwargs
-        )
-        return request(url, **kwargs)
+    def stations_bytag(self, tag):
+        url = self.endpoints.stations_bytag(term=tag)
+        return request(url)
 
-    def stations_bystate(self, state, **kwargs):
-        url = build_endpoint(endpoint="stations/bystate", by=state, **kwargs)
-        return request(url, **kwargs)
+    def stations_bytagexact(self, tagexact):
+        url = self.endpoints.stations_bytagexact(term=tagexact)
+        return request(url)
 
-    def stations_bystateexact(self, stateexact, **kwargs):
-        url = build_endpoint(
-            endpoint="stations/bystateexact", by=stateexact, **kwargs
-        )
-        return request(url, **kwargs)
+    def playable_station(self, stationid):
+        url = self.endpoints.playable_station(stationid=stationid)
+        return request(url)
 
-    def stations_bylanguage(self, language, **kwargs):
-        url = build_endpoint(
-            endpoint="stations/bylanguage", by=language, **kwargs
-        )
-        return request(url, **kwargs)
-
-    def stations_bylanguageexact(self, languageexact, **kwargs):
-        url = build_endpoint(
-            endpoint="stations/bylanguageexact", by=languageexact, **kwargs
-        )
-        return request(url, **kwargs)
-
-    def stations_bytag(self, tag, **kwargs):
-        url = build_endpoint(endpoint="stations/bytag", by=tag, **kwargs)
-        return request(url, **kwargs)
-
-    def stations_bytagexact(self, tagexact, **kwargs):
-        url = build_endpoint(
-            endpoint="stations/bytagexact", by=tagexact, **kwargs
-        )
-        return request(url, **kwargs)
-
-    def playable_station(self, stationid, **kwargs):
-        url = build_endpoint(endpoint="url", by=stationid, ver="v2", **kwargs)
-        return request(url, **kwargs)
-
+    # TODO
     def station_search(self, params, **kwargs):
         assert isinstance(params, dict), "params is not a dict"
         kwargs["params"] = params
-        url = build_endpoint(endpoint="stations", by="search", **kwargs)
+        url = ""
         return request(url, **kwargs)
-

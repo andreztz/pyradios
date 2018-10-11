@@ -49,10 +49,26 @@ Out[3]:
   'clicktrend': '0'}]
 ```
 
+## Development Setup
+
+```
+$ virtualenv venv
+$ source venv/bin/activate
+$ python setup.py develop
+```
+
+## Run Tests
+
+```
+$ virtualenv venv
+$ source venv/bin/activate
+$ python setup.py test
+```
+
 ## Release History
 
-- 0.0.5
-  - Work in progress
+-   0.0.5
+    -   Work in progress
 
 ## Meta
 

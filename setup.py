@@ -7,6 +7,11 @@ def readme():
         return f.read()
 
 
+def required():
+    with open("requirements.txt") as f:
+        return f.read().splitlines()
+
+
 setup(
     name="pyradios",
     version="0.0.9",
@@ -19,7 +24,7 @@ setup(
     url="https://github.com/andreztz/pyradios",
     license="MIT",
     packages=find_packages(),
-    install_requires=["requests"],
+    install_requires=required(),
     classifiers=[
         "Development Status :: 1 - Planning",
         "Environment :: Console",
@@ -27,4 +32,5 @@ setup(
         "Operating System :: OS Independent",
         "Intended Audience :: Developers",
     ],
+    test_suite="tests",
 )
