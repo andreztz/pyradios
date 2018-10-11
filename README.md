@@ -2,10 +2,6 @@
 
 > A Python wrapper for the [Radio Browser](http://www.radio-browser.info/webservice).
 
-[![Build Status][travis-image]][travis-url]
-
-One to two paragraph statement about your product and what it does.
-
 ![](header.png)
 
 ## Installation
@@ -67,14 +63,13 @@ $ python setup.py test
 
 ## Release History
 
--   0.0.5
     -   Work in progress
 
 ## Meta
 
 Andre P. Santos – [@ztzandre](https://twitter.com/ztzandre) – andreztz@gmail.com
 
-Distributed under the XYZ license. See `LICENSE` for more information.
+Distributed under the MIT LICENSE. See `LICENSE` for more information.
 
 [https://github.com/andreztz/github-link](https://github.com/andreztz/)
 
@@ -85,9 +80,3 @@ Distributed under the XYZ license. See `LICENSE` for more information.
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
 5. Create a new Pull Request
-
-<!-- Markdown link & img dfn's -->
-
-[travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
-[wiki]: https://github.com/yourname/yourproject/wiki
