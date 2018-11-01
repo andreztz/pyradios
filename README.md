@@ -71,7 +71,7 @@ Andre P. Santos – [@ztzandre](https://twitter.com/ztzandre) – andreztz@gmail
 
 Distributed under the MIT LICENSE. See `LICENSE` for more information.
 
-[https://github.com/andreztz/github-link](https://github.com/andreztz/)
+[https://github.com/andreztz](https://github.com/andreztz/)
 
 ## Contributing
 

@@ -126,5 +126,5 @@ class RadioBrowser:
     def station_search(self, params, **kwargs):
         assert isinstance(params, dict), "params is not a dict"
         kwargs["params"] = params
-        url = ""
+        url = 'self.endpoints.station_search(**kwargs)'
         return request(url, **kwargs)
