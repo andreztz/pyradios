@@ -122,9 +122,9 @@ class RadioBrowser:
         url = self.endpoints.playable_station(stationid=stationid)
         return request(url)
 
-    # TODO
     def station_search(self, params, **kwargs):
+        # http://www.radio-browser.info/webservice#Advanced_station_search
         assert isinstance(params, dict), "params is not a dict"
         kwargs["params"] = params
-        url = 'self.endpoints.station_search(**kwargs)'
+        url = self.endpoints.station_search()
         return request(url, **kwargs)

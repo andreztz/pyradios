@@ -223,7 +223,8 @@ class EndPoints:
         url = self.build_url(**kwargs)
         return url
 
-    # TODO
-    def station_search(self, params):
-        assert isinstance(params, dict), "params is not a dict"
-        pass
+    def station_search(self):
+        kwargs = {"endpoint": "station_search"}
+        url = self.build_url(**kwargs)
+        return url
+

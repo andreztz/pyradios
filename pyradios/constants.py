@@ -12,5 +12,5 @@ endpoints = {
     "tags": {1: "{fmt}/tags", 2: "{fmt}/tags/{filter}"},
     "stations": {1: "{fmt}/stations", 3: "{fmt}/stations/{by}/{search_term}"},
     "playable_station": {3: "{ver}/{fmt}/url/{station_id}"},
-    # TODO "station_search": {0: "stations/search"},
+    "station_search": {1: "{fmt}/stations/search"},
 }

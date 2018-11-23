@@ -132,3 +132,10 @@ class TestEndPoint(unittest.TestCase):
         stationid = "123"
         url = self.endpoints.playable_station(stationid)
         self.assertEqual(url, expected_result)
+
+    def test_station_search(self):
+        expected_result = (
+            "http://www.radio-browser.info/webservice/json/stations/search"
+        )
+        url = self.endpoints.station_search()
+        self.assertEqual(url, expected_result)
