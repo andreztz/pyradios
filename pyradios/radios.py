@@ -176,7 +176,7 @@ class RadioBrowser:
 
     def station_search(self, params, **kwargs):
         # http://www.radio-browser.info/webservice#Advanced_station_search
-        assert isinstance(params, dict), "params is not a dict"
+        assert isinstance(params, dict), "params must be a dictionary."
         kwargs["params"] = params
         endpoint = self.builder.produce_endpoint(endpoint="station_search")
         return request(endpoint, **kwargs)
