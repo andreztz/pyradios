@@ -17,8 +17,36 @@ In [1]: from pyradios import RadioBrowser
 
 In [2]: rb = RadioBrowser()
 
-In [3]: rb.stations_byid('92585')
-Out[3]:
+In [3]: rb.station_search(params={'name': 'BBC Radio 1', 'nameExact': 'true'})                
+Out[3]: 
+[{'id': '64094',
+  'changeuuid': '4f7e4097-4354-11e8-b74d-52543be04c81',
+  'stationuuid': '96062a7b-0601-11e8-ae97-52543be04c81',
+  'name': 'BBC Radio 1',
+  'url': 'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p',
+  'homepage': 'http://www.bbc.co.uk/radio1/',
+  'favicon': 'https://cdn-radiotime-logos.tunein.com/s24939q.png',
+  'tags': 'bbc,indie,entertainment,music,rock,pop',
+  'country': 'United Kingdom',
+  'countrycode': 'GB',
+  'state': '',
+  'language': 'English',
+  'votes': '4816',
+  'negativevotes': '0',
+  'lastchangetime': '2018-04-19 20:26:52',
+  'ip': '5.15.39.213',
+  'codec': 'MP3',
+  'bitrate': '128',
+  'hls': '0',
+  'lastcheckok': '1',
+  'lastchecktime': '2019-09-23 16:20:11',
+  'lastcheckoktime': '2019-09-23 16:20:11',
+  'clicktimestamp': '2019-09-24 10:21:47',
+  'clickcount': '123',
+  'clicktrend': '-12'}]
+  
+In [4]: rb.stations_byid('92585')
+Out[4]:
 [{'id': '92585',
   'changeuuid': 'e78eb8c0-1a25-11e8-a334-52543be04c81',
   'stationuuid': '9621d43e-0601-11e8-ae97-52543be04c81',
@@ -43,11 +71,14 @@ Out[3]:
   'clicktimestamp': '2018-09-03 09:57:59',
   'clickcount': '0',
   'clicktrend': '0'}]
+  
 ```
 
 ## Development Setup
 
 ```
+$ git clone https://github.com/andreztz/pyradios.git
+$ cd pyradios
 $ virtualenv venv
 $ source venv/bin/activate
 $ python setup.py develop
