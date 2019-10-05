@@ -14,7 +14,9 @@ class TestEndPoint(unittest.TestCase):
 
     def test_countries_with_filter(self):
         expected = "json/countries/Brazil"
-        result = self.builder.produce_endpoint(endpoint="countries", filter="Brazil")
+        result = self.builder.produce_endpoint(
+            endpoint="countries", filter="Brazil"
+        )
         self.assertEqual(result, expected)
 
     def test_codecs(self):
@@ -47,7 +49,9 @@ class TestEndPoint(unittest.TestCase):
 
     def test_languages_with_param(self):
         expected = "json/languages/ger"
-        result = self.builder.produce_endpoint(endpoint="languages", filter="ger")
+        result = self.builder.produce_endpoint(
+            endpoint="languages", filter="ger"
+        )
         self.assertEqual(result, expected)
 
     def test_tags(self):
