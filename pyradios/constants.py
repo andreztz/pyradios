@@ -1,5 +1,3 @@
-BASE_URL = "http://www.radio-browser.info/webservice/"
-
 endpoints = {
     "countries": {1: "{fmt}/countries", 2: "{fmt}/countries/{filter}"},
     "codecs": {1: "{fmt}/codecs", 2: "{fmt}/codecs/{filter}"},
