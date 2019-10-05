@@ -1,9 +1,6 @@
 import unittest
 
-from tests.endpoint_builder import TestEndPoint
-
-
-def load_suit():
-    loader = unittest.TestLoader()
-    suite = loader.loadTestsFromTestCase(TestEndPoint)
-    return suite
+test_loader = unittest.defaultTestLoader
+test_runner = unittest.TextTestRunner()
+test_suite = test_loader.discover(".")
+test_runner.run(test_suite)
