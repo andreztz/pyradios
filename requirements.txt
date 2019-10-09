@@ -1,2 +1,2 @@
 requests>=2.22.0
-appdirs==1.4.3
+appdirs>=1.4.3
