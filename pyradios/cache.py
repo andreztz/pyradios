@@ -45,21 +45,21 @@ def read_cache(filename, key):
     return value
 
 
-def save_cache(filename, key, value, ttl):
+def save_cache(filename, key, value, expire):
     data = read_file(filename)
-    expiry = time.time() + int(ttl)
+    expiry = time.time() + int(expire)
     data[key] = (expiry, value)
     write_file(filename, data)
 
 
-def cache(filename, ttl, **kwargs):
+def cache(filename, expire, **kwargs):
 
     filename = setup_cache_file(filename, **kwargs)
 
     def decorate(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if not ttl:
+            if not expire:
                 return func(*args, **kwargs)
 
             key = func.__name__
@@ -67,7 +67,7 @@ def cache(filename, ttl, **kwargs):
 
             if not cache_value:
                 data = func(*args, **kwargs)
-                save_cache(filename, key, data, ttl)
+                save_cache(filename, key, data, expire)
                 return data
 
             return cache_value

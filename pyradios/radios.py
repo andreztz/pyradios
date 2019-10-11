@@ -11,7 +11,7 @@ def request(endpoint, **kwargs):
 
     BASE_URL = pick_url(
         filename="data.cache",
-        ttl=kwargs.get("ttl", 60000),
+        expire=kwargs.get("expire", 60000),
         appname=kwargs.get("appname", "pyradios"),
         appauthor=kwargs.get("appname", "andreztz"),
     )

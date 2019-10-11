@@ -43,8 +43,8 @@ def rdns_lookup(ip):
     return name[0]
 
 
-def pick_url(filename, ttl, **kwargs):
-    @cache(filename=filename, ttl=ttl, **kwargs)
+def pick_url(filename, expire, **kwargs):
+    @cache(filename=filename, expire=expire, **kwargs)
     def fetch_hosts():
         return list({rdns_lookup(ip) for ip in fetch_all_hosts()})
 
