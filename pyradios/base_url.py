@@ -6,6 +6,7 @@ import random
 import socket
 
 from pyradios.cache import cache
+from pyradios.log import logger
 
 
 def fetch_all_hosts():
@@ -21,7 +22,7 @@ def fetch_all_hosts():
             "all.api.radio-browser.info", 80, 0, 0, socket.IPPROTO_TCP
         )
     except socket.gaierror as exc:
-        print("Networking failure: ", exc.args[1])
+        logger.exception("Networking failure:")
     ips = [ip[4][0] for ip in data]
     return ips
 
@@ -39,7 +40,7 @@ def rdns_lookup(ip):
     try:
         name = socket.gethostbyaddr(ip)
     except socket.herror as exc:
-        print("Networking failure: ", exc.args[1])
+        logger.exception("Networking failure:")
     return name[0]
 
 
