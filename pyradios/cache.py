@@ -1,19 +1,9 @@
 import pickle
 import time
 from functools import wraps
-from pathlib import Path
 
-from appdirs import user_cache_dir
-
-
-def setup_cache_file(filename, **kwargs):
-    appname = kwargs.get("appname")
-    appauthor = kwargs.get("appauthor")
-    cache_dir = Path(user_cache_dir(appname=appname, appauthor=appauthor))
-    if not cache_dir.exists():
-        cache_dir.mkdir()
-    cache_file = cache_dir / filename
-    return cache_file
+from pyradios.log import logger
+from pyradios.utils import setup_cache_file
 
 
 def write_file(filename, data):
@@ -27,7 +17,7 @@ def read_file(filename):
             data = pickle.load(f)
             return data
     except IOError as exc:
-        print(exc)
+        logger.exception("File not Found: {}".format(filename))
     return {}
 
 

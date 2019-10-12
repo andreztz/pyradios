@@ -10,10 +10,7 @@ from pyradios.constants import endpoints
 def request(endpoint, **kwargs):
 
     BASE_URL = pick_url(
-        filename="data.cache",
-        expire=kwargs.get("expire", 604800),
-        appname=kwargs.get("appname", "pyradios"),
-        appauthor=kwargs.get("appname", "andreztz"),
+        filename="data.cache", expire=kwargs.get("expire", 604800), **kwargs
     )
 
     fmt = kwargs.get("format", "json")
