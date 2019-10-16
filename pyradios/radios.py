@@ -1,3 +1,7 @@
+"""
+http://www.radio-browser.info/webservice
+"""
+
 from urllib.parse import urljoin
 from xml.etree import ElementTree
 
@@ -64,33 +68,86 @@ class RadioBrowser:
     config = {}
 
     def __init__(self, fmt="json", **kwargs):
+        self._fmt = fmt
         self.config.update(kwargs, fmt=fmt)
         self.builder = EndPointBuilder(**self.config)
 
-    def countries(self, filter=""):
-        endpoint = self.builder.produce_endpoint(endpoint="countries")
+    def countrycodes(self, filter_by_code=None):
+        if filter_by_code:
+            endpoint = self.builder.produce_endpoint(
+                endpoint="countrycodes", filter=filter_by_code
+            )
+        else:
+            endpoint = self.builder.produce_endpoint(endpoint="countrycodes")
         return request(endpoint, **self.config)
 
-    def codecs(self, filter=""):
+    def codecs(self, filter_by_codec=None):
+        codec = filter_by_codec
         endpoint = self.builder.produce_endpoint(endpoint="codecs")
+
+        if codec:
+            response = request(endpoint, **self.config)
+            return list(
+                filter(
+                    lambda codecs: codecs["name"].lower() == codec.lower(),
+                    response,
+                )
+            )
+
         return request(endpoint, **self.config)
 
-    def states(self, country="", filter=""):
+    def states(self, filter_by_country=None, filter_by_state=None):
+
+        country = filter_by_country
+        name = filter_by_state
+
+        # endpoint = "{}/states".format(self._fmt)
+        endpoint = self.builder.produce_endpoint(endpoint="states")
+
+        if filter_by_country and filter_by_state:
+            response = request(endpoint, **self.config)
+            return list(
+                filter(
+                    lambda state: state["country"].lower() == country.lower()
+                    and state["name"].lower() == name.lower(),
+                    response,
+                )
+            )
+
+        if filter_by_country:
+            response = request(endpoint, **self.config)
+            return list(
+                filter(
+                    lambda state: state["country"].lower() == country.lower(),
+                    response,
+                )
+            )
+        if filter_by_state:
+            response = request(endpoint, **self.config)
+            return list(
+                filter(
+                    lambda state: state["name"].lower() == name.lower(),
+                    response,
+                )
+            )
+        return request(endpoint, **self.config)
+
+    def languages(self, filter_by_language=None):
         endpoint = self.builder.produce_endpoint(
-            endpoint="states", country=country, filter=filter
+            endpoint="languages", filter=filter_by_language
         )
         return request(endpoint, **self.config)
 
-    def languages(self, filter=""):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="languages", filter=filter
-        )
-        return request(endpoint, **self.config)
-
-    def tags(self, filter=""):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="tags", filter=filter
-        )
+    def tags(self, filter_by_tag=None):
+        endpoint = self.builder.produce_endpoint(endpoint="tags")
+        name = filter_by_tag
+        if name:
+            response = request(endpoint, **self.config)
+            return list(
+                filter(
+                    lambda tag: tag["name"].lower() == name.lower(), response
+                )
+            )
         return request(endpoint, **self.config)
 
     def stations_byid(self, id):
@@ -168,16 +225,20 @@ class RadioBrowser:
         return request(endpoint, **self.config)
 
     def stations_bytag(self, tag):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="bytag", search_term=tag
-        )
-        return request(endpoint, **self.config)
+        # endpoint = self.builder.produce_endpoint(
+        #     endpoint="stations", by="bytag", search_term=tag
+        # )
+        # return request(endpoint, **self.config)
+        return self.station_search(params={"tag": tag}, **self.config)
 
     def stations_bytagexact(self, tagexact):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="bytagexact", search_term=tagexact
+        # endpoint = self.builder.produce_endpoint(
+        #     endpoint="stations", by="bytagexact", search_term=tagexact
+        # )
+        # return request(endpoint, **self.config)
+        return self.station_search(
+            params={"tagExact": tagexact}, **self.config
         )
-        return request(endpoint, **self.config)
 
     def playable_station(self, station_id):
         endpoint = self.builder.produce_endpoint(
