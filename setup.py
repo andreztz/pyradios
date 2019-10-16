@@ -1,6 +1,10 @@
 from setuptools import setup
 from setuptools import find_packages
 
+DESCRIPTION = (
+    "A Python wrapper for the http://www.radio-browser.info/webservice"
+)
+
 
 def readme():
     with open("README.md") as f:
@@ -14,8 +18,8 @@ def required():
 
 setup(
     name="pyradios",
-    version="0.0.15",
-    description="A Python wrapper for the http://www.radio-browser.info/webservice",
+    version="0.0.16",
+    description=DESCRIPTION,
     long_description=readme(),
     long_description_content_type="text/markdown",
     keywords="pyradios wrapper radios api",
