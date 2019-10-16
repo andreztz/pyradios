@@ -229,16 +229,14 @@ class RadioBrowser:
         #     endpoint="stations", by="bytag", search_term=tag
         # )
         # return request(endpoint, **self.config)
-        return self.station_search(params={"tag": tag}, **self.config)
+        return self.station_search(tag=tag)
 
     def stations_bytagexact(self, tagexact):
         # endpoint = self.builder.produce_endpoint(
         #     endpoint="stations", by="bytagexact", search_term=tagexact
         # )
         # return request(endpoint, **self.config)
-        return self.station_search(
-            params={"tagExact": tagexact}, **self.config
-        )
+        return self.station_search(tagExact=tagexact)
 
     def playable_station(self, station_id):
         endpoint = self.builder.produce_endpoint(
@@ -257,8 +255,8 @@ class RadioBrowser:
         #  http://www.radio-browser.info/webservice#Advanced_station_search
         assert isinstance(params, dict), "params must be a dictionary."
         endpoint = self.builder.produce_endpoint(endpoint="station_search")
-        if params:
-            self.config["params"] = params
+        self.config.setdefault("params", params)
         if kwargs:
             self.config["params"].update(kwargs)
         return request(endpoint, **self.config)
+
