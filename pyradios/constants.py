@@ -1,5 +1,9 @@
 endpoints = {
     "countries": {1: "{fmt}/countries", 2: "{fmt}/countries/{filter}"},
+    "countrycodes": {
+        1: "{fmt}/countrycodes",
+        2: "{fmt}/countrycodes/{filter}",
+    },
     "codecs": {1: "{fmt}/codecs", 2: "{fmt}/codecs/{filter}"},
     "states": {
         1: "{fmt}/states",
