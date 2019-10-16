@@ -7,15 +7,15 @@ class TestEndPoint(unittest.TestCase):
     def setUp(self):
         self.builder = EndPointBuilder(fmt="json")
 
-    def test_countries(self):
-        expected = "json/countries"
-        result = self.builder.produce_endpoint(endpoint="countries")
+    def test_countrycodes(self):
+        expected = "json/countrycodes"
+        result = self.builder.produce_endpoint(endpoint="countrycodes")
         self.assertEqual(result, expected)
 
-    def test_countries_with_filter(self):
-        expected = "json/countries/Brazil"
+    def test_countrycodes_with_filter(self):
+        expected = "json/countrycodes/BR"
         result = self.builder.produce_endpoint(
-            endpoint="countries", filter="Brazil"
+            endpoint="countrycodes", filter="BR"
         )
         self.assertEqual(result, expected)
 
