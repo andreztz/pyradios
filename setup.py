@@ -1,5 +1,9 @@
 from setuptools import setup
 from setuptools import find_packages
+from setuptools.command.develop import develop
+from setuptools.command.develop import develop as DevelopCommand
+import pip
+
 
 DESCRIPTION = (
     "A Python wrapper for the http://www.radio-browser.info/webservice"
@@ -14,6 +18,15 @@ def readme():
 def required():
     with open("requirements.txt") as f:
         return f.read().splitlines()
+
+
+dev_requirements = ["pytest"]
+
+
+class CustomDevelopCommand(DevelopCommand):
+    def run(self):
+        super().run()
+        pip.main(["install"] + dev_requirements)
 
 
 setup(
@@ -36,5 +49,5 @@ setup(
         "Operating System :: OS Independent",
         "Intended Audience :: Developers",
     ],
-    test_suite="tests",
+    cmdclass={"develop": CustomDevelopCommand},
 )
