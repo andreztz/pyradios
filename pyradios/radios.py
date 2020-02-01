@@ -3,7 +3,7 @@ http://www.radio-browser.info/webservice
 """
 
 from urllib.parse import urljoin
-from xml.etree import ElementTree
+# from xml.etree import ElementTree
 
 import requests
 
@@ -16,14 +16,14 @@ def request(endpoint, **kwargs):
     BASE_URL = pick_url(
         filename="data.cache", expire=kwargs.get("expire", 604800), **kwargs
     )
-
-    fmt = kwargs.get("format", "json")
-
+    
+    fmt = kwargs.get("fmt", "json")
+    
     if fmt == "xml":
-        content_type = f"application/{fmt}"
+        content_type = "application/{}".format(fmt)
     else:
-        content_type = f"application/{fmt}"
-
+        content_type = "application/{}".format(fmt)
+    
     headers = {"content-type": content_type, "User-Agent": "pyradios/dev"}
 
     params = kwargs.get("params", {})
@@ -34,7 +34,7 @@ def request(endpoint, **kwargs):
 
     if resp.status_code == 200:
         if fmt == "xml":
-            return resp.text
+            return resp.content
         return resp.json()
 
     return resp.raise_for_status()
@@ -58,17 +58,10 @@ class EndPointBuilder:
 
 
 class RadioBrowser:
-    """
-    Supported output formats: JSON
-
-    TODO:
-        * XML support.
-    """
 
     config = {}
 
     def __init__(self, fmt="json", **kwargs):
-        self._fmt = fmt
         self.config.update(kwargs, fmt=fmt)
         self.builder = EndPointBuilder(**self.config)
 
@@ -101,7 +94,6 @@ class RadioBrowser:
         country = filter_by_country
         name = filter_by_state
 
-        # endpoint = "{}/states".format(self._fmt)
         endpoint = self.builder.produce_endpoint(endpoint="states")
 
         if filter_by_country and filter_by_state:
@@ -148,12 +140,6 @@ class RadioBrowser:
                     lambda tag: tag["name"].lower() == name.lower(), response
                 )
             )
-        return request(endpoint, **self.config)
-
-    def stations_byid(self, id):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="byid", search_term=id
-        )
         return request(endpoint, **self.config)
 
     def stations_byuuid(self, uuid):
@@ -225,18 +211,18 @@ class RadioBrowser:
         return request(endpoint, **self.config)
 
     def stations_bytag(self, tag):
-        # endpoint = self.builder.produce_endpoint(
-        #     endpoint="stations", by="bytag", search_term=tag
-        # )
-        # return request(endpoint, **self.config)
-        return self.station_search(tag=tag)
+        endpoint = self.builder.produce_endpoint(
+            endpoint="stations", by="bytag", search_term=tag
+        )
+        return request(endpoint, **self.config)
+        # return self.station_search(tag=tag)
 
     def stations_bytagexact(self, tagexact):
-        # endpoint = self.builder.produce_endpoint(
-        #     endpoint="stations", by="bytagexact", search_term=tagexact
-        # )
-        # return request(endpoint, **self.config)
-        return self.station_search(tagExact=tagexact)
+        endpoint = self.builder.produce_endpoint(
+            endpoint="stations", by="bytagexact", search_term=tagexact
+        )
+        return request(endpoint, **self.config)
+        # return self.station_search(tagExact=tagexact)
 
     def playable_station(self, station_id):
         endpoint = self.builder.produce_endpoint(
