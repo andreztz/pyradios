@@ -19,8 +19,7 @@ In [2]: rb = RadioBrowser()
 
 In [3]: rb.station_search(params={'name': 'BBC Radio 1', 'nameExact': 'true'})                
 Out[3]: 
-[{'id': '64094',
-  'changeuuid': '4f7e4097-4354-11e8-b74d-52543be04c81',
+[{'changeuuid': '4f7e4097-4354-11e8-b74d-52543be04c81',
   'stationuuid': '96062a7b-0601-11e8-ae97-52543be04c81',
   'name': 'BBC Radio 1',
   'url': 'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p',
@@ -45,10 +44,9 @@ Out[3]:
   'clickcount': '123',
   'clicktrend': '-12'}]
   
-In [4]: rb.stations_byid('92585')
+In [4]: rb.stations_byuuid('96062a7b-0601-11e8-ae97-52543be04c81')
 Out[4]:
-[{'id': '92585',
-  'changeuuid': 'e78eb8c0-1a25-11e8-a334-52543be04c81',
+[{'changeuuid': 'e78eb8c0-1a25-11e8-a334-52543be04c81',
   'stationuuid': '9621d43e-0601-11e8-ae97-52543be04c81',
   'name': 'Radio Maria Südtirol',
   'url': 'http://s1.shoutitaly.com:8020/;',
