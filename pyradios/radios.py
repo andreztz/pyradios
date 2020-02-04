@@ -150,12 +150,6 @@ class RadioBrowser:
             )
         return request(endpoint, **self.config)
 
-    def stations_byid(self, id):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="byid", search_term=id
-        )
-        return request(endpoint, **self.config)
-
     def stations_byuuid(self, uuid):
         endpoint = self.builder.produce_endpoint(
             endpoint="stations", by="byuuid", search_term=uuid

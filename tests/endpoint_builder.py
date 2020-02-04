@@ -71,13 +71,6 @@ class TestEndPoint(unittest.TestCase):
         result = self.builder.produce_endpoint(endpoint="stations")
         self.assertEqual(result, expected)
 
-    def test_stations_byid(self):
-        expected = "json/stations/byid/0000"
-        result = self.builder.produce_endpoint(
-            endpoint="stations", by="byid", search_term="0000"
-        )
-        self.assertEqual(result, expected)
-
     def test_stations_byuuid(self):
         expected = "json/stations/byuuid/0000"
         result = self.builder.produce_endpoint(
