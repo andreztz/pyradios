@@ -1,6 +1,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
+
 DESCRIPTION = (
     "A Python wrapper for the http://www.radio-browser.info/webservice"
 )
@@ -18,7 +19,7 @@ def required():
 
 setup(
     name="pyradios",
-    version="0.0.19",
+    version="0.0.20",
     description=DESCRIPTION,
     long_description=readme(),
     long_description_content_type="text/markdown",
@@ -36,5 +37,4 @@ setup(
         "Operating System :: OS Independent",
         "Intended Audience :: Developers",
     ],
-    test_suite="tests",
 )

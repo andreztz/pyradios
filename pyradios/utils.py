@@ -5,8 +5,7 @@ from pyradios.config import app_dirs
 
 def create_app_dirs(filename, path):
     p = Path(path)
-    if not p.exists():
-        p.mkdir(parents=True)
+    p.mkdir(parents=True, exist_ok=True)
     return p / filename
 
 
