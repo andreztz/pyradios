@@ -5,7 +5,6 @@ Get all base urls of all currently available radiobrowser servers.
 import random
 import socket
 
-from pyradios.cache import cache
 from pyradios.log import logger
 
 
@@ -16,7 +15,7 @@ class Error(Exception):
 
 
 class RdnsLookupError(Error):
-    """There was a problem with performing a reverse dns lookup."""
+    """There was a problem with performing reverse dns lookup."""
 
     pass
 
@@ -26,14 +25,14 @@ def fetch_all_hosts():
     Get all ip of all currently available radiobrowser servers.
 
     Returns:
-        list: an ip list in string format
+        list: ips
 
     """
     try:
         data = socket.getaddrinfo(
             "all.api.radio-browser.info", 80, 0, 0, socket.IPPROTO_TCP
         )
-    except socket.gaierror as exc:
+    except socket.gaierror:
         logger.exception("Network failure: ")
         raise
     else:
@@ -43,12 +42,10 @@ def fetch_all_hosts():
 
 def rdns_lookup(ip):
     """
-    Do a reverse dns lookup.
-
-    Resolves Domain Names into associated IP addresses.
+    Do reverse dns lookup.
 
     Returns:
-        str: Domain Name
+        str: DNS
 
     """
     try:
@@ -61,27 +58,28 @@ def rdns_lookup(ip):
     return name[0]
 
 
-def pick_url(filename, expire, **kwargs):
-    @cache(filename=filename, expire=expire, **kwargs)
-    def fetch_hosts():
-        names = []
-        try:
-            hosts = fetch_all_hosts()
-        except Exception as exc:
-            logger.exception("Network failure. ")
-        else:
-            for ip in hosts:
-                try:
-                    name = rdns_lookup(ip)
-                except RdnsLookupError as exc:
-                    logger.exception("Network failure. ")
-                else:
-                    names.append(name)
-        return names
+def fetch_hosts():
+    names = []
+    try:
+        hosts = fetch_all_hosts()
+    except Exception:
+        logger.exception("Network failure. ")
+    else:
+        for ip in hosts:
+            try:
+                name = rdns_lookup(ip)
+            except RdnsLookupError:
+                logger.exception("Network failure. ")
+            else:
+                names.append(name)
+    return names
+
+
+def pick_base_url():
 
     try:
         names = fetch_hosts()
-    except Exception as exc:
+    except Exception:
         logger.exception("Network failure. ")
         raise
 
@@ -91,16 +89,5 @@ def pick_url(filename, expire, **kwargs):
 
 
 if __name__ == "__main__":
-    ips = fetch_all_hosts()
-
-    print(ips)
-
-    for ip in ips:
-        print(ip)
-        try:
-            print(rdns_lookup(ip))
-        except RdnsLookupError as exc:
-            print("Network failure: " + str(exc))
-
-    url = pick_url(filename="data.cache", expire=0)
+    url = pick_base_url()
     print(url)
