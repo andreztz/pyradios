@@ -1,248 +1,449 @@
-"""
-http://www.radio-browser.info/webservice
-"""
-
-from urllib.parse import urljoin
-# from xml.etree import ElementTree
-
 import requests
-
-from pyradios.base_url import pick_url
-from pyradios.constants import endpoints
+from pyradios.base_url import pick_base_url
 
 
-def request(endpoint, **kwargs):
+class Request:
+    def __init__(self, fmt, **kwargs):
 
-    BASE_URL = pick_url(
-        filename="data.cache", expire=kwargs.get("expire", 604800), **kwargs
-    )
-    
-    fmt = kwargs.get("fmt", "json")
-    
-    if fmt == "xml":
-        content_type = "application/{}".format(fmt)
-    else:
-        content_type = "application/{}".format(fmt)
-    
-    headers = {"content-type": content_type, "User-Agent": "pyradios/dev"}
+        self._fmt = fmt
 
-    params = kwargs.get("params", {})
+        if "base_url" in kwargs:  # for tests with lib response
+            self.base_url = kwargs.get("base_url")
+        else:
+            self.base_url = pick_base_url()
 
-    url = BASE_URL + endpoint
+    def get(self, endpoint, **kwargs):
 
-    resp = requests.get(url, headers=headers, params=params)
+        if "fmt" in kwargs:
+            self._fmt = kwargs.get("fmt")
+            endpoint = self._fmt + "/" + endpoint.split("/", 1)[1]
+            del kwargs["fmt"]
 
-    if resp.status_code == 200:
-        if fmt == "xml":
-            return resp.content
-        return resp.json()
+        if self._fmt == "xml":
+            content_type = "application/{}".format(self._fmt)
+        else:
+            content_type = "application/{}".format(self._fmt)
 
-    return resp.raise_for_status()
+        headers = {"content-type": content_type, "User-Agent": "pyradios/dev"}
 
+        url = self.base_url + endpoint
 
-class EndPointBuilder:
-    def __init__(self, **kwargs):
-        self.fmt = kwargs.get("fmt")
-        self._option = None
-        self._endpoint = None
+        resp = requests.get(url, headers=headers, params=kwargs)
 
-    @property
-    def endpoint(self):
-        return endpoints[self._endpoint][self._option]
+        if resp.status_code == 200:
+            if self._fmt == "xml":
+                # return resp.text
+                return resp.content
+            return resp.json()
 
-    def produce_endpoint(self, **parts):
-        self._option = len(parts)
-        self._endpoint = parts["endpoint"]
-        parts.update({"fmt": self.fmt})
-        return self.endpoint.format(**parts)
+        return resp.raise_for_status()
 
 
 class RadioBrowser:
-
-    config = {}
-
     def __init__(self, fmt="json", **kwargs):
-        self.config.update(kwargs, fmt=fmt)
-        self.builder = EndPointBuilder(**self.config)
 
-    def countrycodes(self, filter_by_code=None):
-        if filter_by_code:
-            endpoint = self.builder.produce_endpoint(
-                endpoint="countrycodes", filter=filter_by_code
+        self._fmt = fmt
+        self.client = Request(self._fmt, **kwargs)
+
+    def countries(self, code=None):
+        """Lists all countries.
+
+        Args:
+            code ({str}, optional): Filter by country code. Defaults to None.
+
+        Returns:
+            list: Countries.
+        """
+
+        if code:
+            endpoint = "{fmt}/countrycodes/{code}".format(
+                fmt=self._fmt, code=code
             )
         else:
-            endpoint = self.builder.produce_endpoint(endpoint="countrycodes")
-        return request(endpoint, **self.config)
+            endpoint = "{fmt}/countrycodes/".format(fmt=self._fmt)
+        return self.client.get(endpoint)
 
-    def codecs(self, filter_by_codec=None):
-        codec = filter_by_codec
-        endpoint = self.builder.produce_endpoint(endpoint="codecs")
+    def countrycodes(self, code=None):
+        """Lists all countries.
 
+        Args:
+            code ({str}, optional): Filter by country code. Defaults to None.
+
+        Returns:
+            list: Countries.
+        """
+
+        if code:
+            endpoint = "{fmt}/countrycodes/{code}".format(
+                fmt=self._fmt, code=code
+            )
+        else:
+            endpoint = "{fmt}/countrycodes/".format(fmt=self._fmt)
+        return self.client.get(endpoint)
+
+    def codecs(self, codec=None):
+        """Lists all codecs.
+
+        Args:
+            codec ({str}, optional): Filter by codec. Defaults to None.
+
+        Returns:
+            list: Codecs.
+        """
+
+        endpoint = "{fmt}/codecs/".format(fmt=self._fmt)
+
+        # filter
         if codec:
-            response = request(endpoint, **self.config)
+            response = self.client.get(endpoint)
             return list(
                 filter(
-                    lambda codecs: codecs["name"].lower() == codec.lower(),
+                    lambda _codecs: _codecs["name"].lower() == codec.lower(),
                     response,
                 )
             )
 
-        return request(endpoint, **self.config)
+        return self.client.get(endpoint)
 
-    def states(self, filter_by_country=None, filter_by_state=None):
+    def states(self, country=None, state=None):
+        """Lists all states.
 
-        country = filter_by_country
-        name = filter_by_state
+        Args:
+            country ({str}, optional): Filter by country. Defaults to None.
+            state ({str}, optionla): Filter by state.  Defaults to None.
 
-        endpoint = self.builder.produce_endpoint(endpoint="states")
+        Returns:
+            list: States.
+        """
 
-        if filter_by_country and filter_by_state:
-            response = request(endpoint, **self.config)
+        endpoint = "{fmt}/states".format(fmt=self._fmt)
+
+        # filters
+        if country and state:
+
+            response = self.client.get(endpoint)
             return list(
                 filter(
-                    lambda state: state["country"].lower() == country.lower()
-                    and state["name"].lower() == name.lower(),
+                    lambda _state: _state["country"].lower() == country.lower()
+                    and _state["name"].lower() == state.lower(),
                     response,
                 )
             )
 
-        if filter_by_country:
-            response = request(endpoint, **self.config)
+        if country:
+            response = self.client.get(endpoint)
             return list(
                 filter(
-                    lambda state: state["country"].lower() == country.lower(),
+                    lambda _state: _state["country"].lower()
+                    == country.lower(),
                     response,
                 )
             )
-        if filter_by_state:
-            response = request(endpoint, **self.config)
+        if state:
+            response = self.client.get(endpoint)
             return list(
                 filter(
-                    lambda state: state["name"].lower() == name.lower(),
+                    lambda _state: _state["name"].lower() == state.lower(),
                     response,
                 )
             )
-        return request(endpoint, **self.config)
+        return self.client.get(endpoint)
 
-    def languages(self, filter_by_language=None):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="languages", filter=filter_by_language
-        )
-        return request(endpoint, **self.config)
+    def languages(self, language=None):
+        """Lists all languages.
 
-    def tags(self, filter_by_tag=None):
-        endpoint = self.builder.produce_endpoint(endpoint="tags")
-        name = filter_by_tag
-        if name:
-            response = request(endpoint, **self.config)
-            return list(
-                filter(
-                    lambda tag: tag["name"].lower() == name.lower(), response
-                )
+        Args:
+            language ({str}, optional): Filter by language. Defaults to None.
+
+        Returns:
+            list: Languages.
+        """
+        if language:
+            endpoint = "{fmt}/languages/{language}".format(
+                fmt=self._fmt, language=language
             )
-        return request(endpoint, **self.config)
+        else:
+            endpoint = "{fmt}/languages/".format(fmt=self._fmt)
 
-    def stations_byuuid(self, uuid):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="byuuid", search_term=uuid
-        )
-        return request(endpoint, **self.config)
+        return self.client.get(endpoint)
 
-    def stations_byname(self, name):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="byname", search_term=name
-        )
-        return request(endpoint, **self.config)
+    def tags(self, tag=None):
+        """Lists all tags.
 
-    def stations_bynameexact(self, nameexact):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="bynameexact", search_term=nameexact
-        )
-        return request(endpoint, **self.config)
+        Args:
+            tag ({str}, optional): Filter by tag. Defaults to None.
 
-    def stations_bycodec(self, codec):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="bycodec", search_term=codec
-        )
-        return request(endpoint, **self.config)
+        Returns:
+            list: Tags.
+        """
 
-    def stations_bycodecexact(self, codecexact):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="bycodecexact", search_term=codecexact
-        )
-        return request(endpoint, **self.config)
+        if tag:
+            endpoint = "{fmt}/tags/{tag}".format(fmt=self._fmt, tag=tag)
+        else:
+            endpoint = "{fmt}/tags/".format(fmt=self._fmt)
 
-    def stations_bycountry(self, country):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="bycountry", search_term=country
-        )
-        return request(endpoint, **self.config)
+        return self.client.get(endpoint)
 
-    def stations_bycountryexact(self, countryexact):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="bycountryexact", search_term=countryexact
-        )
-        return request(endpoint, **self.config)
+    def station_by_uuid(self, stationuuid):
+        """Radio station by stationuuid.
 
-    def stations_bystate(self, state):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="bystate", search_term=state
-        )
-        return request(endpoint, **self.config)
+        Args:
+            stationuuid {str}: A globally unique identifier for the station.
 
-    def stations_bystateexact(self, stateexact):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="bystateexact", search_term=stateexact
-        )
-        return request(endpoint, **self.config)
-
-    def stations_bylanguage(self, language):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="bylanguage", search_term=language
-        )
-        return request(endpoint, **self.config)
-
-    def stations_bylanguageexact(self, languageexact):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations",
-            by="bylanguageexact",
-            search_term=languageexact,
-        )
-        return request(endpoint, **self.config)
-
-    def stations_bytag(self, tag):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="bytag", search_term=tag
-        )
-        return request(endpoint, **self.config)
-        # return self.station_search(tag=tag)
-
-    def stations_bytagexact(self, tagexact):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="stations", by="bytagexact", search_term=tagexact
-        )
-        return request(endpoint, **self.config)
-        # return self.station_search(tagExact=tagexact)
-
-    def playable_station(self, station_id):
-        endpoint = self.builder.produce_endpoint(
-            endpoint="playable_station", station_id=station_id, ver="v2"
+        Returns:
+            list: Stations.
+        """
+        endpoint = "{fmt}/stations/byuuid/{uuid}".format(
+            fmt=self._fmt, uuid=stationuuid
         )
 
-        return request(endpoint, **self.config)
+        return self.client.get(endpoint)
 
-    def stations(self, **params):
-        endpoint = self.builder.produce_endpoint(endpoint="stations")
-        if params:
-            self.config.update({"params": params})
-        return request(endpoint, **self.config)
+    def stations_by_name(self, name, exact=False):
+        """Lists all radio stations by name.
 
-    def station_search(self, params={}, **kwargs):
-        #  http://www.radio-browser.info/webservice#Advanced_station_search
-        assert isinstance(params, dict), "params must be a dictionary."
-        endpoint = self.builder.produce_endpoint(endpoint="station_search")
-        self.config.setdefault("params", params)
-        if kwargs:
-            self.config["params"].update(kwargs)
-        return request(endpoint, **self.config)
+        Args:
+            name {str}: The name of the station.
 
+        Returns:
+            list: Stations.
+        """
+        if exact:
+            endpoint = "{fmt}/stations/bynameexact/{name}".format(
+                fmt=self._fmt, name=name
+            )
+        else:
+            endpoint = "{fmt}/stations/byname/{name}".format(
+                fmt=self._fmt, name=name
+            )
+
+        return self.client.get(endpoint)
+
+    def stations_by_codec(self, codec, exact=False):
+        """Lists all radio stations by codec.
+
+        Args:
+            codec {str}: The name of the codec.
+
+        Returns:
+            list: Stations.
+        """
+        if exact:
+            endpoint = "{fmt}/stations/bycodecexact/{codec}".format(
+                fmt=self._fmt, codec=codec
+            )
+        else:
+            endpoint = "{fmt}/stations/bycodec/{codec}".format(
+                fmt=self._fmt, codec=codec
+            )
+        return self.client.get(endpoint)
+
+    def stations_by_country(self, country, exact=False):
+        """Lists all radio stations by country.
+
+        Args:
+            country {str}: The name of the country.
+
+        Returns:
+            list: Stations.
+        """
+        if exact:
+            endpoint = "{fmt}/stations/bycoutryexact/{country}".format(
+                fmt=self._fmt, country=country
+            )
+        else:
+            endpoint = "{fmt}/stations/bycountry/{country}".format(
+                fmt=self._fmt, country=country
+            )
+        return self.client.get(endpoint)
+
+    def stations_by_countrycode(self, code):
+        """Lists all radio stations by country code.
+
+        Args:
+            code {str}: Official countrycodes as in ISO 3166-1 alpha-2.
+
+        Returns:
+            list: Stations.
+        """
+
+        endpoint = "{fmt}/stations/bycountrycodeexact/{code}".format(
+            fmt=self._fmt, code=code
+        )
+        return self.client.get(endpoint)
+
+    def stations_by_state(self, state, exact=False):
+        """Lists all radio stations by state.
+
+        Args:
+            state {str}: The name of the state.
+
+        Returns:
+            list: Stations.
+        """
+        if exact:
+            endpoint = "{fmt}/stations/bystateexact/{state}".format(
+                fmt=self._fmt, state=state
+            )
+        else:
+            endpoint = "{fmt}/stations/bystate/{state}".format(
+                fmt=self._fmt, state=state
+            )
+        return self.client.get(endpoint)
+
+    def stations_by_language(self, language, exact=False):
+        """Lists all radio stations by language.
+
+        Args:
+            language {str}: The name of the language.
+
+        Returns:
+            list: Stations.
+        """
+        if exact:
+            endpoint = "{fmt}/stations/bylanguageexact/{language}".format(
+                fmt=self._fmt, language=language
+            )
+        else:
+
+            endpoint = "{fmt}/stations/bylanguage/{language}".format(
+                fmt=self._fmt, language=language
+            )
+        return self.client.get(endpoint)
+
+    def stations_by_tag(self, tag, exact=False):
+        """Lists all radio stations by tag.
+
+        Args:
+            tag {str}: The name of the tag.
+
+        Returns:
+            list: Stations.
+        """
+        if exact:
+            endpoint = "{fmt}/stations/bytagexact/{tag}".format(
+                fmt=self._fmt, tag=tag
+            )
+        else:
+            endpoint = "{fmt}/stations/bytag/{tag}".format(
+                fmt=self._fmt, tag=tag
+            )
+        return self.client.get(endpoint)
+
+    def click_counter(self, stationuuid):
+        """Increase the click count of a station by one.
+
+        This should be called everytime when a user starts
+        playing a stream to mark the stream more popular than others.
+        Every call to this endpoint from the same IP address and for
+        the same station only gets counted once per day. The call will
+        return detailed information about the stream, supported output
+        formats: JSON
+
+        Args:
+            stationuuid {str}: A globally unique identifier for the station.
+
+        Returns:
+            dict: A dict containing informations about the radio station.
+        """
+        endpoint = "{fmt}/url/{uuid}".format(fmt=self._fmt, uuid=stationuuid)
+
+        return self.client.get(endpoint)
+
+    # def stations_byvotes(self, row_count):
+    #     """A list of the highest-voted stations.
+
+    #     You can add a parameter with the number of wanted stations.
+
+    #     Args:
+    #         row_count {int}: Number of wanted stations
+
+    #     Returns:
+    #         {list}: Stations
+    #     TODO: endpoint = "{fmt}/stations/topvote/{row_count}" if row_count else "{fmt}/stations/topvote/"
+    #     """
+    #     return None
+
+    # def vote_for_station(self, stationuuid):
+    #     """Increase the vote count for the station by one.
+
+    #     Can only be done by same IP address for one station every 10 minutes.
+    #     If it woeks, the changed station will be returned as result.
+
+    #     Args:
+    #         stationuuid {str}: A globally unique identifier for the station.
+
+    #     Returns:
+    #         {dict}: Station
+
+    #     TODO:
+    #     https://de1.api.radio-browser.info/#Vote_for_station
+    #     """
+    #     return
+
+    # def add_radio_station(self, **kwargs):
+    #     """Add a radio station to the database.
+
+    #     TODO:
+    #     https://de1.api.radio-browser.info/#Add_radio_station
+    #     """
+    #     return None
+
+    def stations(self, **kwargs):
+        """Lists all radio stations.
+
+        Returns:
+            list: Stations.
+
+        https://nl1.api.radio-browser.info/#List_of_all_radio_stations
+        """
+        endpoint = "{fmt}/stations".format(fmt=self._fmt)
+        return self.client.get(endpoint, **kwargs)
+
+    def search(self, **kwargs):
+        """Advanced search.
+
+        It will search for the station whose attribute
+        contains the search term.
+
+        Args:
+            name ({str}, optional): Name of the station.
+            nameExact ({bool}, optional): Only exact matches, otherwise all
+                matches (default: False).
+            country ({str}, optional): Country of the station.
+            countryExact ({bool}, optional): Only exact matches, otherwise
+                all matches (default: False).
+            countrycode ({str}, optional): 2-digit countrycode of the station
+                (see ISO 3166-1 alpha-2)
+            state ({str}, optional): State of the station.
+            stateExact ({bool}, optional): Only exact matches, otherwise all
+                matches. (default: False)
+            language ({str}, optional): Language of the station.
+            languageExact ({bool}, optional): Only exact matches, otherwise
+                all matches. (default: False)
+            tag ({str}, optional): Tag of the station.
+            tagExact ({bool}, optional): Only exact matches, otherwise all
+                matches. (default: False)
+            tagList ({str}, optional): A comma-separated list of tag.
+            bitrateMin ({int}, optional): Minimum of kbps for bitrate field of
+                stations in result. (default: 0)
+            bitrateMax ({int}, optional): Maximum of kbps for bitrate field of
+                stations in result. (default: 1000000)
+            order ({str}, optional): The result list will be sorted by: name,
+                url, homepage, favicon, tags, country, state, language, votes,
+                codec, bitrate, lastcheckok, lastchecktime, clicktimestamp,
+                clickcount, clicktrend, random
+            reverse ({bool}, optional): Reverse the result list if set to true.
+                (default: false)
+            offset ({int}, optional): Starting value of the result list from
+                the database. For example, if you want to do paging on the
+                server side. (default: 0)
+
+        Returns:
+            list: Stations.
+
+        http://www.radio-browser.info/webservice#Advanced_station_search
+        """
+
+        endpoint = "{fmt}/stations/search".format(fmt=self._fmt)
+        return self.client.get(endpoint, **kwargs)
