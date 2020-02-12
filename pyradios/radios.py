@@ -2,12 +2,38 @@ import requests
 from pyradios.base_url import pick_base_url
 
 
+def bool2string(b):
+    """Convert a boolean type to string.
+
+    Args:
+        b (bool): A Boolean.
+
+    Raises:
+        ValueError: [description]
+
+    Returns:
+        str: String representation of a bool type.
+    """
+    s = str(b).lower()
+    if s in ["true", "false"]:
+        return s
+    raise TypeError("Value must be True or False.")
+
+
+class Error(Exception):
+    """Base class for all excpetions raised by this module."""
+
+
+class IllegalArgumentError(Error):
+    pass
+
+
 class Request:
     def __init__(self, fmt, **kwargs):
 
         self._fmt = fmt
 
-        if "base_url" in kwargs:  # for tests with lib response
+        if "base_url" in kwargs:  # for tests with lib responses
             self.base_url = kwargs.get("base_url")
         else:
             self.base_url = pick_base_url()
@@ -49,7 +75,7 @@ class RadioBrowser:
         """Lists all countries.
 
         Args:
-            code ({str}, optional): Filter by country code. Defaults to None.
+            code (str, optional): Filter by country code. Defaults to None.
 
         Returns:
             list: Countries.
@@ -67,7 +93,7 @@ class RadioBrowser:
         """Lists all countries.
 
         Args:
-            code ({str}, optional): Filter by country code. Defaults to None.
+            code (str, optional): Filter by country code. Defaults to None.
 
         Returns:
             list: Countries.
@@ -85,7 +111,7 @@ class RadioBrowser:
         """Lists all codecs.
 
         Args:
-            codec ({str}, optional): Filter by codec. Defaults to None.
+            codec (str, optional): Filter by codec. Defaults to None.
 
         Returns:
             list: Codecs.
@@ -109,8 +135,8 @@ class RadioBrowser:
         """Lists all states.
 
         Args:
-            country ({str}, optional): Filter by country. Defaults to None.
-            state ({str}, optionla): Filter by state.  Defaults to None.
+            country (str, optional): Filter by country. Defaults to None.
+            state (str, optionla): Filter by state.  Defaults to None.
 
         Returns:
             list: States.
@@ -153,7 +179,7 @@ class RadioBrowser:
         """Lists all languages.
 
         Args:
-            language ({str}, optional): Filter by language. Defaults to None.
+            language (str, optional): Filter by language. Defaults to None.
 
         Returns:
             list: Languages.
@@ -171,7 +197,7 @@ class RadioBrowser:
         """Lists all tags.
 
         Args:
-            tag ({str}, optional): Filter by tag. Defaults to None.
+            tag (str, optional): Filter by tag. Defaults to None.
 
         Returns:
             list: Tags.
@@ -188,7 +214,7 @@ class RadioBrowser:
         """Radio station by stationuuid.
 
         Args:
-            stationuuid {str}: A globally unique identifier for the station.
+            stationuuid (str): A globally unique identifier for the station.
 
         Returns:
             list: Stations.
@@ -203,7 +229,7 @@ class RadioBrowser:
         """Lists all radio stations by name.
 
         Args:
-            name {str}: The name of the station.
+            name (str): The name of the station.
 
         Returns:
             list: Stations.
@@ -223,7 +249,7 @@ class RadioBrowser:
         """Lists all radio stations by codec.
 
         Args:
-            codec {str}: The name of the codec.
+            codec (str): The name of the codec.
 
         Returns:
             list: Stations.
@@ -242,7 +268,7 @@ class RadioBrowser:
         """Lists all radio stations by country.
 
         Args:
-            country {str}: The name of the country.
+            country (str): The name of the country.
 
         Returns:
             list: Stations.
@@ -261,7 +287,7 @@ class RadioBrowser:
         """Lists all radio stations by country code.
 
         Args:
-            code {str}: Official countrycodes as in ISO 3166-1 alpha-2.
+            code (str): Official countrycodes as in ISO 3166-1 alpha-2.
 
         Returns:
             list: Stations.
@@ -276,7 +302,7 @@ class RadioBrowser:
         """Lists all radio stations by state.
 
         Args:
-            state {str}: The name of the state.
+            state (str): The name of the state.
 
         Returns:
             list: Stations.
@@ -295,7 +321,7 @@ class RadioBrowser:
         """Lists all radio stations by language.
 
         Args:
-            language {str}: The name of the language.
+            language (str): The name of the language.
 
         Returns:
             list: Stations.
@@ -315,7 +341,7 @@ class RadioBrowser:
         """Lists all radio stations by tag.
 
         Args:
-            tag {str}: The name of the tag.
+            tag (str): The name of the tag.
 
         Returns:
             list: Stations.
@@ -341,7 +367,7 @@ class RadioBrowser:
         formats: JSON
 
         Args:
-            stationuuid {str}: A globally unique identifier for the station.
+            stationuuid (str): A globally unique identifier for the station.
 
         Returns:
             dict: A dict containing informations about the radio station.
@@ -407,43 +433,92 @@ class RadioBrowser:
         contains the search term.
 
         Args:
-            name ({str}, optional): Name of the station.
-            nameExact ({bool}, optional): Only exact matches, otherwise all
+            name (str, optional): Name of the station.
+            nameExact (bool, optional): Only exact matches, otherwise all
                 matches (default: False).
-            country ({str}, optional): Country of the station.
-            countryExact ({bool}, optional): Only exact matches, otherwise
+            country (str, optional): Country of the station.
+            countryExact (bool, optional): Only exact matches, otherwise
                 all matches (default: False).
-            countrycode ({str}, optional): 2-digit countrycode of the station
+            countrycode (str, optional): 2-digit countrycode of the station
                 (see ISO 3166-1 alpha-2)
-            state ({str}, optional): State of the station.
-            stateExact ({bool}, optional): Only exact matches, otherwise all
+            state (str, optional): State of the station.
+            stateExact (bool, optional): Only exact matches, otherwise all
                 matches. (default: False)
-            language ({str}, optional): Language of the station.
-            languageExact ({bool}, optional): Only exact matches, otherwise
+            language (str, optional): Language of the station.
+            languageExact (bool, optional): Only exact matches, otherwise
                 all matches. (default: False)
-            tag ({str}, optional): Tag of the station.
-            tagExact ({bool}, optional): Only exact matches, otherwise all
+            tag (str, optional): Tag of the station.
+            tagExact (bool, optional): Only exact matches, otherwise all
                 matches. (default: False)
-            tagList ({str}, optional): A comma-separated list of tag.
-            bitrateMin ({int}, optional): Minimum of kbps for bitrate field of
+            tagList (str, optional): A comma-separated list of tag.
+            bitrateMin (int, optional): Minimum of kbps for bitrate field of
                 stations in result. (default: 0)
-            bitrateMax ({int}, optional): Maximum of kbps for bitrate field of
+            bitrateMax (int, optional): Maximum of kbps for bitrate field of
                 stations in result. (default: 1000000)
-            order ({str}, optional): The result list will be sorted by: name,
+            order (str, optional): The result list will be sorted by: name,
                 url, homepage, favicon, tags, country, state, language, votes,
                 codec, bitrate, lastcheckok, lastchecktime, clicktimestamp,
                 clickcount, clicktrend, random
-            reverse ({bool}, optional): Reverse the result list if set to true.
+            reverse (bool, optional): Reverse the result list if set to true.
                 (default: false)
-            offset ({int}, optional): Starting value of the result list from
+            offset (int, optional): Starting value of the result list from
                 the database. For example, if you want to do paging on the
                 server side. (default: 0)
+
+        Raises:
+            ValueError: [description] # TODO
+            ValueError: [description] # TODO
 
         Returns:
             list: Stations.
 
+        Example:
+            >>> from pyradios import RadioBrowser
+            >>> rb = RadioBrowser()
+            >>> rb.search(name="BBC Radio 1", name_exact=True)
+
         http://www.radio-browser.info/webservice#Advanced_station_search
         """
+        _valid_kwargs = {
+            "name": str,
+            "nameExact": bool,
+            "country": str,
+            "countryExact": bool,
+            "countrycode": str,
+            "state": str,
+            "stateExact": bool,
+            "language": str,
+            "languageExact": bool,
+            "tag": str,
+            "tagExact": bool,
+            "tagList": str,
+            "bitrateMin": int,
+            "bitrateMax": int,
+            "order": str,
+            "reverse": bool,
+            "offset": int,
+        }
+
+        for key, value in kwargs.items():
+            try:
+                type_ = _valid_kwargs[key]
+            except KeyError as exc:
+                raise IllegalArgumentError(
+                    "There is no paramter named '{}'".format(exc.args[0])
+                )
+            else:
+                if not isinstance(value, type_):
+                    raise TypeError(
+                        "{} must be {}, not {}".format(
+                            repr(key), type_.__name__, type(value).__name__,
+                        )
+                    )
+                continue
+
+        for key, value in kwargs.items():
+            if isinstance(kwargs[key], bool):
+                kwargs[key] = bool2string(value)
 
         endpoint = "{fmt}/stations/search".format(fmt=self._fmt)
+
         return self.client.get(endpoint, **kwargs)
