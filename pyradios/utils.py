@@ -17,7 +17,7 @@ def setup_cache_file(filename, **kwargs):
     return create_app_dirs(filename, app_dirs.user_cache_dir)
 
 
-def bool2string(b):
+def bool_to_string(b):
     """Convert a boolean type to string.
 
     Args:
@@ -33,3 +33,8 @@ def bool2string(b):
     if s in ["true", "false"]:
         return s
     raise TypeError("Value must be True or False.")
+
+
+def snake_to_camel(s):
+    first, *others = s.split('_')
+    return "".join([first.lower(), *map(str.title, others)])

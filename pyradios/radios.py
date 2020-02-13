@@ -1,6 +1,8 @@
+
 import requests
 from pyradios.base_url import pick_base_url
-from pyradios.utils import bool2string
+from pyradios.utils import bool_to_string
+from pyradios.utils import snake_to_camel
 
 
 class Error(Exception):
@@ -12,6 +14,7 @@ class IllegalArgumentError(Error):
 
 
 class Request:
+
     def __init__(self, fmt, **kwargs):
 
         self._fmt = fmt
@@ -49,6 +52,7 @@ class Request:
 
 
 class RadioBrowser:
+
     def __init__(self, fmt="json", **kwargs):
 
         self._fmt = fmt
@@ -260,8 +264,6 @@ class RadioBrowser:
         See details at:
         https://de1.api.radio-browser.info/#List_of_radio_stations
 
-
-
         Args:
             codec (str): The name of the codec.
 
@@ -421,7 +423,9 @@ class RadioBrowser:
 
     #     Returns:
     #         {list}: Stations
-    #     TODO: endpoint = "{fmt}/stations/topvote/{row_count}" if row_count else "{fmt}/stations/topvote/"
+    #     TODO: endpoint = (
+    #       "{fmt}/stations/topvote/{row_count}"
+    #       if row_count else "{fmt}/stations/topvote/")
     #     """
     #     return None
 
@@ -479,7 +483,7 @@ class RadioBrowser:
             country (str, optional): Country of the station.
             country_exact (bool, optional): Only exact matches, otherwise
                 all matches (default: False).
-            country_code (str, optional): 2-digit countrycode of the station
+            countrycode (str, optional): 2-digit countrycode of the station
                 (see ISO 3166-1 alpha-2)
             state (str, optional): State of the station.
             state_exact (bool, optional): Only exact matches, otherwise all
@@ -515,16 +519,16 @@ class RadioBrowser:
         Example:
             >>> from pyradios import RadioBrowser
             >>> rb = RadioBrowser()
-            >>> rb.search(name="BBC Radio 1", name_exact=True)  # doctest: +ELLIPSIS
-            [{'changeuuid': '4f7e4097-4354-11e8-b74d-52543be04c81', ...
-
+            >>> rb.search(name='BBC Radio 1', name_exact=True)  # doctest: +ELLIPSIS
+            [{'changeuuid': ...
         """
+
         _valid_kwargs = {
             "name": str,
             "name_exact": bool,
             "country": str,
             "country_exact": bool,
-            "country_code": str,
+            "countrycode": str,
             "state": str,
             "state_exact": bool,
             "language": str,
@@ -538,7 +542,6 @@ class RadioBrowser:
             "reverse": bool,
             "offset": int,
         }
-
         for key, value in kwargs.items():
             try:
                 type_ = _valid_kwargs[key]
@@ -554,14 +557,18 @@ class RadioBrowser:
                         )
                     )
                 continue
+        params = {}
 
         for key, value in kwargs.items():
+            new_key = snake_to_camel(key)
             if isinstance(kwargs[key], bool):
-                kwargs[key] = bool2string(value)
+                value = bool_to_string(value)
+            params[new_key] = value
 
         endpoint = "{fmt}/stations/search".format(fmt=self._fmt)
 
-        return self.client.get(endpoint, **kwargs)
+        return self.client.get(endpoint, **params)
+
 
 if __name__ == '__main__':
     import doctest
