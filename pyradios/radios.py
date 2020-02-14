@@ -221,7 +221,6 @@ class RadioBrowser:
         endpoint = "{fmt}/stations/byuuid/{uuid}".format(
             fmt=self._fmt, uuid=stationuuid
         )
-
         return self.client.get(endpoint)
 
     def stations_by_name(self, name, exact=False):
@@ -237,16 +236,7 @@ class RadioBrowser:
         Returns:
             list: Stations.
         """
-        if exact:
-            endpoint = "{fmt}/stations/bynameexact/{name}".format(
-                fmt=self._fmt, name=name
-            )
-        else:
-            endpoint = "{fmt}/stations/byname/{name}".format(
-                fmt=self._fmt, name=name
-            )
-
-        return self.client.get(endpoint)
+        return self.search(name=name, name_exact=exact)
 
     def stations_by_codec(self, codec, exact=False):
         """Lists all radio stations by codec.
@@ -260,15 +250,7 @@ class RadioBrowser:
         Returns:
             list: Stations.
         """
-        if exact:
-            endpoint = "{fmt}/stations/bycodecexact/{codec}".format(
-                fmt=self._fmt, codec=codec
-            )
-        else:
-            endpoint = "{fmt}/stations/bycodec/{codec}".format(
-                fmt=self._fmt, codec=codec
-            )
-        return self.client.get(endpoint)
+        return self.search(codec=codec, codec_exact=exact)
 
     def stations_by_country(self, country, exact=False):
         """Lists all radio stations by country.
@@ -283,15 +265,7 @@ class RadioBrowser:
         Returns:
             list: Stations.
         """
-        if exact:
-            endpoint = "{fmt}/stations/bycoutryexact/{country}".format(
-                fmt=self._fmt, country=country
-            )
-        else:
-            endpoint = "{fmt}/stations/bycountry/{country}".format(
-                fmt=self._fmt, country=country
-            )
-        return self.client.get(endpoint)
+        return self.search(country=country, country_exact=exact)
 
     def stations_by_countrycode(self, code):
         """Lists all radio stations by country code.
@@ -306,11 +280,7 @@ class RadioBrowser:
         Returns:
             list: Stations.
         """
-
-        endpoint = "{fmt}/stations/bycountrycodeexact/{code}".format(
-            fmt=self._fmt, code=code
-        )
-        return self.client.get(endpoint)
+        return self.search(countrycode=code)
 
     def stations_by_state(self, state, exact=False):
         """Lists all radio stations by state.
@@ -325,15 +295,7 @@ class RadioBrowser:
         Returns:
             list: Stations.
         """
-        if exact:
-            endpoint = "{fmt}/stations/bystateexact/{state}".format(
-                fmt=self._fmt, state=state
-            )
-        else:
-            endpoint = "{fmt}/stations/bystate/{state}".format(
-                fmt=self._fmt, state=state
-            )
-        return self.client.get(endpoint)
+        return self.search(state=state, state_exact=exact)
 
     def stations_by_language(self, language, exact=False):
         """Lists all radio stations by language.
@@ -347,16 +309,7 @@ class RadioBrowser:
         Returns:
             list: Stations.
         """
-        if exact:
-            endpoint = "{fmt}/stations/bylanguageexact/{language}".format(
-                fmt=self._fmt, language=language
-            )
-        else:
-
-            endpoint = "{fmt}/stations/bylanguage/{language}".format(
-                fmt=self._fmt, language=language
-            )
-        return self.client.get(endpoint)
+        return self.search(language=language, language_exact=exact)
 
     def stations_by_tag(self, tag, exact=False):
         """Lists all radio stations by tag.
@@ -370,15 +323,7 @@ class RadioBrowser:
         Returns:
             list: Stations.
         """
-        if exact:
-            endpoint = "{fmt}/stations/bytagexact/{tag}".format(
-                fmt=self._fmt, tag=tag
-            )
-        else:
-            endpoint = "{fmt}/stations/bytag/{tag}".format(
-                fmt=self._fmt, tag=tag
-            )
-        return self.client.get(endpoint)
+        return self.search(tag=tag, tag_exact=exact)
 
     def click_counter(self, stationuuid):
         """Increase the click count of a station by one.
