@@ -3,6 +3,15 @@ from pathlib import Path
 from pyradios.config import app_dirs
 
 
+class Error(Exception):
+    """Base class for all excpetions raised by this module."""
+
+
+class IllegalArgumentError(Error):
+    """Raised for illegal argument"""
+    pass
+
+
 def create_app_dirs(filename, path):
     p = Path(path)
     p.mkdir(parents=True, exist_ok=True)
@@ -38,3 +47,20 @@ def bool_to_string(b):
 def snake_to_camel(s):
     first, *others = s.split('_')
     return "".join([first.lower(), *map(str.title, others)])
+
+
+def input_validate(params, valid):
+    for key, value in params.items():
+        try:
+            type_ = valid[key]
+        except KeyError as exc:
+            raise IllegalArgumentError(
+                "There is no paramter named '{}'".format(exc.args[0])
+            )
+        else:
+            if not isinstance(value, type_):
+                raise TypeError(
+                    "Argument {!r} must be {}, not {}".format(
+                        key, type_.__name__, type(value).__name__,
+                    )
+                )

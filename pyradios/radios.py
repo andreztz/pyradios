@@ -1,20 +1,11 @@
-
 import requests
 from pyradios.base_url import pick_base_url
 from pyradios.utils import bool_to_string
 from pyradios.utils import snake_to_camel
-
-
-class Error(Exception):
-    """Base class for all excpetions raised by this module."""
-
-
-class IllegalArgumentError(Error):
-    pass
+from pyradios.utils import input_validate
 
 
 class Request:
-
     def __init__(self, fmt, **kwargs):
 
         self._fmt = fmt
@@ -52,7 +43,6 @@ class Request:
 
 
 class RadioBrowser:
-
     def __init__(self, fmt="json", **kwargs):
 
         self._fmt = fmt
@@ -517,9 +507,9 @@ class RadioBrowser:
             list: Stations.
 
         Example:
-            >>> from pyradios import RadioBrowser
-            >>> rb = RadioBrowser()
-            >>> rb.search(name='BBC Radio 1', name_exact=True)  # doctest: +ELLIPSIS
+            # >>> from pyradios import RadioBrowser
+            # >>> rb = RadioBrowser()
+            # >>> rb.search(name='BBC Radio 1', name_exact=True)  # doctest: +ELLIPSIS
             [{'changeuuid': ...
         """
 
@@ -542,21 +532,9 @@ class RadioBrowser:
             "reverse": bool,
             "offset": int,
         }
-        for key, value in kwargs.items():
-            try:
-                type_ = _valid_kwargs[key]
-            except KeyError as exc:
-                raise IllegalArgumentError(
-                    "There is no paramter named '{}'".format(exc.args[0])
-                )
-            else:
-                if not isinstance(value, type_):
-                    raise TypeError(
-                        "{} must be {}, not {}".format(
-                            repr(key), type_.__name__, type(value).__name__,
-                        )
-                    )
-                continue
+
+        input_validate(kwargs, _valid_kwargs)
+
         params = {}
 
         for key, value in kwargs.items():
@@ -566,10 +544,9 @@ class RadioBrowser:
             params[new_key] = value
 
         endpoint = "{fmt}/stations/search".format(fmt=self._fmt)
-
         return self.client.get(endpoint, **params)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
     doctest.testmod()
