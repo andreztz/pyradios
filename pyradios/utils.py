@@ -1,6 +1,29 @@
+from functools import wraps
 from pathlib import Path
 
 from pyradios.config import app_dirs
+
+types = {
+    "search": {
+        "name": str,
+        "name_exact": bool,
+        "country": str,
+        "country_exact": bool,
+        "countrycode": str,
+        "state": str,
+        "state_exact": bool,
+        "language": str,
+        "language_exact": bool,
+        "tag": str,
+        "tag_exact": bool,
+        "tag_list": str,
+        "bitrate_min": int,
+        "bitrate_max": int,
+        "order": str,
+        "reverse": bool,
+        "offset": int,
+    }
+}
 
 
 class Error(Exception):
@@ -33,7 +56,7 @@ def bool_to_string(b):
         b (bool): A Boolean.
 
     Raises:
-        ValueError: [description]
+        TypeError: [description]
 
     Returns:
         str: String representation of a bool type.
@@ -49,10 +72,20 @@ def snake_to_camel(s):
     return "".join([first.lower(), *map(str.title, others)])
 
 
-def input_validate(params, valid):
-    for key, value in params.items():
+def radio_browser_adapter(**kwargs):
+    params = {}
+
+    for key, value in kwargs.items():
+        new_key = snake_to_camel(key)
+        if isinstance(kwargs[key], bool):
+            value = bool_to_string(value)
+        params[new_key] = value
+    return params
+
+def validate_input(types, input_data):
+    for key, value in input_data.items():
         try:
-            type_ = valid[key]
+            type_ = types[key]
         except KeyError as exc:
             raise IllegalArgumentError(
                 "There is no paramter named '{}'".format(exc.args[0])
@@ -64,3 +97,13 @@ def input_validate(params, valid):
                         key, type_.__name__, type(value).__name__,
                     )
                 )
+
+
+def type_check(func):
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        validate_input(types[func.__name__], kwargs)
+        kwargs = radio_browser_adapter(**kwargs)
+        return func(self, *args, **kwargs)
+    return wrapper
+

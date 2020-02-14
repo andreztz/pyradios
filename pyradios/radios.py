@@ -1,8 +1,6 @@
 import requests
 from pyradios.base_url import pick_base_url
-from pyradios.utils import bool_to_string
-from pyradios.utils import snake_to_camel
-from pyradios.utils import input_validate
+from pyradios.utils import type_check
 
 
 class Request:
@@ -361,6 +359,7 @@ class RadioBrowser:
         endpoint = "{fmt}/stations".format(fmt=self._fmt)
         return self.client.get(endpoint, **kwargs)
 
+    @type_check
     def search(self, **kwargs):
         """Advanced search.
 
@@ -411,44 +410,13 @@ class RadioBrowser:
             list: Stations.
 
         Example:
-            # >>> from pyradios import RadioBrowser
-            # >>> rb = RadioBrowser()
-            # >>> rb.search(name='BBC Radio 1', name_exact=True)  # doctest: +ELLIPSIS
+            >>> from pyradios import RadioBrowser
+            >>> rb = RadioBrowser()
+            >>> rb.search(name='BBC Radio 1', name_exact=True)  # doctest: +ELLIPSIS
             [{'changeuuid': ...
         """
-
-        _valid_kwargs = {
-            "name": str,
-            "name_exact": bool,
-            "country": str,
-            "country_exact": bool,
-            "countrycode": str,
-            "state": str,
-            "state_exact": bool,
-            "language": str,
-            "language_exact": bool,
-            "tag": str,
-            "tag_exact": bool,
-            "tag_list": str,
-            "bitrate_min": int,
-            "bitrate_max": int,
-            "order": str,
-            "reverse": bool,
-            "offset": int,
-        }
-
-        input_validate(kwargs, _valid_kwargs)
-
-        params = {}
-
-        for key, value in kwargs.items():
-            new_key = snake_to_camel(key)
-            if isinstance(kwargs[key], bool):
-                value = bool_to_string(value)
-            params[new_key] = value
-
         endpoint = "{fmt}/stations/search".format(fmt=self._fmt)
-        return self.client.get(endpoint, **params)
+        return self.client.get(endpoint, **kwargs)
 
 
 if __name__ == "__main__":
