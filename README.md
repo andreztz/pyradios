@@ -16,7 +16,7 @@ In [1]: from pyradios import RadioBrowser
 
 In [2]: rb = RadioBrowser()
 
-In [3]: rb.search(name="BBC Radio 1", nameExact="true")
+In [3]: rb.search(name="BBC Radio 1", name_exact=True)
 Out[3]:
 [{'changeuuid': '4f7e4097-4354-11e8-b74d-52543be04c81',
   'stationuuid': '96062a7b-0601-11e8-ae97-52543be04c81',
