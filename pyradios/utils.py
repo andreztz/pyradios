@@ -25,25 +25,12 @@ types = {
         "limit": int,
         "hidebroken": bool,  # Not documented in the "Advanced Station Search"
     },
-    "countries": {
-        "code": str,
-    },
-    "countrycode": {
-        "code": str
-    },
-    "codecs": {
-        "codec": str
-    },
-    "states": {
-        "country": str,
-        "state": str,
-    },
-    "languages": {
-        "language": str
-    },
-    "tags": {
-        "tag": str
-    }
+    "countries": {"code": str,},
+    "countrycodes": {"code": str},
+    "codecs": {"codec": str},
+    "states": {"country": str, "state": str,},
+    "languages": {"language": str},
+    "tags": {"tag": str},
 }
 
 
@@ -53,6 +40,7 @@ class Error(Exception):
 
 class IllegalArgumentError(Error):
     """Raised for illegal argument"""
+
     pass
 
 
@@ -89,7 +77,7 @@ def bool_to_string(b):
 
 
 def snake_to_camel(s):
-    first, *others = s.split('_')
+    first, *others = s.split("_")
     return "".join([first.lower(), *map(str.title, others)])
 
 
@@ -127,5 +115,5 @@ def type_check(func):
         validate_input(types[func.__name__], kwargs)
         kwargs = radio_browser_adapter(**kwargs)
         return func(self, *args, **kwargs)
-    return wrapper
 
+    return wrapper
