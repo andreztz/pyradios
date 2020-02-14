@@ -1,8 +1,6 @@
 import requests
 from pyradios.base_url import pick_base_url
-from pyradios.utils import bool_to_string
-from pyradios.utils import snake_to_camel
-from pyradios.utils import input_validate
+from pyradios.utils import type_check
 
 
 class Request:
@@ -48,6 +46,7 @@ class RadioBrowser:
         self._fmt = fmt
         self.client = Request(self._fmt, **kwargs)
 
+    @type_check
     def countries(self, code=None):
         """Lists all countries.
 
@@ -69,6 +68,7 @@ class RadioBrowser:
             endpoint = "{fmt}/countrycodes/".format(fmt=self._fmt)
         return self.client.get(endpoint)
 
+    @type_check
     def countrycodes(self, code=None):
         """Lists all countries.
 
@@ -90,6 +90,7 @@ class RadioBrowser:
             endpoint = "{fmt}/countrycodes/".format(fmt=self._fmt)
         return self.client.get(endpoint)
 
+    @type_check
     def codecs(self, codec=None):
         """Lists all codecs.
 
@@ -117,6 +118,7 @@ class RadioBrowser:
 
         return self.client.get(endpoint)
 
+    @type_check
     def states(self, country=None, state=None):
         """Lists all states.
 
@@ -164,6 +166,7 @@ class RadioBrowser:
             )
         return self.client.get(endpoint)
 
+    @type_check
     def languages(self, language=None):
         """Lists all languages.
 
@@ -185,6 +188,7 @@ class RadioBrowser:
 
         return self.client.get(endpoint)
 
+    @type_check
     def tags(self, tag=None):
         """Lists all tags.
 
@@ -223,7 +227,7 @@ class RadioBrowser:
         )
         return self.client.get(endpoint)
 
-    def stations_by_name(self, name, exact=False):
+    def stations_by_name(self, name, exact=False, **kwargs):
         """Lists all radio stations by name.
 
         See details at:
@@ -232,13 +236,15 @@ class RadioBrowser:
 
         Args:
             name (str): The name of the station.
+            reverse (bool): Reverse the result list if set to True.
 
         Returns:
             list: Stations.
         """
-        return self.search(name=name, name_exact=exact)
+        kwargs.update({"name": name, "name_exact": exact})
+        return self.search(**kwargs)
 
-    def stations_by_codec(self, codec, exact=False):
+    def stations_by_codec(self, codec, exact=False, **kwargs):
         """Lists all radio stations by codec.
 
         See details at:
@@ -250,9 +256,10 @@ class RadioBrowser:
         Returns:
             list: Stations.
         """
-        return self.search(codec=codec, codec_exact=exact)
+        kwargs.update({"code": codec, "codec_exact": exact})
+        return self.search(**kwargs)
 
-    def stations_by_country(self, country, exact=False):
+    def stations_by_country(self, country, exact=False, **kwargs):
         """Lists all radio stations by country.
 
         See details at:
@@ -265,9 +272,10 @@ class RadioBrowser:
         Returns:
             list: Stations.
         """
-        return self.search(country=country, country_exact=exact)
+        kwargs.update({"country": country, "country_exact": exact})
+        return self.search(**kwargs)
 
-    def stations_by_countrycode(self, code):
+    def stations_by_countrycode(self, code, **kwargs):
         """Lists all radio stations by country code.
 
         See details at:
@@ -280,9 +288,10 @@ class RadioBrowser:
         Returns:
             list: Stations.
         """
-        return self.search(countrycode=code)
+        kwargs.update({"countrycode": code})
+        return self.search(**kwargs)
 
-    def stations_by_state(self, state, exact=False):
+    def stations_by_state(self, state, exact=False, **kwargs):
         """Lists all radio stations by state.
 
         See details at:
@@ -295,9 +304,10 @@ class RadioBrowser:
         Returns:
             list: Stations.
         """
-        return self.search(state=state, state_exact=exact)
+        kwargs.update({"state": state, "state_exact": exact})
+        return self.search(**kwargs)
 
-    def stations_by_language(self, language, exact=False):
+    def stations_by_language(self, language, exact=False, **kwargs):
         """Lists all radio stations by language.
 
         See details at:
@@ -309,9 +319,10 @@ class RadioBrowser:
         Returns:
             list: Stations.
         """
-        return self.search(language=language, language_exact=exact)
+        kwargs.update({"language": language, "language_exact": exact})
+        return self.search(**kwargs)
 
-    def stations_by_tag(self, tag, exact=False):
+    def stations_by_tag(self, tag, exact=False, **kwargs):
         """Lists all radio stations by tag.
 
         See details at:
@@ -323,7 +334,8 @@ class RadioBrowser:
         Returns:
             list: Stations.
         """
-        return self.search(tag=tag, tag_exact=exact)
+        kwargs.update({"tag": tag, "tag_exact": exact})
+        return self.search(**kwargs)
 
     def click_counter(self, stationuuid):
         """Increase the click count of a station by one.
@@ -361,6 +373,7 @@ class RadioBrowser:
         endpoint = "{fmt}/stations".format(fmt=self._fmt)
         return self.client.get(endpoint, **kwargs)
 
+    @type_check
     def search(self, **kwargs):
         """Advanced search.
 
@@ -402,55 +415,25 @@ class RadioBrowser:
             offset (int, optional): Starting value of the result list from
                 the database. For example, if you want to do paging on the
                 server side. (default: 0)
-
-        Raises:
-            ValueError: [description] # TODO
-            ValueError: [description] # TODO
+            limit (int, optional): Number of returned datarows (stations)
+                starting with offset (default 100000)
+            hidebroken (bool, optional): do list/not list broken stations.
+                Note: Not documented in the "Advanced Station Search".
 
         Returns:
             list: Stations.
 
         Example:
-            # >>> from pyradios import RadioBrowser
-            # >>> rb = RadioBrowser()
-            # >>> rb.search(name='BBC Radio 1', name_exact=True)  # doctest: +ELLIPSIS
+            >>> from pyradios import RadioBrowser
+            >>> rb = RadioBrowser()
+            >>> rb.search(name='BBC Radio 1', name_exact=True)  # doctest: +ELLIPSIS
             [{'changeuuid': ...
         """
-
-        _valid_kwargs = {
-            "name": str,
-            "name_exact": bool,
-            "country": str,
-            "country_exact": bool,
-            "countrycode": str,
-            "state": str,
-            "state_exact": bool,
-            "language": str,
-            "language_exact": bool,
-            "tag": str,
-            "tag_exact": bool,
-            "tag_list": str,
-            "bitrate_min": int,
-            "bitrate_max": int,
-            "order": str,
-            "reverse": bool,
-            "offset": int,
-        }
-
-        input_validate(kwargs, _valid_kwargs)
-
-        params = {}
-
-        for key, value in kwargs.items():
-            new_key = snake_to_camel(key)
-            if isinstance(kwargs[key], bool):
-                value = bool_to_string(value)
-            params[new_key] = value
-
         endpoint = "{fmt}/stations/search".format(fmt=self._fmt)
-        return self.client.get(endpoint, **params)
+        return self.client.get(endpoint, **kwargs)
 
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()
