@@ -403,47 +403,6 @@ class RadioBrowser:
 
         return self.client.get(endpoint)
 
-    # def stations_byvotes(self, row_count):
-    #     """A list of the highest-voted stations.
-
-    #     You can add a parameter with the number of wanted stations.
-
-    #     Args:
-    #         row_count {int}: Number of wanted stations
-
-    #     Returns:
-    #         {list}: Stations
-    #     TODO: endpoint = (
-    #       "{fmt}/stations/topvote/{row_count}"
-    #       if row_count else "{fmt}/stations/topvote/")
-    #     """
-    #     return None
-
-    # def vote_for_station(self, stationuuid):
-    #     """Increase the vote count for the station by one.
-
-    #     Can only be done by same IP address for one station every 10 minutes.
-    #     If it woeks, the changed station will be returned as result.
-
-    #     Args:
-    #         stationuuid {str}: A globally unique identifier for the station.
-
-    #     Returns:
-    #         {dict}: Station
-
-    #     TODO:
-    #     https://de1.api.radio-browser.info/#Vote_for_station
-    #     """
-    #     return
-
-    # def add_radio_station(self, **kwargs):
-    #     """Add a radio station to the database.
-
-    #     TODO:
-    #     https://de1.api.radio-browser.info/#Add_radio_station
-    #     """
-    #     return None
-
     def stations(self, **kwargs):
         """Lists all radio stations.
 
