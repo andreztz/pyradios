@@ -3,6 +3,7 @@ from pathlib import Path
 
 from pyradios.config import app_dirs
 
+
 types = {
     "search": {
         "name": str,
@@ -25,10 +26,10 @@ types = {
         "limit": int,
         "hidebroken": bool,  # Not documented in the "Advanced Station Search"
     },
-    "countries": {"code": str,},
+    "countries": {"code": str},
     "countrycodes": {"code": str},
     "codecs": {"codec": str},
-    "states": {"country": str, "state": str,},
+    "states": {"country": str, "state": str},
     "languages": {"language": str},
     "tags": {"tag": str},
 }
@@ -36,11 +37,11 @@ types = {
 
 class Error(Exception):
     """Base class for all excpetions raised by this module."""
+    pass
 
 
 class IllegalArgumentError(Error):
     """Raised for illegal argument"""
-
     pass
 
 
@@ -115,5 +116,4 @@ def type_check(func):
         validate_input(types[func.__name__], kwargs)
         kwargs = radio_browser_adapter(**kwargs)
         return func(self, *args, **kwargs)
-
     return wrapper

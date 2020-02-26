@@ -19,7 +19,7 @@ def required():
 
 setup(
     name="pyradios",
-    version="0.0.20",
+    version="0.0.21",
     description=DESCRIPTION,
     long_description=readme(),
     long_description_content_type="text/markdown",
