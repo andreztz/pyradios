@@ -1,6 +1,6 @@
 # Pyradios
 
-> A Python wrapper for the [Radio Browser](https://www.radio-browser.info/gui/#!/)
+> A Python wrapper for the [Radio Browser](https://api.radio-browser.info)
 
 
 ## Installation
