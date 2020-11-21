@@ -4,7 +4,8 @@ from pyradios.utils import type_check
 
 
 class Request:
-    def __init__(self, fmt, **kwargs):
+    def __init__(self, fmt, session=None, **kwargs):
+        self._session = self._init_session(session)
 
         self._fmt = fmt
 
@@ -12,6 +13,11 @@ class Request:
             self.base_url = kwargs.get("base_url")
         else:
             self.base_url = pick_base_url()
+    
+    def _init_session(self, session):
+        if session is None:
+            return requests.Session()
+        return session
 
     def get(self, endpoint, **kwargs):
 
@@ -29,7 +35,7 @@ class Request:
 
         url = self.base_url + endpoint
 
-        resp = requests.get(url, headers=headers, params=kwargs)
+        resp = self._session.get(url, headers=headers, params=kwargs)
 
         if resp.status_code == 200:
             if self._fmt == "xml":
@@ -41,10 +47,10 @@ class Request:
 
 
 class RadioBrowser:
-    def __init__(self, fmt="json", **kwargs):
+    def __init__(self, fmt="json", session=None, **kwargs):
 
         self._fmt = fmt
-        self.client = Request(self._fmt, **kwargs)
+        self.client = Request(self._fmt, session, **kwargs)
 
     @type_check
     def countries(self, code=None):
