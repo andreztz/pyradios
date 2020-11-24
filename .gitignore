@@ -112,3 +112,5 @@ dmypy.json
 #
 .vscode/
 .idea/
+
+cache.sqlite
