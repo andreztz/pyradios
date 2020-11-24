@@ -66,7 +66,7 @@ def bool_to_string(b):
         b (bool): A Boolean.
 
     Raises:
-        TypeError: [description]
+        TypeError
 
     Returns:
         str: String representation of a bool type.
