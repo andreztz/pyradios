@@ -1,4 +1,5 @@
 import requests
+
 from pyradios.base_url import pick_base_url
 from pyradios.utils import type_check
 
@@ -9,11 +10,11 @@ class Request:
 
         self._fmt = fmt
 
-        if "base_url" in kwargs:  # for tests with lib responses
+        if "base_url" in kwargs:  # for tests with the responses lib
             self.base_url = kwargs.get("base_url")
         else:
             self.base_url = pick_base_url()
-    
+
     def _init_session(self, session):
         if session is None:
             return requests.Session()
@@ -47,6 +48,37 @@ class Request:
 
 
 class RadioBrowser:
+    """This class implements the main interface for the Radio Browser API.
+
+    Args:
+        session (obj, optional): The `requests_cache.CachedSession` instance.
+
+    Examples:
+        To create an instance of the RadioBrowser class with cached session
+
+        >>> from pyradios import RadioBrowser
+        >>> from requests_cache import CachedSession
+        >>> import datetime
+        >>> from datetime import timedelta
+        >>> expire_after = timedelta(days=3)
+        >>> session = CachedSession(
+        ...     cache_name='cache',
+        ...     backend='sqlite',
+        ...     expire_after=expire_after)
+        >>> rb = RadioBrowser(session=session)
+        >>> rb.countries()
+
+        No cahce
+
+        >>> import pyradios
+        >>> rb = pyradios.RadioBrowser()
+        >>> rb.countries()
+
+    Note:
+        Run `pip install requests_cache` to use cached session.
+
+    """
+
     def __init__(self, fmt="json", session=None, **kwargs):
 
         self._fmt = fmt
@@ -56,14 +88,14 @@ class RadioBrowser:
     def countries(self, code=None):
         """Lists all countries.
 
-        See details at:
-        https://de1.api.radio-browser.info/#List_of_countries
-
         Args:
             code (str, optional): Filter by country code. Defaults to None.
 
         Returns:
             list: Countries.
+
+        See details:
+            https://de1.api.radio-browser.info/#List_of_countries
         """
 
         if code:
@@ -78,14 +110,14 @@ class RadioBrowser:
     def countrycodes(self, code=None):
         """Lists all countries.
 
-        See details at:
-        https://de1.api.radio-browser.info/#List_of_countrycodes
-
         Args:
             code (str, optional): Filter by country code. Defaults to None.
 
         Returns:
             list: Countries.
+
+        See details:
+            https://de1.api.radio-browser.info/#List_of_countrycodes
         """
 
         if code:
@@ -100,19 +132,18 @@ class RadioBrowser:
     def codecs(self, codec=None):
         """Lists all codecs.
 
-        See details at:
-        https://de1.api.radio-browser.info/#List_of_codecs
-
         Args:
             codec (str, optional): Filter by codec. Defaults to None.
 
         Returns:
             list: Codecs.
+
+        See details:
+            https://de1.api.radio-browser.info/#List_of_codecs
         """
 
         endpoint = "{fmt}/codecs/".format(fmt=self._fmt)
 
-        # filter
         if codec:
             response = self.client.get(endpoint)
             return list(
@@ -128,20 +159,19 @@ class RadioBrowser:
     def states(self, country=None, state=None):
         """Lists all states.
 
-        See details at:
-        https://de1.api.radio-browser.info/#List_of_states
-
         Args:
             country (str, optional): Filter by country. Defaults to None.
             state (str, optionla): Filter by state.  Defaults to None.
 
         Returns:
             list: States.
+
+        See details:
+            https://de1.api.radio-browser.info/#List_of_states
         """
 
         endpoint = "{fmt}/states".format(fmt=self._fmt)
 
-        # filters
         if country and state:
 
             response = self.client.get(endpoint)
@@ -176,14 +206,14 @@ class RadioBrowser:
     def languages(self, language=None):
         """Lists all languages.
 
-        See details at:
-        https://de1.api.radio-browser.info/#List_of_languages
-
         Args:
             language (str, optional): Filter by language. Defaults to None.
 
         Returns:
             list: Languages.
+
+        See details:
+            https://de1.api.radio-browser.info/#List_of_languages
         """
         if language:
             endpoint = "{fmt}/languages/{language}".format(
@@ -198,14 +228,14 @@ class RadioBrowser:
     def tags(self, tag=None):
         """Lists all tags.
 
-        See details at:
-        https://de1.api.radio-browser.info/#List_of_tags
-
         Args:
             tag (str, optional): Filter by tag. Defaults to None.
 
         Returns:
             list: Tags.
+
+        See details:
+            https://de1.api.radio-browser.info/#List_of_tags
         """
 
         if tag:
@@ -218,15 +248,14 @@ class RadioBrowser:
     def station_by_uuid(self, stationuuid):
         """Radio station by stationuuid.
 
-        See details at:
-        https://de1.api.radio-browser.info/#List_of_radio_stations
-
-
         Args:
             stationuuid (str): A globally unique identifier for the station.
 
         Returns:
             list: Stations.
+
+        See details:
+            https://de1.api.radio-browser.info/#List_of_radio_stations
         """
         endpoint = "{fmt}/stations/byuuid/{uuid}".format(
             fmt=self._fmt, uuid=stationuuid
@@ -236,16 +265,15 @@ class RadioBrowser:
     def stations_by_name(self, name, exact=False, **kwargs):
         """Lists all radio stations by name.
 
-        See details at:
-        https://de1.api.radio-browser.info/#List_of_radio_stations
-
-
         Args:
             name (str): The name of the station.
             reverse (bool): Reverse the result list if set to True.
 
         Returns:
             list: Stations.
+
+        See details:
+            https://de1.api.radio-browser.info/#List_of_radio_stations
         """
         kwargs.update({"name": name, "name_exact": exact})
         return self.search(**kwargs)
@@ -253,14 +281,14 @@ class RadioBrowser:
     def stations_by_codec(self, codec, exact=False, **kwargs):
         """Lists all radio stations by codec.
 
-        See details at:
-        https://de1.api.radio-browser.info/#List_of_radio_stations
-
         Args:
             codec (str): The name of the codec.
 
         Returns:
             list: Stations.
+
+        See details:
+            https://de1.api.radio-browser.info/#List_of_radio_stations
         """
         kwargs.update({"code": codec, "codec_exact": exact})
         return self.search(**kwargs)
@@ -268,15 +296,14 @@ class RadioBrowser:
     def stations_by_country(self, country, exact=False, **kwargs):
         """Lists all radio stations by country.
 
-        See details at:
-        https://de1.api.radio-browser.info/#List_of_radio_stations
-
-
         Args:
             country (str): The name of the country.
 
         Returns:
             list: Stations.
+
+        See details:
+            https://de1.api.radio-browser.info/#List_of_radio_stations
         """
         kwargs.update({"country": country, "country_exact": exact})
         return self.search(**kwargs)
@@ -284,15 +311,14 @@ class RadioBrowser:
     def stations_by_countrycode(self, code, **kwargs):
         """Lists all radio stations by country code.
 
-        See details at:
-        https://de1.api.radio-browser.info/#List_of_radio_stations
-
-
         Args:
             code (str): Official countrycodes as in ISO 3166-1 alpha-2.
 
         Returns:
             list: Stations.
+
+        See details:
+            https://de1.api.radio-browser.info/#List_of_radio_stations
         """
         kwargs.update({"countrycode": code})
         return self.search(**kwargs)
@@ -300,15 +326,14 @@ class RadioBrowser:
     def stations_by_state(self, state, exact=False, **kwargs):
         """Lists all radio stations by state.
 
-        See details at:
-        https://de1.api.radio-browser.info/#List_of_radio_stations
-
-
         Args:
             state (str): The name of the state.
 
         Returns:
             list: Stations.
+
+        See details:
+            https://de1.api.radio-browser.info/#List_of_radio_stations
         """
         kwargs.update({"state": state, "state_exact": exact})
         return self.search(**kwargs)
@@ -316,14 +341,14 @@ class RadioBrowser:
     def stations_by_language(self, language, exact=False, **kwargs):
         """Lists all radio stations by language.
 
-        See details at:
-        https://de1.api.radio-browser.info/#List_of_radio_stations
-
         Args:
             language (str): The name of the language.
 
         Returns:
             list: Stations.
+
+        See details:
+            https://de1.api.radio-browser.info/#List_of_radio_stations
         """
         kwargs.update({"language": language, "language_exact": exact})
         return self.search(**kwargs)
@@ -331,14 +356,13 @@ class RadioBrowser:
     def stations_by_tag(self, tag, exact=False, **kwargs):
         """Lists all radio stations by tag.
 
-        See details at:
-        https://de1.api.radio-browser.info/#List_of_radio_stations
-
         Args:
             tag (str): The name of the tag.
 
         Returns:
             list: Stations.
+        See details:
+            https://de1.api.radio-browser.info/#List_of_radio_stations
         """
         kwargs.update({"tag": tag, "tag_exact": exact})
         return self.search(**kwargs)
@@ -353,14 +377,14 @@ class RadioBrowser:
         return detailed information about the stream, supported output
         formats: JSON
 
-        See details at:
-        https://de1.api.radio-browser.info/#Count_station_click
-
         Args:
             stationuuid (str): A globally unique identifier for the station.
 
         Returns:
             dict: A dict containing informations about the radio station.
+
+        See details:
+            https://de1.api.radio-browser.info/#Count_station_click
         """
         endpoint = "{fmt}/url/{uuid}".format(fmt=self._fmt, uuid=stationuuid)
 
@@ -369,12 +393,11 @@ class RadioBrowser:
     def stations(self, **kwargs):
         """Lists all radio stations.
 
-        See details at:
-        https://nl1.api.radio-browser.info/#List_of_all_radio_stations
-
         Returns:
             list: Stations.
 
+        See details:
+            https://nl1.api.radio-browser.info/#List_of_all_radio_stations
         """
         endpoint = "{fmt}/stations".format(fmt=self._fmt)
         return self.client.get(endpoint, **kwargs)
@@ -385,9 +408,6 @@ class RadioBrowser:
 
         It will search for the station whose attribute
         contains the search term.
-
-        See details at:
-        https://de1.api.radio-browser.info/#Advanced_station_search
 
         Args:
             name (str, optional): Name of the station.
@@ -432,14 +452,11 @@ class RadioBrowser:
         Example:
             >>> from pyradios import RadioBrowser
             >>> rb = RadioBrowser()
-            >>> rb.search(name='BBC Radio 1', name_exact=True)  # doctest: +ELLIPSIS
-            [{'changeuuid': ...
+            >>> rb.search(name='BBC Radio 1', name_exact=True)
+
+        See details:
+            https://de1.api.radio-browser.info/#Advanced_station_search
         """
         endpoint = "{fmt}/stations/search".format(fmt=self._fmt)
         return self.client.get(endpoint, **kwargs)
 
-
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()

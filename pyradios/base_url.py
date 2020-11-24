@@ -1,6 +1,5 @@
 """
 Get all base urls of all currently available radiobrowser servers.
-
 """
 import random
 import socket
@@ -25,8 +24,7 @@ def fetch_all_hosts():
     Get all ip of all currently available radiobrowser servers.
 
     Returns:
-        list: ips
-
+        list: A list of IPs
     """
     try:
         data = socket.getaddrinfo(
@@ -45,7 +43,7 @@ def rdns_lookup(ip):
     Do reverse dns lookup.
 
     Returns:
-        str: DNS
+        str: domain name
 
     """
     try:
@@ -60,6 +58,7 @@ def rdns_lookup(ip):
 
 def fetch_hosts():
     names = []
+
     try:
         hosts = fetch_all_hosts()
     except Exception:
