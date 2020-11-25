@@ -459,4 +459,3 @@ class RadioBrowser:
         """
         endpoint = "{fmt}/stations/search".format(fmt=self._fmt)
         return self.client.get(endpoint, **kwargs)
-
