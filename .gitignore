@@ -55,7 +55,7 @@ coverage.xml
 *.log
 local_settings.py
 db.sqlite3
-
+*.sqlite
 # Flask stuff:
 instance/
 .webassets-cache
@@ -112,5 +112,3 @@ dmypy.json
 #
 .vscode/
 .idea/
-
-cache.sqlite
