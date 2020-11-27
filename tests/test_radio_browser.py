@@ -156,4 +156,3 @@ def test_request_station_byuuid(rb):
 
     assert len(resp[0]) == len(response_keys)
     assert super_set.issuperset(response_keys)
-
