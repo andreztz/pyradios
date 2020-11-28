@@ -1,10 +1,12 @@
 """
 Get all base urls of all currently available radiobrowser servers.
 """
+import logging
 import random
 import socket
 
-from pyradios.log import logger
+
+log = logging.getLogger("pyradios")
 
 
 class Error(Exception):
@@ -31,7 +33,7 @@ def fetch_all_hosts():
             "all.api.radio-browser.info", 80, 0, 0, socket.IPPROTO_TCP
         )
     except socket.gaierror:
-        logger.exception("Network failure: ")
+        log.exception("Network failure")
         raise
     else:
         ips = [ip[4][0] for ip in data]
@@ -62,13 +64,14 @@ def fetch_hosts():
     try:
         hosts = fetch_all_hosts()
     except Exception:
-        logger.exception("Network failure. ")
+        log.exception("Network failure")
+        raise
     else:
         for ip in hosts:
             try:
                 name = rdns_lookup(ip)
             except RdnsLookupError:
-                logger.exception("Network failure. ")
+                log.exception("Network failure")
             else:
                 names.append(name)
     return names
@@ -79,7 +82,7 @@ def pick_base_url():
     try:
         names = fetch_hosts()
     except Exception:
-        logger.exception("Network failure. ")
+        log.exception("Network failure")
         raise
 
     names.sort()
