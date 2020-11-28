@@ -1,10 +1,19 @@
+import re
 from setuptools import setup
 from setuptools import find_packages
 
 
-DESCRIPTION = (
-    "A Python wrapper for the http://www.radio-browser.info/webservice"
-)
+DESCRIPTION = "Python client for the http://www.radio-browser.info/webservice"
+
+
+def get_version():
+    content = open("pyradios/__init__.py").read()
+    mo = re.search(r"__version__\s+=\s+'([^']+)'", content)
+    if not mo:
+        raise RuntimeError(
+                'Unable to find version string in pyradios/__init__.py'
+            )
+    return mo[1]
 
 
 def readme():
@@ -19,7 +28,7 @@ def required():
 
 setup(
     name="pyradios",
-    version="0.0.22",
+    version=get_version(),
     description=DESCRIPTION,
     long_description=readme(),
     long_description_content_type="text/markdown",
@@ -37,4 +46,9 @@ setup(
         "Operating System :: OS Independent",
         "Intended Audience :: Developers",
     ],
+    python_requires=">=3.6",
+    project_urls={
+        "Source": "https://github.com/andreztz/pyradios/",
+        "Upstream": "https://api.radio-browser.info/",
+    },
 )
