@@ -3,7 +3,7 @@ from setuptools import setup
 from setuptools import find_packages
 
 
-DESCRIPTION = "Python client for the http://www.radio-browser.info/webservice"
+DESCRIPTION = "Python client for the https://api.radio-browser.info"
 
 
 def get_version():
