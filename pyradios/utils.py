@@ -1,7 +1,4 @@
 from functools import wraps
-from pathlib import Path
-
-from pyradios.config import app_dirs
 
 
 types = {
@@ -37,26 +34,14 @@ types = {
 
 class Error(Exception):
     """Base class for all excpetions raised by this module."""
+
     pass
 
 
 class IllegalArgumentError(Error):
     """Raised for illegal argument"""
+
     pass
-
-
-def create_app_dirs(filename, path):
-    p = Path(path)
-    p.mkdir(parents=True, exist_ok=True)
-    return p / filename
-
-
-def setup_log_file(filename, **kwargs):
-    return create_app_dirs(filename, app_dirs.user_log_dir)
-
-
-def setup_cache_file(filename, **kwargs):
-    return create_app_dirs(filename, app_dirs.user_cache_dir)
 
 
 def bool_to_string(b):
@@ -105,7 +90,9 @@ def validate_input(types, input_data):
             if not isinstance(value, type_):
                 raise TypeError(
                     "Argument {!r} must be {}, not {}".format(
-                        key, type_.__name__, type(value).__name__,
+                        key,
+                        type_.__name__,
+                        type(value).__name__,
                     )
                 )
 
@@ -116,4 +103,5 @@ def type_check(func):
         validate_input(types[func.__name__], kwargs)
         kwargs = radio_browser_adapter(**kwargs)
         return func(self, *args, **kwargs)
+
     return wrapper
