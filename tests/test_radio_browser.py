@@ -156,3 +156,43 @@ def test_request_station_byuuid(rb):
 
     assert len(resp[0]) == len(response_keys)
     assert super_set.issuperset(response_keys)
+
+
+def test_request_station_tagList(rb):
+
+    tagList = ["New York City", "Jazz"]
+    resp = rb.stations_by_tagList(tagList)
+
+    super_set = {
+        "changeuuid",
+        "stationuuid",
+        "name",
+        "url",
+        "url_resolved",
+        "homepage",
+        "favicon",
+        "tags",
+        "country",
+        "countrycode",
+        "state",
+        "language",
+        "votes",
+        "lastchangetime",
+        "codec",
+        "bitrate",
+        "hls",
+        "lastcheckok",
+        "lastchecktime",
+        "lastcheckoktime",
+        "lastlocalchecktime",
+        "clicktimestamp",
+        "clickcount",
+        "clicktrend",
+    }
+    response_keys = resp[0].keys()
+    tags = set(resp[0]['tags'].split(","))
+    test_tagList = [tag.lower() for tag in tagList] #API is not case-sensitive
+
+    assert len(resp[0]) == len(response_keys)
+    assert super_set.issuperset(response_keys)
+    assert tags.issuperset(test_tagList)
