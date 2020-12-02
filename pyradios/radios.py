@@ -367,6 +367,22 @@ class RadioBrowser:
         kwargs.update({"tag": tag, "tag_exact": exact})
         return self.search(**kwargs)
 
+    def stations_by_tagList(self, tagList, **kwargs):
+        """Lists all radio stations by tag. Must match all tags exactly.
+
+        Args:
+            tagList (list): A list of names of tags.
+
+        Returns:
+            list: Stations.
+        See details:
+            https://de1.api.radio-browser.info/#List_of_radio_stations
+        """
+        tagList = ",".join(tagList)
+        kwargs.update({"tag_list": tagList})
+        return self.search(**kwargs)
+
+
     def click_counter(self, stationuuid):
         """Increase the click count of a station by one.
 
@@ -374,7 +390,7 @@ class RadioBrowser:
         playing a stream to mark the stream more popular than others.
         Every call to this endpoint from the same IP address and for
         the same station only gets counted once per day. The call will
-        return detailed information about the stream, supported output
+        return detailed information about thestat stream, supported output
         formats: JSON
 
         Args:
