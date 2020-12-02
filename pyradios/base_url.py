@@ -28,6 +28,7 @@ def fetch_all_hosts():
     Returns:
         list: A list of IPs
     """
+    ips = []
     try:
         data = socket.getaddrinfo(
             "all.api.radio-browser.info", 80, 0, 0, socket.IPPROTO_TCP
@@ -36,7 +37,9 @@ def fetch_all_hosts():
         log.exception("Network failure")
         raise
     else:
-        ips = [ip[4][0] for ip in data]
+        if data and isinstance(data[0][4], tuple):
+            for ip in data:
+                ips.append(ip[4][0])
     return ips
 
 
@@ -88,8 +91,3 @@ def pick_base_url():
     names.sort()
     url = random.choice(names)
     return "https://{}/".format(url)
-
-
-if __name__ == "__main__":
-    url = pick_base_url()
-    print(url)
