@@ -390,7 +390,7 @@ class RadioBrowser:
         playing a stream to mark the stream more popular than others.
         Every call to this endpoint from the same IP address and for
         the same station only gets counted once per day. The call will
-        return detailed information about thestat stream, supported output
+        return detailed information about the stat stream, supported output
         formats: JSON
 
         Args:
