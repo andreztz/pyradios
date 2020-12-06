@@ -158,10 +158,10 @@ def test_request_station_byuuid(rb):
     assert super_set.issuperset(response_keys)
 
 
-def test_request_station_tagList(rb):
+def test_request_station_tag_list(rb):
 
-    tagList = ["New York City", "Jazz"]
-    resp = rb.stations_by_tagList(tagList)
+    tag_list = ["New York City", "Jazz"]
+    resp = rb.stations_by_tag_list(tag_list)
 
     super_set = {
         "changeuuid",
@@ -191,8 +191,8 @@ def test_request_station_tagList(rb):
     }
     response_keys = resp[0].keys()
     tags = set(resp[0]['tags'].split(","))
-    test_tagList = [tag.lower() for tag in tagList] #API is not case-sensitive
+    test_tag_list = [tag.lower() for tag in tag_list] #API is not case-sensitive
 
     assert len(resp[0]) == len(response_keys)
     assert super_set.issuperset(response_keys)
-    assert tags.issuperset(test_tagList)
+    assert tags.issuperset(test_tag_list)

@@ -367,19 +367,19 @@ class RadioBrowser:
         kwargs.update({"tag": tag, "tag_exact": exact})
         return self.search(**kwargs)
 
-    def stations_by_tagList(self, tagList, **kwargs):
+    def stations_by_tag_list(self, tag_list, **kwargs):
         """Lists all radio stations by tag. Must match all tags exactly.
 
         Args:
-            tagList (list): A list of names of tags.
+            tag_list (list): A list of names of tags.
 
         Returns:
             list: Stations.
         See details:
             https://de1.api.radio-browser.info/#List_of_radio_stations
         """
-        tagList = ",".join(tagList)
-        kwargs.update({"tag_list": tagList})
+        tag_list = ",".join(tag_list)
+        kwargs.update({"tag_list": tag_list})
         return self.search(**kwargs)
 
 
