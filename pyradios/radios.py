@@ -382,7 +382,6 @@ class RadioBrowser:
         kwargs.update({"tag_list": tag_list})
         return self.search(**kwargs)
 
-
     def click_counter(self, stationuuid):
         """Increase the click count of a station by one.
 
