@@ -190,8 +190,10 @@ def test_request_station_tag_list(rb):
         "clicktrend",
     }
     response_keys = resp[0].keys()
-    tags = set(resp[0]['tags'].split(","))
-    test_tag_list = [tag.lower() for tag in tag_list] #API is not case-sensitive
+    tags = set(resp[0]["tags"].split(","))
+    test_tag_list = [
+        tag.lower() for tag in tag_list
+    ]  # API is not case-sensitive
 
     assert len(resp[0]) == len(response_keys)
     assert super_set.issuperset(response_keys)
