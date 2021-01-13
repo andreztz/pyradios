@@ -5,45 +5,26 @@ from pyradios.utils import type_check
 
 
 class Request:
-    def __init__(self, fmt, session=None, **kwargs):
+    def __init__(self, fmt, session=None):
         self._session = self._init_session(session)
-
         self._fmt = fmt
-
-        if "base_url" in kwargs:  # for tests with the responses lib
-            self.base_url = kwargs.get("base_url")
-        else:
-            self.base_url = pick_base_url()
 
     def _init_session(self, session):
         if session is None:
             return requests.Session()
         return session
 
-    def get(self, endpoint, **kwargs):
-
-        if "fmt" in kwargs:
-            self._fmt = kwargs.get("fmt")
-            endpoint = self._fmt + "/" + endpoint.split("/", 1)[1]
-            del kwargs["fmt"]
-
+    def get(self, url, **kwargs):
         if self._fmt == "xml":
             content_type = "application/{}".format(self._fmt)
         else:
             content_type = "application/{}".format(self._fmt)
-
         headers = {"content-type": content_type, "User-Agent": "pyradios/dev"}
-
-        url = self.base_url + endpoint
-
         resp = self._session.get(url, headers=headers, params=kwargs)
-
         if resp.status_code == 200:
             if self._fmt == "xml":
-                # return resp.text
                 return resp.content
             return resp.json()
-
         return resp.raise_for_status()
 
 
@@ -54,7 +35,12 @@ class RadioBrowser:
         session (obj, optional): The `requests_cache.CachedSession` instance.
 
     Examples:
-        To create an instance of the RadioBrowser class with cached session
+
+        >>> import pyradios
+        >>> rb = pyradios.RadioBrowser()
+        >>> rb.countries()
+
+        To create an instance of the RadioBrowser class with cached session.
 
         >>> from pyradios import RadioBrowser
         >>> from requests_cache import CachedSession
@@ -68,12 +54,6 @@ class RadioBrowser:
         >>> rb = RadioBrowser(session=session)
         >>> rb.countries()
 
-        No cahce
-
-        >>> import pyradios
-        >>> rb = pyradios.RadioBrowser()
-        >>> rb.countries()
-
     Note:
         Run `pip install requests_cache` to use cached session.
 
@@ -82,7 +62,19 @@ class RadioBrowser:
     def __init__(self, fmt="json", session=None, **kwargs):
 
         self._fmt = fmt
-        self.client = Request(self._fmt, session, **kwargs)
+        self.base_url = kwargs.get("base_url", pick_base_url())
+        self.client = Request(self._fmt, session=session)
+
+    def build_url(self, endpoint, **kwargs):
+
+        if "fmt" in kwargs:
+            self._fmt = kwargs.get("fmt")
+            endpoint = self._fmt + "/" + endpoint.split("/", 1)[1]
+            del kwargs["fmt"]
+
+        url = self.base_url + endpoint
+
+        return url
 
     @type_check
     def countries(self, code=None):
@@ -104,7 +96,8 @@ class RadioBrowser:
             )
         else:
             endpoint = "{fmt}/countrycodes/".format(fmt=self._fmt)
-        return self.client.get(endpoint)
+        url = self.build_url(endpoint)
+        return self.client.get(url)
 
     @type_check
     def countrycodes(self, code=None):
@@ -126,7 +119,8 @@ class RadioBrowser:
             )
         else:
             endpoint = "{fmt}/countrycodes/".format(fmt=self._fmt)
-        return self.client.get(endpoint)
+        url = self.build_url(endpoint)
+        return self.client.get(url)
 
     @type_check
     def codecs(self, codec=None):
@@ -143,17 +137,17 @@ class RadioBrowser:
         """
 
         endpoint = "{fmt}/codecs/".format(fmt=self._fmt)
+        url = self.build_url(endpoint)
 
         if codec:
-            response = self.client.get(endpoint)
+            response = self.client.get(url)
             return list(
                 filter(
                     lambda _codecs: _codecs["name"].lower() == codec.lower(),
                     response,
                 )
             )
-
-        return self.client.get(endpoint)
+        return self.client.get(url)
 
     @type_check
     def states(self, country=None, state=None):
@@ -171,10 +165,11 @@ class RadioBrowser:
         """
 
         endpoint = "{fmt}/states".format(fmt=self._fmt)
+        url = self.build_url(endpoint)
 
         if country and state:
 
-            response = self.client.get(endpoint)
+            response = self.client.get(url)
             return list(
                 filter(
                     lambda _state: _state["country"].lower() == country.lower()
@@ -184,7 +179,7 @@ class RadioBrowser:
             )
 
         if country:
-            response = self.client.get(endpoint)
+            response = self.client.get(url)
             return list(
                 filter(
                     lambda _state: _state["country"].lower()
@@ -193,14 +188,14 @@ class RadioBrowser:
                 )
             )
         if state:
-            response = self.client.get(endpoint)
+            response = self.client.get(url)
             return list(
                 filter(
                     lambda _state: _state["name"].lower() == state.lower(),
                     response,
                 )
             )
-        return self.client.get(endpoint)
+        return self.client.get(url)
 
     @type_check
     def languages(self, language=None):
@@ -221,8 +216,8 @@ class RadioBrowser:
             )
         else:
             endpoint = "{fmt}/languages/".format(fmt=self._fmt)
-
-        return self.client.get(endpoint)
+        url = self.build_url(endpoint)
+        return self.client.get(url)
 
     @type_check
     def tags(self, tag=None):
@@ -242,8 +237,8 @@ class RadioBrowser:
             endpoint = "{fmt}/tags/{tag}".format(fmt=self._fmt, tag=tag)
         else:
             endpoint = "{fmt}/tags/".format(fmt=self._fmt)
-
-        return self.client.get(endpoint)
+        url = self.build_url(endpoint)
+        return self.client.get(url)
 
     def station_by_uuid(self, stationuuid):
         """Radio station by stationuuid.
@@ -260,7 +255,8 @@ class RadioBrowser:
         endpoint = "{fmt}/stations/byuuid/{uuid}".format(
             fmt=self._fmt, uuid=stationuuid
         )
-        return self.client.get(endpoint)
+        url = self.build_url(endpoint)
+        return self.client.get(url)
 
     def stations_by_name(self, name, exact=False, **kwargs):
         """Lists all radio stations by name.
@@ -402,8 +398,8 @@ class RadioBrowser:
             https://de1.api.radio-browser.info/#Count_station_click
         """
         endpoint = "{fmt}/url/{uuid}".format(fmt=self._fmt, uuid=stationuuid)
-
-        return self.client.get(endpoint)
+        url = self.build_url(endpoint)
+        return self.client.get(url)
 
     def stations(self, **kwargs):
         """Lists all radio stations.
@@ -415,7 +411,8 @@ class RadioBrowser:
             https://nl1.api.radio-browser.info/#List_of_all_radio_stations
         """
         endpoint = "{fmt}/stations".format(fmt=self._fmt)
-        return self.client.get(endpoint, **kwargs)
+        url = self.build_url(endpoint, **kwargs)
+        return self.client.get(url, **kwargs)
 
     @type_check
     def search(self, **kwargs):
@@ -473,4 +470,5 @@ class RadioBrowser:
             https://de1.api.radio-browser.info/#Advanced_station_search
         """
         endpoint = "{fmt}/stations/search".format(fmt=self._fmt)
-        return self.client.get(endpoint, **kwargs)
+        url = self.build_url(endpoint, **kwargs)
+        return self.client.get(url, **kwargs)
