@@ -9,7 +9,9 @@ BASE_URL = "https://nl1.api.radio-browser.info/"
 
 @pytest.fixture
 def rb():
-    return RadioBrowser(base_url=BASE_URL)
+    _rb = RadioBrowser()
+    _rb.base_url = BASE_URL
+    return _rb
 
 
 @responses.activate
