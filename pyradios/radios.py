@@ -4,6 +4,9 @@ from pyradios.base_url import pick_base_url
 from pyradios.utils import type_check
 
 
+version = "dev"
+
+
 class Request:
     def __init__(self, fmt, headers=None, session=None):
         self._content_type = "application/{}".format(fmt)
@@ -58,26 +61,19 @@ class RadioBrowser:
 
     """
 
-    headers = {"User-Agent": "pyradios/dev"}
+    base_url = pick_base_url()
+    headers = {"User-Agent": "pyradios/{}".format(version)}
 
     def __init__(self, fmt="json", session=None, **kwargs):
-
         self._fmt = fmt
-        self.base_url = kwargs.get("base_url", pick_base_url())
-        self.client = Request(
-            self._fmt, headers=self.headers, session=session
-        )
+        self.client = Request(self._fmt, headers=self.headers, session=session)
 
-    # build call parameters
     def build_url(self, endpoint, **kwargs):
-
         if "fmt" in kwargs:
-            self._fmt = kwargs.get("fmt")
-            endpoint = self._fmt + "/" + endpoint.split("/", 1)[1]
-            del kwargs["fmt"]
-
+            endpoint = "{}/{}".format(
+                kwargs.get("fmt"), endpoint.split("/", 1)[1]
+            )
         url = self.base_url + endpoint
-
         return url
 
     @type_check
