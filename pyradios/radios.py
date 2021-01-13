@@ -5,9 +5,10 @@ from pyradios.utils import type_check
 
 
 class Request:
-    def __init__(self, fmt, session=None):
+    def __init__(self, fmt, headers=None, session=None):
+        self._content_type = "application/{}".format(fmt)
+        self._headers = headers
         self._session = self._init_session(session)
-        self._fmt = fmt
 
     def _init_session(self, session):
         if session is None:
@@ -15,14 +16,12 @@ class Request:
         return session
 
     def get(self, url, **kwargs):
-        if self._fmt == "xml":
-            content_type = "application/{}".format(self._fmt)
-        else:
-            content_type = "application/{}".format(self._fmt)
-        headers = {"content-type": content_type, "User-Agent": "pyradios/dev"}
-        resp = self._session.get(url, headers=headers, params=kwargs)
+        self._headers.update(
+            {"content-type": kwargs.get("content-type", self._content_type)}
+        )
+        resp = self._session.get(url, headers=self._headers, params=kwargs)
         if resp.status_code == 200:
-            if self._fmt == "xml":
+            if self._headers.get("application/xml") == "xml":
                 return resp.content
             return resp.json()
         return resp.raise_for_status()
@@ -59,12 +58,17 @@ class RadioBrowser:
 
     """
 
+    headers = {"User-Agent": "pyradios/dev"}
+
     def __init__(self, fmt="json", session=None, **kwargs):
 
         self._fmt = fmt
         self.base_url = kwargs.get("base_url", pick_base_url())
-        self.client = Request(self._fmt, session=session)
+        self.client = Request(
+            self._fmt, headers=self.headers, session=session
+        )
 
+    # build call parameters
     def build_url(self, endpoint, **kwargs):
 
         if "fmt" in kwargs:
