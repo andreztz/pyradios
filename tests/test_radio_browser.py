@@ -28,7 +28,7 @@ def test_request_countrycodes(rb):
     )
 
     resp = rb.countrycodes()
-    assert len(resp) > 0, "at least one coountry should be in the response"
+    assert len(resp) > 0, "at least one country should be in the response"
     assert "name" in resp[0]
     assert "stationcount" in resp[0]
     assert resp == expected
@@ -39,7 +39,7 @@ def test_request_countrycodes_with_filters(rb):
     # expected = [{"name": "BR", "stationcount": 607}]
 
     resp = rb.countrycodes(code="BR")
-    assert len(resp) > 0, "at least one coountry should be in the response"
+    assert len(resp) > 0, "at least one country should be in the response"
     assert resp[0]["name"] == "BR"
 
 
