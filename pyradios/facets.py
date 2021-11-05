@@ -3,9 +3,10 @@ from pyradios.radios import RadioBrowser
 
 class RadioFacets:
     FACETS = ["tags", "countrycodes", "languages", "states", "codecs"]
+
     def __init__(self, rb, **params):
         assert rb is not None, "facets requires a RadioBrowser service to call"
-        assert isinstance(rb, RadioBrowser), "wrong type for RadioBrowser service"
+        assert isinstance(rb, RadioBrowser), "RadioBrowser service wrong type"
         self.rb = rb
         self.filter = params
         self._exec()
@@ -13,7 +14,6 @@ class RadioFacets:
     def _exec(self):
         self.result = self.rb.search(**self.filter)
         # todo - calculate counts and histograms on everything
-
 
     # todo implement ideas expressed in https://github.com/andreztz/pyradios/issues/32
     #     fb = rb.facets(**query)
