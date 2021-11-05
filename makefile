@@ -1,11 +1,10 @@
 SHELL := /bin/bash
 PYTHON = python3
 TEST_PATH = ./tests/
-FLAKE8_EXCLUDE = .venv,.eggs,,tox,.git,__pycache__,*.pyc
+FLAKE8_EXCLUDE = venv,.venv,.eggs,,tox,.git,__pycache__,*.pyc
 
 
-all:
-	clean install test
+all: clean install test
 
 check:
 	${PYTHON} -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude ${FLAKE8_EXCLUDE}
@@ -48,5 +47,8 @@ install:
 	pip install --upgrade pip
 	pip install -e .
 
-test:
+install-dev: install
+	pip install -e .[dev]
+
+test: install-dev
 	${PYTHON} -m pytest ${TEST_PATH}

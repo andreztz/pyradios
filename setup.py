@@ -21,8 +21,8 @@ def readme():
         return f.read()
 
 
-def required():
-    with open("requirements.txt") as f:
+def required(sfx=''):
+    with open(f"requirements{sfx}.txt") as f:
         return f.read().splitlines()
 
 
@@ -39,6 +39,7 @@ setup(
     license="MIT",
     packages=find_packages(),
     install_requires=required(),
+    extras_require={'dev': required('-dev')},
     classifiers=[
         "Development Status :: 1 - Planning",
         "Environment :: Console",

@@ -1,0 +1,3 @@
+# here we list the requirements needed by developers - tools referenced in the makefile that should get into your venv
+pytest
+flake8
