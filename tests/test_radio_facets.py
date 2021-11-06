@@ -16,4 +16,4 @@ def rb():
 def test_facet_init(rb):
     rf = RadioFacets(rb)
     assert rf.result is not None, "there should be a result-set"
-    assert len(rf.result) > 0, "the no-query result-set should not be empty"
+    assert len(rf) > 0, "the no-query result-set should not be empty"

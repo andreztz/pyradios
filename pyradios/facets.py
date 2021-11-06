@@ -15,6 +15,9 @@ class RadioFacets:
         self.result = self.rb.search(**self.filter)
         # todo - calculate counts and histograms on everything
 
+    def __len__(self):
+        return len(self.result)
+
     # todo implement ideas expressed in https://github.com/andreztz/pyradios/issues/32
     #     fb = rb.facets(**query)
     #     fb.result       # yielding the equivalent of rb.search(**kwargs)
