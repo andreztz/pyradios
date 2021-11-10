@@ -18,6 +18,20 @@ class RadioFacets:
     def __len__(self):
         return len(self.result)
 
+    def _derived(self, **filter):
+        return RadioFacets(self.rb, **filter)
+
+    def narrow(self, **extra_params):
+        filter = dict(self.filter)
+        filter.update(extra_params)
+        return self._derived(**filter)
+
+    def broaden(self, *keys_to_remove):
+        filter = dict(self.filter)
+        for k in keys_to_remove:
+            filter.pop(k, None)
+        return self._derived(**filter)
+
     # todo implement ideas expressed in https://github.com/andreztz/pyradios/issues/32
     #     fb = rb.facets(**query)
     #     fb.result       # yielding the equivalent of rb.search(**kwargs)
