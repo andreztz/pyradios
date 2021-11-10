@@ -8,24 +8,19 @@ version = "dev"
 
 
 class Request:
-    def __init__(self, fmt, headers=None, session=None):
-        self._content_type = "application/{}".format(fmt)
+    def __init__(self, headers=None, session=None):
         self._headers = headers
         self._session = self._init_session(session)
 
-    def _init_session(self, session):
+    @staticmethod
+    def _init_session(session):
         if session is None:
             return requests.Session()
         return session
 
     def get(self, url, **kwargs):
-        self._headers.update(
-            {"content-type": kwargs.get("content-type", self._content_type)}
-        )
         resp = self._session.get(url, headers=self._headers, params=kwargs)
         if resp.status_code == 200:
-            if self._headers.get("application/xml") == "xml":
-                return resp.content
             return resp.json()
         return resp.raise_for_status()
 
@@ -64,15 +59,11 @@ class RadioBrowser:
     base_url = pick_base_url()
     headers = {"User-Agent": "pyradios/{}".format(version)}
 
-    def __init__(self, fmt="json", session=None, **kwargs):
-        self._fmt = fmt
-        self.client = Request(self._fmt, headers=self.headers, session=session)
+    def __init__(self, session=None, **kwargs):
+        self._fmt = 'json'
+        self.client = Request(headers=self.headers, session=session)
 
-    def build_url(self, endpoint, **kwargs):
-        if "fmt" in kwargs:
-            endpoint = "{}/{}".format(
-                kwargs.get("fmt"), endpoint.split("/", 1)[1]
-            )
+    def build_url(self, endpoint):
         url = self.base_url + endpoint
         return url
 
@@ -91,11 +82,11 @@ class RadioBrowser:
         """
 
         if code:
-            endpoint = "{fmt}/countrycodes/{code}".format(
-                fmt=self._fmt, code=code
+            endpoint = "json/countrycodes/{code}".format(
+                code=code
             )
         else:
-            endpoint = "{fmt}/countrycodes/".format(fmt=self._fmt)
+            endpoint = "json/countrycodes/"
         url = self.build_url(endpoint)
         return self.client.get(url)
 
@@ -114,11 +105,11 @@ class RadioBrowser:
         """
 
         if code:
-            endpoint = "{fmt}/countrycodes/{code}".format(
-                fmt=self._fmt, code=code
+            endpoint = "json/countrycodes/{code}".format(
+                code=code
             )
         else:
-            endpoint = "{fmt}/countrycodes/".format(fmt=self._fmt)
+            endpoint = "json/countrycodes/"
         url = self.build_url(endpoint)
         return self.client.get(url)
 
@@ -136,7 +127,7 @@ class RadioBrowser:
             https://de1.api.radio-browser.info/#List_of_codecs
         """
 
-        endpoint = "{fmt}/codecs/".format(fmt=self._fmt)
+        endpoint = "json/codecs/"
         url = self.build_url(endpoint)
 
         if codec:
@@ -164,7 +155,8 @@ class RadioBrowser:
             https://de1.api.radio-browser.info/#List_of_states
         """
 
-        endpoint = "{fmt}/states".format(fmt=self._fmt)
+        endpoint = "json/states"
+
         url = self.build_url(endpoint)
 
         if country and state:
@@ -211,11 +203,11 @@ class RadioBrowser:
             https://de1.api.radio-browser.info/#List_of_languages
         """
         if language:
-            endpoint = "{fmt}/languages/{language}".format(
-                fmt=self._fmt, language=language
+            endpoint = "json/languages/{language}".format(
+                language=language
             )
         else:
-            endpoint = "{fmt}/languages/".format(fmt=self._fmt)
+            endpoint = "json/languages/"
         url = self.build_url(endpoint)
         return self.client.get(url)
 
@@ -235,9 +227,9 @@ class RadioBrowser:
 
         if tag:
             tag = tag.lower()
-            endpoint = "{fmt}/tags/{tag}".format(fmt=self._fmt, tag=tag)
+            endpoint = "json/tags/{tag}".format(tag=tag)
         else:
-            endpoint = "{fmt}/tags/".format(fmt=self._fmt)
+            endpoint = "json/tags/"
         url = self.build_url(endpoint)
         return self.client.get(url)
 
@@ -253,8 +245,8 @@ class RadioBrowser:
         See details:
             https://de1.api.radio-browser.info/#List_of_radio_stations
         """
-        endpoint = "{fmt}/stations/byuuid/{uuid}".format(
-            fmt=self._fmt, uuid=stationuuid
+        endpoint = "json/stations/byuuid/{uuid}".format(
+            uuid=stationuuid
         )
         url = self.build_url(endpoint)
         return self.client.get(url)
@@ -398,7 +390,7 @@ class RadioBrowser:
         See details:
             https://de1.api.radio-browser.info/#Count_station_click
         """
-        endpoint = "{fmt}/url/{uuid}".format(fmt=self._fmt, uuid=stationuuid)
+        endpoint = "json/url/{uuid}".format(uuid=stationuuid)
         url = self.build_url(endpoint)
         return self.client.get(url)
 
@@ -411,8 +403,8 @@ class RadioBrowser:
         See details:
             https://nl1.api.radio-browser.info/#List_of_all_radio_stations
         """
-        endpoint = "{fmt}/stations".format(fmt=self._fmt)
-        url = self.build_url(endpoint, **kwargs)
+        endpoint = "json/stations"
+        url = self.build_url(endpoint)
         return self.client.get(url, **kwargs)
 
     @type_check
@@ -470,10 +462,10 @@ class RadioBrowser:
         See details:
             https://de1.api.radio-browser.info/#Advanced_station_search
         """
-        endpoint = "{fmt}/stations/search".format(fmt=self._fmt)
+        endpoint = "json/stations/search"
         # lowercase tag reference since the API turned to be case-sensitive
         for paramkey in ['tag', 'tagList']:
             if paramkey in kwargs:
                 kwargs[paramkey] = kwargs[paramkey].lower()
-        url = self.build_url(endpoint, **kwargs)
+        url = self.build_url(endpoint)
         return self.client.get(url, **kwargs)
