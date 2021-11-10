@@ -8,7 +8,6 @@ from pyradios import RadioBrowser, RadioFacets
 log = logging.getLogger("pyradios")
 
 
-
 @pytest.fixture
 def rb():
     _rb = RadioBrowser()
@@ -49,22 +48,22 @@ def test_facet_narrow_broaden(rb):
 
     # further narrow to name-matches
     rfbenlklaralim = rfbenllim.narrow(**qry_klara)
-    assert 0 < len(rfbenlklaralim) < limit, f"expecting size between 0 < {limit}"
+    assert 0 < len(rfbenlklaralim) < limit, f"expecting 0 < size < {limit}"
     log.debug(f"found {len(rfbenlklaralim)} stations " +
-        f"matching {rfbenlklaralim.filter}")
+              f"matching {rfbenlklaralim.filter}")
 
-    rfklaralim = rfbenlklaralim.broaden(tuple({ **qry_be, **qry_nl}.keys()))
+    rfklaralim = rfbenlklaralim.broaden(tuple({**qry_be, **qry_nl}.keys()))
     assert len(rfbenlklaralim) <= len(rfklaralim) < limit
     log.debug(f"found {len(rfklaralim)} stations " +
-        f"matching {rfklaralim.filter}")
-
+              f"matching {rfklaralim.filter}")
 
 
 def enable_stdout_logging():
     log.setLevel(logging.DEBUG)
     handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    msg_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    formatter = logging.Formatter(msg_fmt)
     handler.setFormatter(formatter)
     log.addHandler(handler)
 
@@ -75,5 +74,5 @@ if __name__ == "__main__":
         "Running tests in ",
         __file__,
         "with -v(erbose) and -s(no stdout capturing) ",
-        "and DEBUG logging")
+        "and logging-level on DEBUG")
     sys.exit(pytest.main(["-v", "-s",  __file__]))
