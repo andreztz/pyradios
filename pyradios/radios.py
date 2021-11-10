@@ -234,6 +234,7 @@ class RadioBrowser:
         """
 
         if tag:
+            tag = tag.lower()
             endpoint = "{fmt}/tags/{tag}".format(fmt=self._fmt, tag=tag)
         else:
             endpoint = "{fmt}/tags/".format(fmt=self._fmt)
@@ -470,5 +471,9 @@ class RadioBrowser:
             https://de1.api.radio-browser.info/#Advanced_station_search
         """
         endpoint = "{fmt}/stations/search".format(fmt=self._fmt)
+        # lowercase tag reference since the API turned to be case-sensitive
+        for paramkey in ['tag', 'tagList']:
+            if paramkey in kwargs:
+                kwargs[paramkey] = kwargs[paramkey].lower()
         url = self.build_url(endpoint, **kwargs)
         return self.client.get(url, **kwargs)
