@@ -141,7 +141,7 @@ def pick_random_station(rb, **params):
 def assert_expected_keys(station):
     # Note: this assertion is more about the API service implmentation,
     #       than it is about this py library
-    EXPECTED_STATION_KEYS = {
+    expected_station_keys = {
         "changeuuid", "stationuuid", "name", "url",
         "url_resolved", "homepage", "favicon", "tags", "country",
         "countrycode", "state", "language", "votes", "lastchangetime",
@@ -149,7 +149,7 @@ def assert_expected_keys(station):
         "lastcheckoktime", "lastlocalchecktime", "clicktimestamp",
         "clickcount", "clicktrend",
     }
-    missingkeys = EXPECTED_STATION_KEYS - set(station.keys())
+    missingkeys = expected_station_keys - set(station.keys())
     assert len(missingkeys) == 0, "keys missing: %s" % missingkeys
 
 
