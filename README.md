@@ -62,9 +62,7 @@ $ git clone https://github.com/andreztz/pyradios.git
 $ cd pyradios
 $ virtualenv venv
 $ source venv/bin/activate
-$ pip install -e .
-$ pip install pytest
-$ pip install responses
+$ pip install -e .[dev]
 ```
 
 ## Run Tests
@@ -75,7 +73,7 @@ $ pytest
 
 ## Release History
 
-    -   Work in progress
+    - Work in progress
 
 ## Meta
 
