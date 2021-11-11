@@ -1,10 +1,12 @@
+import pkg_resources
+
 import requests
 
 from pyradios.base_url import pick_base_url
 from pyradios.utils import type_check
 
 
-version = "dev"
+version = pkg_resources.require('pyradios')[0].version
 
 
 class Request:
