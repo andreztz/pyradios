@@ -3,8 +3,10 @@ import requests
 from pyradios.base_url import pick_base_url
 from pyradios.utils import type_check
 
+import pkg_resources
 
-version = "dev"
+
+version = pkg_resources.get_distribution('pyradios').version
 
 
 class Request:
@@ -12,8 +14,7 @@ class Request:
         self._headers = headers
         self._session = self._init_session(session)
 
-    @staticmethod
-    def _init_session(session):
+    def _init_session(self, session):
         if session is None:
             return requests.Session()
         return session

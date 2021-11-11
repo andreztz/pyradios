@@ -4,9 +4,14 @@ import random
 import re
 
 from pyradios import RadioBrowser
+from pyradios.radios import version
 
 
 BASE_URL = "https://nl1.api.radio-browser.info/"
+
+
+def test_version():
+    assert version == '0.0.22'
 
 
 @pytest.fixture
