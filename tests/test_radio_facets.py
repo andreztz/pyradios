@@ -1,6 +1,7 @@
 import pytest
 import sys
 import logging
+import random
 
 from pyradios import RadioBrowser, RadioFacets
 
@@ -14,11 +15,31 @@ def rb():
     return _rb
 
 
-def test_facet_init_and_narrow(rb):
+def test_facet_init(rb):
     log.debug("started")
     rf = RadioFacets(rb)
     assert rf.result is not None, "expecting to have a result-set"
     assert len(rf) > 0, "expecting the no-query result-set to not be empty"
+
+    anystation = random.choice(rf.result)
+    log.debug(f"one rsult == {anystation}")
+
+    assert rf.tags is not None, "expecting a tags histogram"
+    anytag = random.choice(anystation['tags'].split(','))
+    foundtags = list(filter(lambda t: t['name'] == anytag, rf.tags))
+    assert len(foundtags) == 1, "expecting matching tag in the result-set"
+    assert foundtags[0]['count'] > 1, "expecting at least one match"
+
+    assert rf.countrycodes is not None, "expecting a contrycode histogram"
+    assert rf.languages is not None, "expecting a language histogram"
+    assert rf.codecs is not None, "expecting a codec histogram"
+    assert rf.states is not None, "expecting a state histogram"
+
+    log.debug(f"facet repr == {rf}")
+    log.debug(f"facet top tags == {rf.tags[:10]}")
+    log.debug(f"facet top langs == {rf.languages[:10]}")
+    log.debug(f"facet top codecs == {rf.codecs[:10]}")
+    log.debug(f"facet top ctrys == {rf.countrycodes[:10]}")
 
 
 def test_facet_narrow_broaden(rb):
@@ -63,7 +84,6 @@ def test_facet_narrow_broaden(rb):
     assert len(rfklaraclss) <= len(rfklaralim)
     log.debug(f"found {len(rfklaraclss)} stations " +
               f"matching {rfklaraclss.filter}")
-    log.debug(f"facet repr == {rfklaraclss}")
 
 
 def enable_stdout_logging():
