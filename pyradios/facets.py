@@ -1,5 +1,7 @@
 from pyradios.radios import RadioBrowser
 from itertools import chain
+from functools import reduce
+from collections import defaultdict
 import logging
 
 
@@ -7,7 +9,7 @@ log = logging.getLogger("pyradios")
 
 
 class RadioFacets:
-    FACETS = ["tags", "countrycodes", "languages", "states", "codecs"]
+    FACETS = ["tags", "countrycode", "language", "state", "codec"]
 
     def __init__(self, rb, **params):
         assert rb is not None, "facets requires a RadioBrowser service to call"
@@ -18,12 +20,35 @@ class RadioFacets:
 
     def __repr__(self):
         typename = type(self).__name__
-        filter_repr = ['{}={!r}'.format(k, v) for k, v in self.filter.items()]
-        return "%s(%s)" % (typename, ', '.join(filter_repr))
+        args = ['{}={!r}'.format(k, v) for k, v in self.filter.items()]
+        return "%s(%s)" % (typename, ', '.join(args))
 
     def _fetch_and_calc(self):
         self.result = self.rb.search(**self.filter)
-        # todo - calculate counts and histograms on everything
+        self.facets = dict()
+
+        def facetcount(facets, item):
+            for f in facets.keys():
+                for fv in item[f].split(','):
+                    if len(fv) > 0:
+                        facets[f][fv] += 1
+            return facets
+
+        init = {f: defaultdict(int) for f in RadioFacets.FACETS}
+        interim = reduce(facetcount, self.result, init)
+        for f in interim.keys():
+            # order histogram items from high to low
+            hgram = interim[f].items()
+            hgram = sorted(hgram, key=lambda i: i[1], reverse=True)
+            # pluralize the key if needed
+            fpub = f if f[-1] == 's' else f + "s"
+            self.facets[fpub] = [{"name": k, "count": v} for k, v in hgram]
+
+    def __getattr__(self, key):
+        if key in self.facets:
+            return self.facets[key]
+        # else
+        return getattr(self, key)
 
     def __len__(self):
         return len(self.result)
@@ -43,13 +68,3 @@ class RadioFacets:
         for k in chain(keys2rm, pars2rm.keys()):
             filter.pop(k, None)
         return self._derived(**filter)
-
-    # todo various ideas in https://github.com/andreztz/pyradios/issues/32
-    #     fb = rb.facets(**query)
-    #     fb.result       # yielding the equivalent of rb.search(**kwargs)
-    #     fb.filter       # remembering the **kwargs used to filter
-    #     fb.tags         # yielding a similar
-    #                     # list({"name": "..", "stationcount": ".."})
-    #                     # as rb.tags()
-    #                     # but narrowed to the tags still in this resultset
-    #     fb.coutries     # -- and idem for languages, codecs, ...
