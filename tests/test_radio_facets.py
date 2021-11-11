@@ -23,12 +23,12 @@ def test_facet_init_and_narrow(rb):
 
 def test_facet_narrow_broaden(rb):
     log.debug("started")
-    limit = 10
-    qry_be = dict(countrycode="be")  # the center of the world
-    qry_nl = dict(language="dutch")  # spoken in be as is french and german
-    qry_lim = dict(limit=limit)    # size limit
+    limit = 10                         # not make this smaller then 5
+    qry_be = dict(countrycode="be")    # the center of the world
+    qry_nl = dict(language="dutch")    # spoken in .be, as is french and german
+    qry_lim = dict(limit=limit)        # size limit
     qry_klara = dict(name="klara", name_exact=False)  # radiostation in be
-    qry_class = dict(tag="classical")
+    qry_clss = dict(tag="classical")   # tag that will fit radio klara
 
     # start off with a set of belgian stations
     rfbe = RadioFacets(rb, **qry_be)
@@ -52,10 +52,18 @@ def test_facet_narrow_broaden(rb):
     log.debug(f"found {len(rfbenlklaralim)} stations " +
               f"matching {rfbenlklaralim.filter}")
 
-    rfklaralim = rfbenlklaralim.broaden(tuple({**qry_be, **qry_nl}.keys()))
+    # broaden up by skipping the country and language constraint
+    rfklaralim = rfbenlklaralim.broaden(**qry_be, **qry_nl)
     assert len(rfbenlklaralim) <= len(rfklaralim) < limit
     log.debug(f"found {len(rfklaralim)} stations " +
               f"matching {rfklaralim.filter}")
+
+    # exchange the limit constraint with a tag constraint
+    rfklaraclss = rfklaralim.broaden(tuple(qry_lim.keys())).narrow(**qry_clss)
+    assert len(rfklaraclss) <= len(rfklaralim)
+    log.debug(f"found {len(rfklaraclss)} stations " +
+              f"matching {rfklaraclss.filter}")
+    log.debug(f"facet repr == {rfklaraclss}")
 
 
 def enable_stdout_logging():
