@@ -1,3 +1,4 @@
+import io
 import re
 from setuptools import setup
 from setuptools import find_packages
@@ -17,7 +18,7 @@ def get_version():
 
 
 def readme():
-    with open("README.md") as f:
+    with io.open("README.md", "r", encoding="utf-8") as f:
         return f.read()
 
 
