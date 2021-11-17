@@ -152,13 +152,32 @@ def test_request_codecs(rb):
     assert "stationcount" in resp[0]
 
 
+@responses.activate
 def test_request_codecs_with_filters(rb):
+    """
+    This test runs against a subset of the API response, with the sole 
+    purpose of ensuring the behavior of the filter mechanism of the 
+    tested method.
+    """
+    # subset of the API response for testing purposes
+    payload = [
+        {'name': 'AAC', 'stationcount': 2226},
+        {'name': 'MP3', 'stationcount': 19678},
+        {'name': 'MP3,H.264', 'stationcount': 6},
+        {'name': 'OGG', 'stationcount': 265},
+        {'name': 'UNKNOWN', 'stationcount': 1827},
 
-    # expected = [{"name": "MP3", "stationcount": 16620}]
+    ]
+    responses.add(
+        responses.GET,
+        BASE_URL + "json/codecs/",
+        json=payload,
+        status=200,
+    )
 
     resp = rb.codecs(codec="mp3")
-    assert len(resp) > 0, "at least one codec should be in the response"
-    assert resp[0]["name"] == "MP3"
+    assert len(resp) == 1
+    assert resp[0]["name"] == "MP3", "only one codec should be in the response"
 
 
 def test_request_states_with_filters(rb):
