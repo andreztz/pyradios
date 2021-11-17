@@ -3,6 +3,7 @@ import sys
 import logging
 import random
 import os
+from functools import reduce
 
 
 from pyradios import RadioBrowser, RadioFacets
@@ -17,20 +18,36 @@ def rb():
     return _rb
 
 
+def partition(predicate, iterable):
+    """
+    splits the items in iter into two partitions based on predicate() outcome
+      True  --> into first list of returned tuple
+      False --> into second list
+    """
+    def split(parts, item):
+        parts[int(not predicate(item))].append(item)
+        return parts
+    return reduce(split, iterable, ([], []))
+
+
 def test_facet_init(rb):
     log.info("test facet_init started")
     rf = RadioFacets(rb)
     assert rf.result is not None, "expecting to have a result-set"
     assert len(rf) > 0, "expecting the no-query result-set to not be empty"
 
-    anystation = random.choice(rf.result)
-    log.debug(f"one rsult == {anystation}")
+    # split the set in stations with and without tags
+    parts = partition(lambda s: len(s['tags']) == 0, rf.result)
 
-    assert rf.tags is not None, "expecting a tags histogram"
-    anytag = random.choice(anystation['tags'].split(','))
-    foundtags = list(filter(lambda t: t['name'] == anytag, rf.tags))
-    assert len(foundtags) == 1, f"expecting tag '{anytag}' in the result-set"
-    assert foundtags[0]['count'] > 1, f"expecting minimum one match '{anytag}'"
+    for part in parts:
+        anystation = random.choice(part)
+        log.debug(f"one rsult == {anystation}")
+
+        assert rf.tags is not None, "expecting a tags histogram"
+        anytag = random.choice(anystation['tags'].split(','))
+        foundtags = list(filter(lambda t: t['name'] == anytag, rf.tags))
+        assert len(foundtags) == 1, f"tag '{anytag}' not in the result-set"
+        assert foundtags[0]['count'] > 1, f"not even one match '{anytag}'"
 
     assert rf.countrycodes is not None, "expecting a contrycode histogram"
     assert rf.languages is not None, "expecting a language histogram"
@@ -102,7 +119,7 @@ def enable_stdout_logging():
 
 if __name__ == "__main__":
     enable_stdout_logging()
-    print(
+    log.info(
         "Running tests in ",
         __file__,
         "with -v(erbose) and -s(no stdout capturing) ",
