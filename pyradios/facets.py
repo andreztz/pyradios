@@ -30,19 +30,19 @@ class RadioFacets:
         def facetcount(facets, item):
             for f in facets.keys():
                 for fv in item[f].split(','):
-                    if len(fv) > 0:
-                        facets[f][fv] += 1
+                    facets[f][fv] += 1  # tracks empty facet-values as ''
             return facets
 
         init = {f: defaultdict(int) for f in RadioFacets.FACETS}
-        interim = reduce(facetcount, self.result, init)
-        for f in interim.keys():
+        captured_hist_per_facet = reduce(facetcount, self.result, init)
+        for f in captured_hist_per_facet.keys():
+            # unsorted facet histogram
+            usf_hist = captured_hist_per_facet[f].items()
             # order histogram items from high to low
-            hgram = interim[f].items()
-            hgram = sorted(hgram, key=lambda i: i[1], reverse=True)
+            sf_hist = sorted(usf_hist, key=lambda i: i[1], reverse=True)
             # pluralize the key if needed
             fpub = f if f[-1] == 's' else f + "s"
-            self.facets[fpub] = [{"name": k, "count": v} for k, v in hgram]
+            self.facets[fpub] = [{"name": k, "count": v} for k, v in sf_hist]
 
     def __getattr__(self, key):
         if key in self.facets:
