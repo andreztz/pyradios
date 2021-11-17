@@ -2,6 +2,8 @@ import pytest
 import sys
 import logging
 import random
+import os
+
 
 from pyradios import RadioBrowser, RadioFacets
 
@@ -16,7 +18,7 @@ def rb():
 
 
 def test_facet_init(rb):
-    log.debug("started")
+    log.info("test facet_init started")
     rf = RadioFacets(rb)
     assert rf.result is not None, "expecting to have a result-set"
     assert len(rf) > 0, "expecting the no-query result-set to not be empty"
@@ -27,8 +29,8 @@ def test_facet_init(rb):
     assert rf.tags is not None, "expecting a tags histogram"
     anytag = random.choice(anystation['tags'].split(','))
     foundtags = list(filter(lambda t: t['name'] == anytag, rf.tags))
-    assert len(foundtags) == 1, "expecting matching tag in the result-set"
-    assert foundtags[0]['count'] > 1, "expecting at least one match"
+    assert len(foundtags) == 1, f"expecting tag '{anytag}' in the result-set"
+    assert foundtags[0]['count'] > 1, f"expecting minimum one match '{anytag}'"
 
     assert rf.countrycodes is not None, "expecting a contrycode histogram"
     assert rf.languages is not None, "expecting a language histogram"
@@ -43,7 +45,7 @@ def test_facet_init(rb):
 
 
 def test_facet_narrow_broaden(rb):
-    log.debug("started")
+    log.info("test facet_narrow_broaden started")
     limit = 10                         # not make this smaller then 5
     qry_be = dict(countrycode="be")    # the center of the world
     qry_nl = dict(language="dutch")    # spoken in .be, as is french and german
@@ -87,13 +89,15 @@ def test_facet_narrow_broaden(rb):
 
 
 def enable_stdout_logging():
-    log.setLevel(logging.DEBUG)
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.DEBUG)
-    msg_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    formatter = logging.Formatter(msg_fmt)
-    handler.setFormatter(formatter)
-    log.addHandler(handler)
+    if 'PYTEST_LOG' in os.environ:
+        loglevel = logging.getLevelName(os.environ['PYTEST_LOG'].upper())
+        log.setLevel(loglevel)
+        handler = logging.StreamHandler(sys.stdout)
+        handler.setLevel(loglevel)
+        msg_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        formatter = logging.Formatter(msg_fmt)
+        handler.setFormatter(formatter)
+        log.addHandler(handler)
 
 
 if __name__ == "__main__":
@@ -102,5 +106,5 @@ if __name__ == "__main__":
         "Running tests in ",
         __file__,
         "with -v(erbose) and -s(no stdout capturing) ",
-        "and logging-level on DEBUG")
+        "and logging to stdout, level controlled by env var ${PYTEST_LOG}")
     sys.exit(pytest.main(["-v", "-s",  __file__]))
