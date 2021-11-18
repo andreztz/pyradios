@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 PYTHON = python3
 TEST_PATH = ./tests/
-FLAKE8_EXCLUDE = venv,.venv,.eggs,,tox,.git,__pycache__,*.pyc
+FLAKE8_EXCLUDE = venv,.venv,.eggs,.tox,.git,__pycache__,*.pyc
 
 
 all: clean install-dev test
@@ -48,6 +48,7 @@ install:
 	pip install -e .
 
 install-dev: install
+	pip install --upgrade pip
 	pip install -e .[dev]
 
 test: 
