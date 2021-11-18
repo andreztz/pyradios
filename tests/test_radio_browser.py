@@ -155,8 +155,8 @@ def test_request_codecs(rb):
 @responses.activate
 def test_request_codecs_with_filters(rb):
     """
-    This test runs against a subset of the API response, with the sole 
-    purpose of ensuring the behavior of the filter mechanism of the 
+    This test runs against a subset of the API response, with the sole
+    purpose of ensuring the behavior of the filter mechanism of the
     tested method.
     """
     # subset of the API response for testing purposes
