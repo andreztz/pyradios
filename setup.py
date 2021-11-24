@@ -4,7 +4,7 @@ from setuptools import setup
 from setuptools import find_packages
 
 
-DESCRIPTION = "Python client for https://api.radio-browser.info"
+DESCRIPTION = "Python client for the Radio Browser API"
 
 
 def get_version():
