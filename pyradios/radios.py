@@ -408,6 +408,22 @@ class RadioBrowser:
         url = self.build_url(endpoint)
         return self.client.get(url, **kwargs)
 
+    def stations_by_votes(self, limit, **kwargs):
+        """A list of the highest-voted stations.
+
+        Args:
+            limit: Number of wanted stations
+
+        Returns:
+            list: Stations.
+
+        See details:
+            https://nl1.api.radio-browser.info/#Stations_by_votes
+        """
+        endpoint = "json/stations/topvote/{limit}".format(limit=limit)
+        url = self.build_url(endpoint)
+        return self.client.get(url, **kwargs)
+
     @type_check
     def search(self, **kwargs):
         """Advanced search.
