@@ -223,16 +223,18 @@ def test_request_tags_with_filters(rb):
     assert "stationcount" in resp[0]
 
 
-def test_request_station_byuuid(rb):
+def test_request_stations_by_votes(rb):
+    resp = rb.stations_by_votes(1)
+    assert len(resp) == 1, "exactly one station should be in the response"
 
+
+def test_request_station_byuuid(rb):
     uuid = pick_random_station(rb, limit=100)["stationuuid"]
     resp = rb.station_by_uuid(uuid)
-
     assert len(resp) == 1, "exactly one should match the uuid '%s'" % uuid
 
 
 def test_request_station_tag_list(rb):
-
     tag_list = ["New York City", "Jazz"]
     resp = rb.stations_by_tag_list(tag_list)
 
@@ -241,7 +243,6 @@ def test_request_station_tag_list(rb):
     some_stations = random.choices(resp, k=5)  # just take some stations
 
     for station in some_stations:
-
         # Be aware that tag search is token (or word) based
         # meaning that searching 'jazz' will match 'smooth jazz'
         tagtokens = re.split(r"\s|,", station["tags"])
