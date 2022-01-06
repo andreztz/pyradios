@@ -17,7 +17,7 @@ def pick_random_station(rb, **params):
 
 
 def test_version():
-    assert version == "0.0.22"
+    assert version == "0.0.23"
 
 
 @pytest.fixture
