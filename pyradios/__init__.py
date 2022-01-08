@@ -4,7 +4,7 @@ from pyradios.radios import RadioBrowser
 from pyradios.facets import RadioFacets
 
 # warning: setup.py assumes strict single quotes on the line below
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 __all__ = ["RadioBrowser", "RadioFacets"]
 
