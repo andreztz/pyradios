@@ -57,10 +57,10 @@ class RadioBrowser:
 
     """
 
-    base_url = pick_base_url()
     headers = {"User-Agent": "pyradios/{}".format(version)}
 
     def __init__(self, session=None, **kwargs):
+        self.base_url = pick_base_url()
         self._fmt = 'json'
         self.client = Request(headers=self.headers, session=session)
 
