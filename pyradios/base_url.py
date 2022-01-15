@@ -1,5 +1,5 @@
 """
-Get all base urls of all currently available radiobrowser servers.
+This module get information about `Radio Browser` servers.
 """
 import logging
 import random
@@ -21,10 +21,10 @@ class RdnsLookupError(Error):
 
 def fetch_all_hosts():
     """
-    Get all ip of all currently available radiobrowser servers.
+    Get IP of all currently available `Radiob Browser` servers.
 
     Returns:
-        list: A list of IPs
+        list: List of IPs
     """
     ips = []
     try:
@@ -43,10 +43,10 @@ def fetch_all_hosts():
 
 def rdns_lookup(ip):
     """
-    Do reverse dns lookup.
+    Reverse DNS lookup.
 
     Returns:
-        str: domain name
+        str: hostname
 
     """
     try:
