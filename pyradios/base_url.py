@@ -11,13 +11,11 @@ log = logging.getLogger("pyradios")
 
 class Error(Exception):
     """Base class for all exceptions raised by this module."""
-
     pass
 
 
 class RdnsLookupError(Error):
     """There was a problem with performing reverse dns lookup."""
-
     pass
 
 
@@ -63,25 +61,19 @@ def rdns_lookup(ip):
 
 def fetch_hosts():
     names = []
+    hosts = fetch_all_hosts()
 
-    try:
-        hosts = fetch_all_hosts()
-    except Exception:
-        log.exception("Network failure")
-        raise
-    else:
-        for ip in hosts:
-            try:
-                name = rdns_lookup(ip)
-            except RdnsLookupError:
-                log.exception("Network failure")
-            else:
-                names.append(name)
+    for ip in hosts:
+        try:
+            name = rdns_lookup(ip)
+        except RdnsLookupError:
+            log.exception("Network failure")
+        else:
+            names.append(name)
     return names
 
 
 def pick_base_url():
-
     try:
         names = fetch_hosts()
     except Exception:
