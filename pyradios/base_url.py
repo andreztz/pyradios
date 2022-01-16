@@ -14,9 +14,14 @@ class Error(Exception):
     pass
 
 
-class RdnsLookupError(Error):
-    """There was a problem with performing reverse dns lookup."""
-    pass
+class RDNSLookupError(Error):
+    def __init__(self, ip):
+        self.ip = ip
+        self.error_msg = (
+            f'There was a problem with performing '
+            f'reverse dns lookup for ip: {ip}'
+        )
+        super().__init__(self.error_msg)
 
 
 def fetch_servers():
@@ -52,10 +57,7 @@ def rdns_lookup(ip):
     try:
         hostname, _, _ = socket.gethostbyaddr(ip)
     except socket.herror as exc:
-        if "Unknown host" in exc.args:
-            raise RdnsLookupError("Unknown host")
-        else:
-            raise
+        raise RDNSLookupError(ip) from exc
     return hostname
 
 
@@ -66,19 +68,14 @@ def fetch_hosts():
     for ip in servers:
         try:
             host_name = rdns_lookup(ip)
-        except RdnsLookupError:
-            log.exception("Network failure")
+        except RDNSLookupError as exc:
+            log.exception(exc.error_msg)
         else:
             names.append(host_name)
     return names
 
 
 def pick_base_url():
-    try:
-        hosts = fetch_hosts()
-    except Exception:
-        log.exception("Network failure")
-        raise
-
+    hosts = fetch_hosts()
     url = random.choice(sorted(hosts))
     return "https://{}/".format(url)
