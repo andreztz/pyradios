@@ -3,7 +3,7 @@ from unittest.mock import Mock
 from unittest.mock import patch
 
 import pytest
-from pyradios.base_url import fetch_all_hosts
+from pyradios.base_url import fetch_servers
 
 
 def getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
@@ -20,10 +20,10 @@ def getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
     return return_value
 
 
-def test_fetch_all_hosts():
+def test_fetch_servers():
 
     with patch("socket.getaddrinfo", getaddrinfo):
-        assert fetch_all_hosts() == [
+        assert fetch_servers() == [
             "192.168.1.1",
             "192.168.1.2",
             "192.168.1.3",
@@ -31,11 +31,11 @@ def test_fetch_all_hosts():
         ]
 
 
-def test_fetch_all_hosts_network_failure():
+def test_fetch_servers_network_failure():
     mock_getaddrinfo = Mock()
     mock_getaddrinfo.side_effect = socket.gaierror
     with patch("socket.getaddrinfo", mock_getaddrinfo):
         with pytest.raises(socket.gaierror) as exc_info:
-            fetch_all_hosts()
+            fetch_servers()
         assert issubclass(exc_info.type, (OSError,))
         assert exc_info.type == socket.gaierror
