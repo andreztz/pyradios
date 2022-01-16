@@ -19,7 +19,7 @@ class RdnsLookupError(Error):
     pass
 
 
-def fetch_all_hosts():
+def fetch_servers():
     """
     Get IP of all currently available `Radiob Browser` servers.
 
@@ -50,36 +50,35 @@ def rdns_lookup(ip):
 
     """
     try:
-        name = socket.gethostbyaddr(ip)
+        hostname, _, _ = socket.gethostbyaddr(ip)
     except socket.herror as exc:
         if "Unknown host" in exc.args:
             raise RdnsLookupError("Unknown host")
         else:
             raise
-    return name[0]
+    return hostname
 
 
 def fetch_hosts():
     names = []
-    hosts = fetch_all_hosts()
+    servers = fetch_servers()
 
-    for ip in hosts:
+    for ip in servers:
         try:
-            name = rdns_lookup(ip)
+            host_name = rdns_lookup(ip)
         except RdnsLookupError:
             log.exception("Network failure")
         else:
-            names.append(name)
+            names.append(host_name)
     return names
 
 
 def pick_base_url():
     try:
-        names = fetch_hosts()
+        hosts = fetch_hosts()
     except Exception:
         log.exception("Network failure")
         raise
 
-    names.sort()
-    url = random.choice(names)
+    url = random.choice(sorted(hosts))
     return "https://{}/".format(url)
