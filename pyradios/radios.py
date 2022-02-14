@@ -83,11 +83,11 @@ class RadioBrowser:
         """
 
         if code:
-            endpoint = "json/countrycodes/{code}".format(
+            endpoint = "json/countries/{code}".format(
                 code=code
             )
         else:
-            endpoint = "json/countrycodes/"
+            endpoint = "json/countries/"
         url = self.build_url(endpoint)
         return self.client.get(url)
 
