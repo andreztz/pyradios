@@ -280,7 +280,7 @@ class RadioBrowser:
         See details:
             https://de1.api.radio-browser.info/#List_of_radio_stations
         """
-        kwargs.update({"code": codec, "codec_exact": exact})
+        kwargs.update({"codec": codec, "codec_exact": exact})
         return self.search(**kwargs)
 
     def stations_by_country(self, country, exact=False, **kwargs):

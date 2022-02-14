@@ -5,6 +5,8 @@ types = {
     "search": {
         "name": str,
         "name_exact": bool,
+        "codec": str,
+        "codec_exact": bool,
         "country": str,
         "country_exact": bool,
         "countrycode": str,
