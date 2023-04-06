@@ -93,19 +93,19 @@ def test_request_station_click_counter(rb):
     expected = {
         "ok": True,
         "message": "retrieved station url",
-        "stationuuid": "96062a7b-0601-11e8-ae97-52543be04c81",
+        "stationuuid": "a726a172-4cc2-4076-b283-a950218ed0c2",
         "name": "BBC Radio 1",
-        "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p",
+        "url": "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one",
     }
     # mock responses
     responses.add(
         responses.GET,
-        BASE_URL + "json/url/96062a7b-0601-11e8-ae97-52543be04c81",
+        BASE_URL + "json/url/a726a172-4cc2-4076-b283-a950218ed0c2",
         json=expected,
         status=200,
     )
 
-    resp = rb.click_counter("96062a7b-0601-11e8-ae97-52543be04c81")
+    resp = rb.click_counter("a726a172-4cc2-4076-b283-a950218ed0c2")
 
     assert "ok" in resp
     assert "message" in resp
