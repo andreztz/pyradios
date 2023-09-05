@@ -38,7 +38,7 @@ setup(
     author_email="andreztz@gmail.com",
     url="https://github.com/andreztz/pyradios",
     license="MIT",
-    packages=find_packages(),
+    packages=find_packages(exclude=["test*"]),
     install_requires=required(),
     extras_require={'dev': required('-dev')},
     classifiers=[
