@@ -466,7 +466,6 @@ class RadioBrowser:
             limit (int, optional): Number of returned datarows (stations)
                 starting with offset (default 100000)
             hidebroken (bool, optional): do list/not list broken stations.
-                Note: Not documented in the "Advanced Station Search".
 
         Returns:
             list: Stations.
