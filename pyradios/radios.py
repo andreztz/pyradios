@@ -127,18 +127,12 @@ class RadioBrowser:
         See details:
             https://de1.api.radio-browser.info/#List_of_codecs
         """
-
-        endpoint = "json/codecs/"
-        url = self.build_url(endpoint)
-
         if codec:
-            response = self.client.get(url)
-            return list(
-                filter(
-                    lambda _codecs: _codecs["name"].lower() == codec.lower(),
-                    response,
-                )
-            )
+            endpoint = "json/codecs/{}".format(codec)
+        else:
+            endpoint = "json/codecs/"
+
+        url = self.build_url(endpoint)
         return self.client.get(url)
 
     @type_check
@@ -156,38 +150,16 @@ class RadioBrowser:
             https://de1.api.radio-browser.info/#List_of_states
         """
 
-        endpoint = "json/states"
-
-        url = self.build_url(endpoint)
+        endpoint = "json/states/"
 
         if country and state:
+            endpoint += "{}/{}".format(country.title(), state.title())
+        elif country:
+            endpoint += "{}".format(country.title())
+        elif state:
+            endpoint += "{}".format(state.title())
 
-            response = self.client.get(url)
-            return list(
-                filter(
-                    lambda _state: _state["country"].lower() == country.lower()
-                    and _state["name"].lower() == state.lower(),
-                    response,
-                )
-            )
-
-        if country:
-            response = self.client.get(url)
-            return list(
-                filter(
-                    lambda _state: _state["country"].lower()
-                    == country.lower(),
-                    response,
-                )
-            )
-        if state:
-            response = self.client.get(url)
-            return list(
-                filter(
-                    lambda _state: _state["name"].lower() == state.lower(),
-                    response,
-                )
-            )
+        url = self.build_url(endpoint)
         return self.client.get(url)
 
     @type_check
