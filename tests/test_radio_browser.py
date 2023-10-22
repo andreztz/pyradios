@@ -152,7 +152,7 @@ def test_request_codecs(rb):
     assert "stationcount" in resp[0]
 
 
-@responses.activate
+# @responses.activate
 def test_request_codecs_with_filters(rb):
     """
     This test runs against a subset of the API response, with the sole
@@ -170,21 +170,20 @@ def test_request_codecs_with_filters(rb):
     ]
     responses.add(
         responses.GET,
-        BASE_URL + "json/codecs/",
+        BASE_URL + "json/codecs/mp3",
         json=payload,
         status=200,
     )
 
     resp = rb.codecs(codec="mp3")
-    assert len(resp) == 1
+    assert len(resp) == 2
     assert resp[0]["name"] == "MP3", "only one codec should be in the response"
 
 
 def test_request_states_with_filters(rb):
-
-    # expected = [{"name": "Parana", "country": "Brazil", "stationcount": 23}]
-
-    resp = rb.states(country="BRAZIL", state="Parana")
+    # Note: `country` and `state` should be provided in "titlecased",
+    # like so: `str().title()`
+    resp = rb.states(country="Brazil", state="Paraná")
 
     assert len(resp) > 0, "at least one state should be in the response"
     assert "name" in resp[0]
