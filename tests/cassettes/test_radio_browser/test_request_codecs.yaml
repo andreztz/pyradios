@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - pyradios/2.0.0
+    method: GET
+    uri: https://nl1.api.radio-browser.info/json/codecs/
+  response:
+    body:
+      string: '[{"name":"AAC","stationcount":4449},{"name":"AAC+","stationcount":7495},{"name":"AAC+,H.264","stationcount":4},{"name":"AAC,H.264","stationcount":80},{"name":"FLV","stationcount":10},{"name":"MP3","stationcount":27967},{"name":"MP3,H.264","stationcount":14},{"name":"OGG","stationcount":443},{"name":"UNKNOWN","stationcount":1652}]'
+    headers:
+      Access-Control-Allow-Headers:
+      - origin, x-requested-with, content-type, User-Agent
+      Access-Control-Allow-Methods:
+      - GET,POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '331'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 25 Oct 2023 06:13:07 GMT
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+    status:
+      code: 200
+      message: OK
+version: 1

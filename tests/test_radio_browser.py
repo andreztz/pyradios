@@ -74,10 +74,10 @@ def test_station_struct(rb, station_struct):
     """
     Checks if the keys in the API response structure have changed.
 
-    Note: This test is more about the API service implmentation, than
-    it is about this python library.
+    Note: This test primarily assesses the implementation of the API
+    service, rather than focusing on this Python library.
 
-    See details:
+    For detailed information, refer to:
         https://de1.api.radio-browser.info/#Struct_station
     """
     stationuuid = "d97b5842-8e9b-46cc-85f0-d2dff6738c7c"
@@ -89,7 +89,6 @@ def test_station_struct(rb, station_struct):
 
 @responses.activate
 def test_request_station_click_counter(rb):
-
     expected = {
         "ok": True,
         "message": "retrieved station url",
@@ -117,7 +116,6 @@ def test_request_station_click_counter(rb):
 
 @responses.activate
 def test_request_countrycodes(rb):
-
     expected = [{"name": "AD", "stationcount": 5}]
     responses.add(
         responses.GET,
@@ -125,61 +123,45 @@ def test_request_countrycodes(rb):
         json=expected,
         status=200,
     )
-
     resp = rb.countrycodes()
+
     assert len(resp) > 0, "at least one country should be in the response"
     assert "name" in resp[0]
     assert "stationcount" in resp[0]
     assert resp == expected
 
 
+@pytest.mark.vcr()
 def test_request_countrycodes_with_filters(rb):
-
-    # expected = [{"name": "BR", "stationcount": 607}]
-
     resp = rb.countrycodes(code="BR")
+
     assert len(resp) > 0, "at least one country should be in the response"
     assert resp[0]["name"] == "BR"
 
 
+@pytest.mark.vcr()
 def test_request_codecs(rb):
-
-    # expected = [{"name": "MP3", "stationcount": 16620}]
-
     resp = rb.codecs()
+
     assert len(resp) > 0, "at least one codec should be in the response"
     assert "name" in resp[0]
     assert "stationcount" in resp[0]
 
 
-# @responses.activate
+@pytest.mark.vcr()
 def test_request_codecs_with_filters(rb):
     """
     This test runs against a subset of the API response, with the sole
     purpose of ensuring the behavior of the filter mechanism of the
     tested method.
     """
-    # subset of the API response for testing purposes
-    payload = [
-        {'name': 'AAC', 'stationcount': 2226},
-        {'name': 'MP3', 'stationcount': 19678},
-        {'name': 'MP3,H.264', 'stationcount': 6},
-        {'name': 'OGG', 'stationcount': 265},
-        {'name': 'UNKNOWN', 'stationcount': 1827},
-
-    ]
-    responses.add(
-        responses.GET,
-        BASE_URL + "json/codecs/mp3",
-        json=payload,
-        status=200,
-    )
-
     resp = rb.codecs(codec="mp3")
+
     assert len(resp) == 2
     assert resp[0]["name"] == "MP3", "only one codec should be in the response"
 
 
+@pytest.mark.vcr()
 def test_request_states_with_filters(rb):
     # Note: `country` and `state` should be provided in "titlecased",
     # like so: `str().title()`
@@ -191,13 +173,8 @@ def test_request_states_with_filters(rb):
     assert "stationcount" in resp[0]
 
 
+@pytest.mark.vcr()
 def test_request_languages_with_filters(rb):
-
-    # expected = [
-    #     {"name": "brazilian portuguese", "stationcount": 8,},
-    #     {"name": "portuguese", "stationcount": 638,},
-    # ]
-
     resp = rb.languages(language="portuguese")
 
     assert len(resp) > 0, "at least one language should be in the response"
@@ -205,16 +182,8 @@ def test_request_languages_with_filters(rb):
     assert "stationcount" in resp[0]
 
 
-# @responses.activate
+@pytest.mark.vcr()
 def test_request_tags_with_filters(rb):
-
-    # expected = [{"name": "drum and bass", "stationcount": 73,}]
-    # responses.add(
-    #     responses.GET,
-    #     BASE_URL + "json/tags/drum%20and%20bass",
-    #     json=expected,
-    #     status=200,
-    # )
     resp = rb.tags(tag="Drum and Bass")
 
     assert len(resp) > 0, "at least one tag should be in the response"
@@ -222,6 +191,7 @@ def test_request_tags_with_filters(rb):
     assert "stationcount" in resp[0]
 
 
+@pytest.mark.vcr()
 def test_request_stations_by_votes(rb):
     resp = rb.stations_by_votes(1)
     assert len(resp) == 1, "exactly one station should be in the response"

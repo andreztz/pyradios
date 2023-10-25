@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - pyradios/2.0.0
+    method: GET
+    uri: https://nl1.api.radio-browser.info/json/languages/portuguese
+  response:
+    body:
+      string: '[{"name":"brazilian portuguese","iso_639":null,"stationcount":378},{"name":"portuguese","iso_639":"pt","stationcount":562}]'
+    headers:
+      Access-Control-Allow-Headers:
+      - origin, x-requested-with, content-type, User-Agent
+      Access-Control-Allow-Methods:
+      - GET,POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '123'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 25 Oct 2023 06:13:09 GMT
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+    status:
+      code: 200
+      message: OK
+version: 1
