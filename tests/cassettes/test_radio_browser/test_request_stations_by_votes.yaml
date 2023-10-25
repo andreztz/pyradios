@@ -1,0 +1,44 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - pyradios/2.0.0
+    method: GET
+    uri: https://nl1.api.radio-browser.info/json/stations/topvote/1
+  response:
+    body:
+      string: '[{"changeuuid":"8b62de9b-db82-43dd-9f8a-832a4346448e","stationuuid":"78012206-1aa1-11e9-a80b-52543be04c81","serveruuid":null,"name":"MANGORADIO","url":"http://stream.mangoradio.de/","url_resolved":"https://mangoradio.stream.laut.fm/mangoradio?t302=2023-10-25_06-42-39&uuid=f992e1d3-d33e-45de-978c-e56eb288f9ef","homepage":"https://mangoradio.de/","favicon":"","tags":"mango,mangoradio,mongo,mongoradio,public
+        radio,webradio","country":"Germany","countrycode":"DE","iso_3166_2":null,"state":"","language":"german","languagecodes":"de","votes":646087,"lastchangetime":"2022-10-02
+        08:26:04","lastchangetime_iso8601":"2022-10-02T08:26:04Z","codec":"MP3","bitrate":128,"hls":0,"lastcheckok":1,"lastchecktime":"2023-10-25
+        04:46:00","lastchecktime_iso8601":"2023-10-25T04:46:00Z","lastcheckoktime":"2023-10-25
+        04:46:00","lastcheckoktime_iso8601":"2023-10-25T04:46:00Z","lastlocalchecktime":"2023-10-25
+        03:44:01","lastlocalchecktime_iso8601":"2023-10-25T03:44:01Z","clicktimestamp":"2023-10-25
+        06:05:42","clicktimestamp_iso8601":"2023-10-25T06:05:42Z","clickcount":10851,"clicktrend":151,"ssl_error":0,"geo_lat":null,"geo_long":null,"has_extended_info":false}]'
+    headers:
+      Access-Control-Allow-Headers:
+      - origin, x-requested-with, content-type, User-Agent
+      Access-Control-Allow-Methods:
+      - GET,POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1152'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 25 Oct 2023 06:13:11 GMT
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+    status:
+      code: 200
+      message: OK
+version: 1
