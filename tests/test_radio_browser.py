@@ -27,66 +27,6 @@ def rb():
     return _rb
 
 
-@pytest.fixture
-def station_struct():
-    """https://de1.api.radio-browser.info/#Struct_station"""
-    return {
-        "changeuuid",
-        "stationuuid",
-        "name",
-        "url",
-        "url_resolved",
-        "homepage",
-        "favicon",
-        "tags",
-        "country",
-        "countrycode",
-        "state",
-        "language",
-        "languagecodes",
-        "votes",
-        "lastchangetime",
-        "lastchangetime_iso8601",
-        "codec",
-        "bitrate",
-        "hls",
-        "lastcheckok",
-        "lastchecktime",
-        "lastchecktime_iso8601",
-        "lastcheckoktime",
-        "lastcheckoktime_iso8601",
-        "lastlocalchecktime",
-        "lastlocalchecktime_iso8601",
-        "clicktimestamp",
-        "clicktimestamp_iso8601",
-        "clickcount",
-        "clicktrend",
-        "ssl_error",
-        "geo_lat",
-        "geo_long",
-        "serveruuid",
-        "has_extended_info",
-        "iso_3166_2",
-    }
-
-
-def test_station_struct(rb, station_struct):
-    """
-    Checks if the keys in the API response structure have changed.
-
-    Note: This test primarily assesses the implementation of the API
-    service, rather than focusing on this Python library.
-
-    For detailed information, refer to:
-        https://de1.api.radio-browser.info/#Struct_station
-    """
-    stationuuid = "d97b5842-8e9b-46cc-85f0-d2dff6738c7c"
-    resp = rb.station_by_uuid(stationuuid)
-    response_keys = set(resp[0].keys())
-    missing_keys = response_keys.difference(station_struct)
-    assert len(missing_keys) == 0, f"Keys missing {missing_keys}"
-
-
 @responses.activate
 def test_request_station_click_counter(rb):
     expected = {
