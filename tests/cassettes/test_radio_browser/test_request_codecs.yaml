@@ -1,20 +1,21 @@
 interactions:
 - request:
-    body: null
+    body: ''
     headers:
-      Accept:
+      accept:
       - '*/*'
-      Accept-Encoding:
+      accept-encoding:
       - gzip, deflate
-      Connection:
+      connection:
       - keep-alive
-      User-Agent:
+      host:
+      - nl1.api.radio-browser.info
+      user-agent:
       - pyradios/2.0.0
     method: GET
     uri: https://nl1.api.radio-browser.info/json/codecs/
   response:
-    body:
-      string: '[{"name":"AAC","stationcount":4449},{"name":"AAC+","stationcount":7495},{"name":"AAC+,H.264","stationcount":4},{"name":"AAC,H.264","stationcount":80},{"name":"FLV","stationcount":10},{"name":"MP3","stationcount":27967},{"name":"MP3,H.264","stationcount":14},{"name":"OGG","stationcount":443},{"name":"UNKNOWN","stationcount":1652}]'
+    content: '[{"name":"AAC","stationcount":4559},{"name":"AAC+","stationcount":7385},{"name":"AAC+,H.264","stationcount":6},{"name":"AAC,H.264","stationcount":87},{"name":"FLV","stationcount":11},{"name":"MP3","stationcount":29173},{"name":"MP3,H.264","stationcount":14},{"name":"OGG","stationcount":464},{"name":"UNKNOWN","stationcount":1681},{"name":"UNKNOWN,H.264","stationcount":1}]'
     headers:
       Access-Control-Allow-Headers:
       - origin, x-requested-with, content-type, User-Agent
@@ -25,14 +26,13 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '331'
+      - '373'
       Content-Type:
       - application/json
       Date:
-      - Wed, 25 Oct 2023 06:13:07 GMT
+      - Mon, 11 Dec 2023 18:03:57 GMT
       Server:
       - nginx/1.18.0 (Ubuntu)
-    status:
-      code: 200
-      message: OK
+    http_version: HTTP/1.1
+    status_code: 200
 version: 1

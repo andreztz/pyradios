@@ -1,8 +1,8 @@
 import re
 
+import httpx
 import pytest
 import random
-import responses
 
 from pyradios import RadioBrowser
 from pyradios.radios import version
@@ -17,7 +17,7 @@ def pick_random_station(rb, **params):
 
 
 def test_version():
-    assert version == '2.0.0'
+    assert version == '2.1.0'
 
 
 @pytest.fixture
@@ -27,8 +27,7 @@ def rb():
     return _rb
 
 
-@responses.activate
-def test_request_station_click_counter(rb):
+def test_request_station_click_counter(rb, mocker):
     expected = {
         "ok": True,
         "message": "retrieved station url",
@@ -36,39 +35,29 @@ def test_request_station_click_counter(rb):
         "name": "BBC Radio 1",
         "url": "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one",
     }
-    # mock responses
-    responses.add(
-        responses.GET,
-        BASE_URL + "json/url/a726a172-4cc2-4076-b283-a950218ed0c2",
-        json=expected,
-        status=200,
-    )
 
-    resp = rb.click_counter("a726a172-4cc2-4076-b283-a950218ed0c2")
+    with mocker.patch.object(rb.client, 'get', return_value=expected):
 
-    assert "ok" in resp
-    assert "message" in resp
-    assert "stationuuid" in resp
-    assert "name" in resp
-    assert "url" in resp
-    assert resp == expected
+        resp = rb.click_counter("a726a172-4cc2-4076-b283-a950218ed0c2")
+
+        assert "ok" in resp
+        assert "message" in resp
+        assert "stationuuid" in resp
+        assert "name" in resp
+        assert "url" in resp
+        assert resp == expected
 
 
-@responses.activate
-def test_request_countrycodes(rb):
+def test_request_countrycodes(rb, mocker):
     expected = [{"name": "AD", "stationcount": 5}]
-    responses.add(
-        responses.GET,
-        BASE_URL + "json/countrycodes/",
-        json=expected,
-        status=200,
-    )
-    resp = rb.countrycodes()
 
-    assert len(resp) > 0, "at least one country should be in the response"
-    assert "name" in resp[0]
-    assert "stationcount" in resp[0]
-    assert resp == expected
+    with  mocker.patch.object(rb.client, 'get', return_value=expected):
+        resp = rb.countrycodes()
+
+        assert len(resp) > 0, "at least one country should be in the response"
+        assert "name" in resp[0]
+        assert "stationcount" in resp[0]
+        assert resp == expected
 
 
 @pytest.mark.vcr()

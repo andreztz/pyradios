@@ -1,20 +1,21 @@
 interactions:
 - request:
-    body: null
+    body: ''
     headers:
-      Accept:
+      accept:
       - '*/*'
-      Accept-Encoding:
+      accept-encoding:
       - gzip, deflate
-      Connection:
+      connection:
       - keep-alive
-      User-Agent:
+      host:
+      - nl1.api.radio-browser.info
+      user-agent:
       - pyradios/2.0.0
     method: GET
     uri: https://nl1.api.radio-browser.info/json/tags/drum%20and%20bass
   response:
-    body:
-      string: '[{"name":"drum and bass","stationcount":71}]'
+    content: '[{"name":"drum and bass","stationcount":76}]'
     headers:
       Access-Control-Allow-Headers:
       - origin, x-requested-with, content-type, User-Agent
@@ -29,10 +30,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 25 Oct 2023 06:13:10 GMT
+      - Mon, 11 Dec 2023 18:04:30 GMT
       Server:
       - nginx/1.18.0 (Ubuntu)
-    status:
-      code: 200
-      message: OK
+    http_version: HTTP/1.1
+    status_code: 200
 version: 1

@@ -1,4 +1,4 @@
-import requests
+import httpx
 
 from pyradios.base_url import pick_base_url
 from pyradios.utils import type_check
@@ -16,7 +16,7 @@ class Request:
 
     def _init_session(self, session):
         if session is None:
-            return requests.Session()
+            return httpx.Client()
         return session
 
     def get(self, url, **kwargs):

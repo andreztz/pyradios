@@ -1,26 +1,27 @@
 interactions:
 - request:
-    body: null
+    body: ''
     headers:
-      Accept:
+      accept:
       - '*/*'
-      Accept-Encoding:
+      accept-encoding:
       - gzip, deflate
-      Connection:
+      connection:
       - keep-alive
-      User-Agent:
+      host:
+      - nl1.api.radio-browser.info
+      user-agent:
       - pyradios/2.0.0
     method: GET
     uri: https://nl1.api.radio-browser.info/json/stations/topvote/1
   response:
-    body:
-      string: '[{"changeuuid":"8b62de9b-db82-43dd-9f8a-832a4346448e","stationuuid":"78012206-1aa1-11e9-a80b-52543be04c81","serveruuid":null,"name":"MANGORADIO","url":"http://stream.mangoradio.de/","url_resolved":"https://mangoradio.stream.laut.fm/mangoradio?t302=2023-10-25_06-42-39&uuid=f992e1d3-d33e-45de-978c-e56eb288f9ef","homepage":"https://mangoradio.de/","favicon":"","tags":"mango,mangoradio,mongo,mongoradio,public
-        radio,webradio","country":"Germany","countrycode":"DE","iso_3166_2":null,"state":"","language":"german","languagecodes":"de","votes":646087,"lastchangetime":"2022-10-02
-        08:26:04","lastchangetime_iso8601":"2022-10-02T08:26:04Z","codec":"MP3","bitrate":128,"hls":0,"lastcheckok":1,"lastchecktime":"2023-10-25
-        04:46:00","lastchecktime_iso8601":"2023-10-25T04:46:00Z","lastcheckoktime":"2023-10-25
-        04:46:00","lastcheckoktime_iso8601":"2023-10-25T04:46:00Z","lastlocalchecktime":"2023-10-25
-        03:44:01","lastlocalchecktime_iso8601":"2023-10-25T03:44:01Z","clicktimestamp":"2023-10-25
-        06:05:42","clicktimestamp_iso8601":"2023-10-25T06:05:42Z","clickcount":10851,"clicktrend":151,"ssl_error":0,"geo_lat":null,"geo_long":null,"has_extended_info":false}]'
+    content: '[{"changeuuid":"599cf698-a707-4d50-8383-e5f342fb9c08","stationuuid":"78012206-1aa1-11e9-a80b-52543be04c81","serveruuid":null,"name":"MANGORADIO","url":"http://stream.mangoradio.de/","url_resolved":"https://mangoradio.stream.laut.fm/mangoradio?t302=2023-12-11_08-56-28&uuid=8b1ac60c-8b49-4740-8622-3e8920aeedc5","homepage":"https://mangoradio.de/","favicon":"","tags":"mango,mangoradio,mongo,mongoradio,public
+      radio,webradio","country":"Germany","countrycode":"DE","iso_3166_2":null,"state":"","language":"german","languagecodes":"de","votes":659857,"lastchangetime":"2023-11-04
+      17:05:55","lastchangetime_iso8601":"2023-11-04T17:05:55Z","codec":"MP3","bitrate":128,"hls":0,"lastcheckok":1,"lastchecktime":"2023-12-11
+      08:04:26","lastchecktime_iso8601":"2023-12-11T08:04:26Z","lastcheckoktime":"2023-12-11
+      08:04:26","lastcheckoktime_iso8601":"2023-12-11T08:04:26Z","lastlocalchecktime":"2023-12-10
+      21:14:51","lastlocalchecktime_iso8601":"2023-12-10T21:14:51Z","clicktimestamp":"2023-12-11
+      17:56:12","clicktimestamp_iso8601":"2023-12-11T17:56:12Z","clickcount":4976,"clicktrend":-120,"ssl_error":0,"geo_lat":null,"geo_long":null,"has_extended_info":false}]'
     headers:
       Access-Control-Allow-Headers:
       - origin, x-requested-with, content-type, User-Agent
@@ -35,10 +36,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 25 Oct 2023 06:13:11 GMT
+      - Mon, 11 Dec 2023 18:04:40 GMT
       Server:
       - nginx/1.18.0 (Ubuntu)
-    status:
-      code: 200
-      message: OK
+    http_version: HTTP/1.1
+    status_code: 200
 version: 1
