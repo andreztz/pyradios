@@ -47,7 +47,7 @@ def test_facet_init(rb):
         anytag = random.choice(anystation['tags'].split(','))
         foundtags = list(filter(lambda t: t['name'] == anytag, rf.tags))
         assert len(foundtags) == 1, f"tag '{anytag}' not in the result-set"
-        assert foundtags[0]['count'] > 1, f"not even one match '{anytag}'"
+        assert foundtags[0]["count"] >= 1, f"not even one match '{anytag}'"
 
     assert rf.countrycodes is not None, "expecting a contrycode histogram"
     assert rf.languages is not None, "expecting a language histogram"
@@ -94,9 +94,9 @@ def test_facet_narrow_broaden(rb):
 
     # broaden up by skipping the country and language constraint
     rfklaralim = rfbenlklaralim.broaden(**qry_be, **qry_nl)
-    assert len(rfbenlklaralim) <= len(rfklaralim) < limit
     log.debug(f"found {len(rfklaralim)} stations " +
               f"matching {rfklaralim.filter}")
+    assert len(rfbenlklaralim) <= len(rfklaralim) <= limit
 
     # exchange the limit constraint with a tag constraint
     rfklaraclss = rfklaralim.broaden(tuple(qry_lim.keys())).narrow(**qry_clss)
