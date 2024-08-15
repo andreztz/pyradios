@@ -1,12 +1,12 @@
+from importlib.metadata import version as get_version
+
 import httpx
 
 from pyradios.base_url import pick_base_url
 from pyradios.utils import type_check
 
-import pkg_resources
 
-
-version = pkg_resources.get_distribution('pyradios').version
+version = get_version("pyradios")
 
 
 class Request:
