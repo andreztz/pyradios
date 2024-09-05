@@ -3,7 +3,7 @@
 ![Upload Python Package](https://github.com/andreztz/pyradios/workflows/Upload%20Python%20Package/badge.svg)
 ![Python package](https://github.com/andreztz/pyradios/workflows/Python%20package/badge.svg)
 
-> client for the [Radio Browser API](https://api.radio-browser.info)
+> Client for the [Radio Browser API](https://api.radio-browser.info)
 
 
 ## Installation
