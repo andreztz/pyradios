@@ -1,92 +1,158 @@
 # Pyradios
 
-![Upload Python Package](https://github.com/andreztz/pyradios/workflows/Upload%20Python%20Package/badge.svg)
+![Upload Python Package](https://github.com/andreztz/pyradios/workflows/Upload%20Python%20Package/badge.svg)  
 ![Python package](https://github.com/andreztz/pyradios/workflows/Python%20package/badge.svg)
 
-> Client for the [Radio Browser API](https://api.radio-browser.info)
+> A Python client for the [Radio Browser API](https://api.radio-browser.info), allowing users to search and filter thousands of online radio stations.
 
+## 📥 Installation
 
-## Installation
-
-```sh
- pip install pyradios
-```
-
-## Examples
+Install `pyradios` via pip:
 
 ```sh
-In [1]: from pyradios import RadioBrowser
+pip install pyradios
 
-In [2]: rb = RadioBrowser()
-
-In [3]: rb.search(name="BBC Radio 1", name_exact=True)
-Out[3]:
-[{'changeuuid': '4f7e4097-4354-11e8-b74d-52543be04c81',
-  'stationuuid': '96062a7b-0601-11e8-ae97-52543be04c81',
-  'name': 'BBC Radio 1',
-  'url': 'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p',
-  'url_resolved': 'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p',
-  'homepage': 'http://www.bbc.co.uk/radio1/',
-  'favicon': 'https://cdn-radiotime-logos.tunein.com/s24939q.png',
-  'tags': 'bbc,indie,entertainment,music,rock,pop',
-  'country': 'United Kingdom',
-  'countrycode': 'GB',
-  'state': '',
-  'language': 'english',
-  'votes': 5018,
-  'lastchangetime': '2020-01-19 13:17:11',
-  'codec': 'MP3',
-  'bitrate': 128,
-  'hls': 0,
-  'lastcheckok': 1,
-  'lastchecktime': '2020-02-03 19:44:37',
-  'lastcheckoktime': '2020-02-03 19:44:37',
-  'lastlocalchecktime': '2020-02-03 09:23:37',
-  'clicktimestamp': '2020-02-04 00:16:54',
-  'clickcount': 2880,
-  'clicktrend': 40}]  
 ```
-## Help
+
+## 🚀 Usage
+
+### Basic Example
 
 ```python
-In [1]: from pyradios import RadioBrowser
+from pyradios import RadioBrowser
 
-In [2]: help(RadioBrowser)
-```
+rb = RadioBrowser()
+results = rb.search(name="BBC Radio 1", name_exact=True)
 
-
-## Development Setup
-
-```
-$ git clone https://github.com/andreztz/pyradios.git
-$ cd pyradios
-$ virtualenv venv
-$ source venv/bin/activate
-$ pip install -e .[dev]
-```
-
-## Run Tests
+print(results)
 
 ```
-$ pytest
+
+### Sample Output
+
+```json
+[
+  {
+    "changeuuid": "4f7e4097-4354-11e8-b74d-52543be04c81",
+    "stationuuid": "96062a7b-0601-11e8-ae97-52543be04c81",
+    "name": "BBC Radio 1",
+    "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p",
+    "homepage": "http://www.bbc.co.uk/radio1/",
+    "tags": "bbc,indie,entertainment,music,rock,pop",
+    "country": "United Kingdom",
+    "countrycode": "GB",
+    "language": "english",
+    "codec": "MP3",
+    "bitrate": 128
+  }
+]
+
 ```
 
-## Release History
+## 🔍 Faceted Search with `RadioFacets`
 
-    - Work in progress
+### What is `RadioFacets`?
 
-## Meta
+`RadioFacets` extends `RadioBrowser` by providing faceted search functionality. It allows you to filter radio stations by various attributes such as:
 
-Andre P. Santos – [@ztzandre](https://twitter.com/ztzandre) – andreztz@gmail.com
+-   **Tags** (`tags`)
+-   **Country Code** (`countrycode`)
+-   **Language** (`language`)
+-   **State/Region** (`state`)
+-   **Audio Codec** (`codec`)
 
-Distributed under the MIT LICENSE. See `LICENSE` for more information.
+### Example: Using `RadioFacets`
 
-[https://github.com/andreztz](https://github.com/andreztz/)
+```python
+from pyradios import RadioBrowser, RadioFacets
 
-## Contributing
+rb = RadioBrowser()
+rf = RadioFacets(rb)
 
-1. Fork it (<https://github.com/andreztz/pyradios/fork>)
-2. Create your feature branch (`git checkout -b feature/fooBar`)
-3. Commit your changes (`git commit -am 'Add some fooBar'`)
-4. Push to the branch (`git push origin feature/fooBar`)
-5. Create a new Pull Request
+print(len(rf))  # Total stations available
+
+rf_be = rf.narrow(countrycode="BE")  # Narrow by Belgium (BE)
+print(len(rf_be))
+
+rf_nl = rf_be.narrow(language="dutch")  # Further narrow by Dutch language
+print(len(rf_nl))
+
+rf_reset = rf_nl.broaden(countrycode="BE", language="dutch")  # Remove filters
+print(len(rf_reset))  # Back to original count
+
+```
+
+### Explanation
+
+-   **`narrow(**params)`** → Adds filters and narrows results.
+-   **`broaden(*keys, **params)`** → Removes filters and broadens results.
+-   **`len(rf)`** → Returns the number of stations matching the filters.
+-   **`rf.result`** → Stores the list of filtered stations.
+
+### Example Output
+
+```sh
+53768  # Total available stations
+398    # Stations in Belgium
+108    # Dutch-speaking stations in Belgium
+53768  # Reset back to all stations
+
+```
+
+## 📖 Documentation
+
+To explore all available methods and options, use Python’s built-in `help()` function:
+
+```python
+from pyradios import RadioBrowser, RadioFacets
+
+help(RadioBrowser)
+help(RadioFacets)
+
+```
+
+## 🛠 Development Setup
+
+Clone the repository and set up the environment:
+
+```sh
+git clone https://github.com/andreztz/pyradios.git
+cd pyradios
+virtualenv venv
+source venv/bin/activate
+pip install -e .[dev]
+
+```
+
+## ✅ Running Tests
+
+Execute the test suite using `pytest`:
+
+```sh
+pytest
+
+```
+
+## 📌 Release History
+
+-   **Work in progress**
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more details.
+
+## 👥 Contributing
+
+Contributions are welcome! Follow these steps to contribute:
+
+1.  **Fork the repository** ([https://github.com/andreztz/pyradios/fork](https://github.com/andreztz/pyradios/fork))
+2.  **Create a feature branch** (`git checkout -b feature/fooBar`)
+3.  **Commit your changes** (`git commit -am 'Add feature fooBar'`)
+4.  **Push to your branch** (`git push origin feature/fooBar`)
+5.  **Submit a Pull Request**
+
+----------
+
+📧 **Author:** Andre P. Santos – [@ztzandre](https://twitter.com/ztzandre) – [andreztz@gmail.com](mailto:andreztz@gmail.com)
+
+GitHub: [https://github.com/andreztz](https://github.com/andreztz/)
