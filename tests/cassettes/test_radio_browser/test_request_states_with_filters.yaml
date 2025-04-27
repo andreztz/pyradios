@@ -35,4 +35,43 @@ interactions:
       - nginx/1.18.0 (Ubuntu)
     http_version: HTTP/1.1
     status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - de2.api.radio-browser.info
+      user-agent:
+      - pyradios/2.1.0
+    method: GET
+    uri: https://de2.api.radio-browser.info/json/states/Brazil/Paran%C3%A1
+  response:
+    body:
+      string: "[{\"name\":\"Curitiba Paran\xE1\",\"country\":\"Brazil\",\"stationcount\":1},{\"name\":\"Londrina,
+        Paran\xE1\",\"country\":\"Brazil\",\"stationcount\":1},{\"name\":\"Parana\",\"country\":\"Brazil\",\"stationcount\":10},{\"name\":\"Paran\xE1(Brazil)\",\"country\":\"Brazil\",\"stationcount\":14},{\"name\":\"Paranapanema\",\"country\":\"Brazil\",\"stationcount\":3}]"
+    headers:
+      Access-Control-Allow-Headers:
+      - origin, x-requested-with, content-type, User-Agent
+      Access-Control-Allow-Methods:
+      - GET,POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '309'
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 27 Apr 2025 00:10:06 GMT
+      Server:
+      - nginx/1.24.0 (Ubuntu)
+    status:
+      code: 200
+      message: OK
 version: 1

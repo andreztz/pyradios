@@ -35,4 +35,43 @@ interactions:
       - nginx/1.18.0 (Ubuntu)
     http_version: HTTP/1.1
     status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - de2.api.radio-browser.info
+      user-agent:
+      - pyradios/2.1.0
+    method: GET
+    uri: https://de2.api.radio-browser.info/json/languages/portuguese
+  response:
+    body:
+      string: "[{\"name\":\"128 brazilian portuguese\",\"iso_639\":null,\"stationcount\":2},{\"name\":\"brazilian
+        portuguese\",\"iso_639\":null,\"stationcount\":372},{\"name\":\"galaic\u2013portuguese\",\"iso_639\":null,\"stationcount\":1},{\"name\":\"portuguese\",\"iso_639\":\"pt\",\"stationcount\":578}]"
+    headers:
+      Access-Control-Allow-Headers:
+      - origin, x-requested-with, content-type, User-Agent
+      Access-Control-Allow-Methods:
+      - GET,POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '254'
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 27 Apr 2025 00:10:07 GMT
+      Server:
+      - nginx/1.24.0 (Ubuntu)
+    status:
+      code: 200
+      message: OK
 version: 1

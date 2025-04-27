@@ -41,4 +41,47 @@ interactions:
       - nginx/1.18.0 (Ubuntu)
     http_version: HTTP/1.1
     status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - de2.api.radio-browser.info
+      user-agent:
+      - pyradios/2.1.0
+    method: GET
+    uri: https://de2.api.radio-browser.info/json/stations/topvote/1
+  response:
+    body:
+      string: '[{"changeuuid":"b610a038-5c99-4efc-9bd8-9e5ea75de9fd","stationuuid":"78012206-1aa1-11e9-a80b-52543be04c81","serveruuid":"3d329f86-eb68-4b3d-aabc-2cff320eac8d","name":"MANGORADIO","url":"https://mangoradio.stream.laut.fm/mangoradio","url_resolved":"https://mangoradio.stream.laut.fm/mangoradio","homepage":"https://mangoradio.de/","favicon":"https://mangoradio.de/wp-content/uploads/cropped-Logo-192x192.webp","tags":"music,variety","country":"Germany","countrycode":"DE","iso_3166_2":"DE-RP","state":"Rheinland-Pfalz","language":"german","languagecodes":"DE,EN","votes":733735,"lastchangetime":"2025-04-26
+        19:32:47","lastchangetime_iso8601":"2025-04-26T19:32:47Z","codec":"MP3","bitrate":128,"hls":0,"lastcheckok":1,"lastchecktime":"2025-04-26
+        19:32:50","lastchecktime_iso8601":"2025-04-26T19:32:50Z","lastcheckoktime":"2025-04-26
+        19:32:50","lastcheckoktime_iso8601":"2025-04-26T19:32:50Z","lastlocalchecktime":"2025-04-26
+        07:51:28","lastlocalchecktime_iso8601":"2025-04-26T07:51:28Z","clicktimestamp":"2025-04-27
+        00:03:36","clicktimestamp_iso8601":"2025-04-27T00:03:36Z","clickcount":1761,"clicktrend":10,"ssl_error":0,"geo_lat":null,"geo_long":null,"geo_distance":null,"has_extended_info":false}]'
+    headers:
+      Access-Control-Allow-Headers:
+      - origin, x-requested-with, content-type, User-Agent
+      Access-Control-Allow-Methods:
+      - GET,POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1198'
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 27 Apr 2025 00:10:09 GMT
+      Server:
+      - nginx/1.24.0 (Ubuntu)
+    status:
+      code: 200
+      message: OK
 version: 1

@@ -35,4 +35,42 @@ interactions:
       - nginx/1.18.0 (Ubuntu)
     http_version: HTTP/1.1
     status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - de2.api.radio-browser.info
+      user-agent:
+      - pyradios/2.1.0
+    method: GET
+    uri: https://de2.api.radio-browser.info/json/countrycodes/BR
+  response:
+    body:
+      string: '[{"name":"BR","stationcount":1253}]'
+    headers:
+      Access-Control-Allow-Headers:
+      - origin, x-requested-with, content-type, User-Agent
+      Access-Control-Allow-Methods:
+      - GET,POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '35'
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 27 Apr 2025 00:10:03 GMT
+      Server:
+      - nginx/1.24.0 (Ubuntu)
+    status:
+      code: 200
+      message: OK
 version: 1
