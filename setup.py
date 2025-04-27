@@ -1,20 +1,9 @@
 import io
-import re
 from setuptools import setup
 from setuptools import find_packages
 
 
 DESCRIPTION = "Python client for the Radio Browser API"
-
-
-def get_version():
-    content = open("pyradios/__init__.py").read()
-    mo = re.search(r"__version__\s+=\s+'([^']+)'", content)
-    if not mo:
-        raise RuntimeError(
-                'Unable to find version string in pyradios/__init__.py'
-            )
-    return mo[1]
 
 
 def readme():
@@ -29,7 +18,7 @@ def required(sfx=''):
 
 setup(
     name="pyradios",
-    version=get_version(),
+    version="2.1.0",
     description=DESCRIPTION,
     long_description=readme(),
     long_description_content_type="text/markdown",
