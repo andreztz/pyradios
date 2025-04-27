@@ -48,7 +48,7 @@ setup(
         "Operating System :: OS Independent",
         "Intended Audience :: Developers",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.9",
     project_urls={
         "Source": "https://github.com/andreztz/pyradios/",
         "Upstream": "https://api.radio-browser.info/",
