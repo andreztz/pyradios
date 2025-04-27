@@ -53,3 +53,6 @@ install-dev: install
 
 test: 
 	${PYTHON} -m pytest ${TEST_PATH}
+
+vcr-new-episodes:
+	${PYTHON} -m pytest ${TEST_PATH} -vvv -s --record-mode=new_episodes
