@@ -86,7 +86,7 @@ def test_request_codecs_with_filters(rb):
     """
     resp = rb.codecs(codec="mp3")
 
-    assert len(resp) == 2
+    assert len(resp) == 1
     assert resp[0]["name"] == "MP3", "only one codec should be in the response"
 
 
