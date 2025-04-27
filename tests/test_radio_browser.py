@@ -8,7 +8,7 @@ from pyradios import RadioBrowser
 from pyradios.radios import version
 
 
-BASE_URL = "https://nl1.api.radio-browser.info/"
+BASE_URL = "https://de2.api.radio-browser.info/"
 
 
 def pick_random_station(rb, **params):
