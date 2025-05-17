@@ -1,6 +1,5 @@
 import re
 
-import httpx
 import pytest
 import random
 
@@ -17,7 +16,7 @@ def pick_random_station(rb, **params):
 
 
 def test_version():
-    assert version == '2.1.0'
+    assert version == '2.1.1'
 
 
 @pytest.fixture
