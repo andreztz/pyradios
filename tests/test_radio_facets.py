@@ -15,6 +15,7 @@ log = logging.getLogger("pyradios")
 @pytest.fixture
 def rb():
     _rb = RadioBrowser()
+    _rb.base_url = "https://de2.api.radio-browser.info/"
     return _rb
 
 
@@ -30,9 +31,10 @@ def partition(predicate, iterable):
     return reduce(split, iterable, ([], []))
 
 
+@pytest.mark.vcr()
 def test_facet_init(rb):
     log.info("test facet_init started")
-    rf = RadioFacets(rb)
+    rf = RadioFacets(rb, **{"limit": 10})
     assert rf.result is not None, "expecting to have a result-set"
     assert len(rf) > 0, "expecting the no-query result-set to not be empty"
 
@@ -60,7 +62,7 @@ def test_facet_init(rb):
     log.debug(f"facet top codecs == {rf.codecs[:10]}")
     log.debug(f"facet top ctrys == {rf.countrycodes[:10]}")
 
-
+@pytest.mark.vcr()
 def test_facet_narrow_broaden(rb):
     log.info("test facet_narrow_broaden started")
     limit = 10                         # not make this smaller then 5

@@ -1,0 +1,103 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - de2.api.radio-browser.info
+      user-agent:
+      - pyradios/2.1.1
+    method: GET
+    uri: https://de2.api.radio-browser.info/json/stations/search?limit=10
+  response:
+    body:
+      string: '[{"changeuuid":"647c930b-ba03-4723-8807-496e548fea45","stationuuid":"db93a00f-9191-46ab-9e87-ec9b373b3eee","serveruuid":"dfcb0258-c60e-4b6a-9e3b-c53839092fa4","name":"\tArrow
+        Classic Rock","url":"http://stream.gal.io/arrow","url_resolved":"http://stream.gal.io/arrow","homepage":"https://www.arrow.nl/","favicon":"https://www.arrow.nl/wp-content/uploads/2020/08/logo.png","tags":"","country":"The
+        Netherlands","countrycode":"NL","iso_3166_2":"","state":"","language":"","languagecodes":"","votes":202,"lastchangetime":"2025-04-22
+        21:02:29","lastchangetime_iso8601":"2025-04-22T21:02:29Z","codec":"MP3","bitrate":192,"hls":0,"lastcheckok":1,"lastchecktime":"2025-06-05
+        18:00:22","lastchecktime_iso8601":"2025-06-05T18:00:22Z","lastcheckoktime":"2025-06-05
+        18:00:22","lastcheckoktime_iso8601":"2025-06-05T18:00:22Z","lastlocalchecktime":"2025-06-05
+        15:45:04","lastlocalchecktime_iso8601":"2025-06-05T15:45:04Z","clicktimestamp":"2025-06-06
+        04:58:54","clicktimestamp_iso8601":"2025-06-06T04:58:54Z","clickcount":169,"clicktrend":12,"ssl_error":0,"geo_lat":52.07963259545092,"geo_long":4.303894042968751,"geo_distance":null,"has_extended_info":false},{"changeuuid":"04703fa4-5131-46c7-acc9-3f0a007bee6a","stationuuid":"ffc0d701-f43b-4232-8be6-f7ff72add8ef","serveruuid":"484f4503-2617-4e4c-9f5d-20bc2e58e675","name":"\tBlasmusikradio
+        mit Bernd","url":"https://stream.laut.fm/blasmusikradio_mit_bernd","url_resolved":"https://blasmusikradiomitbernd.stream.laut.fm/blasmusikradio_mit_bernd?t302=2025-06-05_14-58-38&uuid=a7547871-614f-4789-9aba-273f813e126f","homepage":"https://laut.fm/blasmusikradio_mit_bernd","favicon":"https://assets.laut.fm/b22749b7fdb382b8912269e3d8054380?t=_120x120","tags":"blasmusik,folk,marsch,polka","country":"Germany","countrycode":"DE","iso_3166_2":"","state":"Bayern","language":"german","languagecodes":"de","votes":74,"lastchangetime":"2025-04-23
+        02:15:55","lastchangetime_iso8601":"2025-04-23T02:15:55Z","codec":"MP3","bitrate":128,"hls":0,"lastcheckok":1,"lastchecktime":"2025-06-05
+        17:59:49","lastchecktime_iso8601":"2025-06-05T17:59:49Z","lastcheckoktime":"2025-06-05
+        17:59:49","lastcheckoktime_iso8601":"2025-06-05T17:59:49Z","lastlocalchecktime":"2025-06-05
+        06:41:46","lastlocalchecktime_iso8601":"2025-06-05T06:41:46Z","clicktimestamp":"2025-06-06
+        00:24:34","clicktimestamp_iso8601":"2025-06-06T00:24:34Z","clickcount":59,"clicktrend":2,"ssl_error":0,"geo_lat":null,"geo_long":null,"geo_distance":null,"has_extended_info":false},{"changeuuid":"ceaf48f3-5970-4f0f-adb9-db7a4c9e699b","stationuuid":"9d69cc77-b698-40c0-8036-17cd1f09ca44","serveruuid":"b37eef2f-f66b-4405-9491-b808b6823066","name":"\tFun
+        Radio","url":"http://stream.funradio.sk:8000/fun128.mp3","url_resolved":"http://stream.funradio.sk:8000/fun128.mp3","homepage":"http://www.funradio.sk/","favicon":"","tags":"","country":"Slovakia","countrycode":"SK","iso_3166_2":"","state":"","language":"","languagecodes":"","votes":436,"lastchangetime":"2025-04-22
+        21:02:34","lastchangetime_iso8601":"2025-04-22T21:02:34Z","codec":"MP3","bitrate":128,"hls":0,"lastcheckok":1,"lastchecktime":"2025-06-05
+        22:04:24","lastchecktime_iso8601":"2025-06-05T22:04:24Z","lastcheckoktime":"2025-06-05
+        22:04:24","lastcheckoktime_iso8601":"2025-06-05T22:04:24Z","lastlocalchecktime":"2025-06-05
+        14:57:22","lastlocalchecktime_iso8601":"2025-06-05T14:57:22Z","clicktimestamp":"2025-06-06
+        04:38:04","clicktimestamp_iso8601":"2025-06-06T04:38:04Z","clickcount":104,"clicktrend":-5,"ssl_error":0,"geo_lat":null,"geo_long":null,"geo_distance":null,"has_extended_info":false},{"changeuuid":"74e2f753-ec87-402c-ad46-f4c78aec58c2","stationuuid":"9afeaf65-bb57-4d76-892d-c7a39fc6c805","serveruuid":"486e06e6-8600-4df6-90af-294acc92af23","name":"\tHard
+        Rock Radio FM","url":"http://67.249.184.45:8015/listen.pls","url_resolved":"http://67.249.184.45:8015/","homepage":"https://hardrockradiofm.weebly.com/","favicon":"","tags":"80''s,90''s,hard
+        rock,heavy metal","country":"The United States Of America","countrycode":"US","iso_3166_2":"","state":"NY","language":"","languagecodes":"","votes":197,"lastchangetime":"2025-04-22
+        21:02:32","lastchangetime_iso8601":"2025-04-22T21:02:32Z","codec":"MP3","bitrate":128,"hls":0,"lastcheckok":1,"lastchecktime":"2025-06-05
+        18:28:40","lastchecktime_iso8601":"2025-06-05T18:28:40Z","lastcheckoktime":"2025-06-05
+        18:28:40","lastcheckoktime_iso8601":"2025-06-05T18:28:40Z","lastlocalchecktime":"2025-06-05
+        10:37:27","lastlocalchecktime_iso8601":"2025-06-05T10:37:27Z","clicktimestamp":"2025-06-06
+        04:33:05","clicktimestamp_iso8601":"2025-06-06T04:33:05Z","clickcount":207,"clicktrend":2,"ssl_error":0,"geo_lat":43.064015622124,"geo_long":-74.90702480077745,"geo_distance":null,"has_extended_info":false},{"changeuuid":"8a4e17f7-138e-4364-a43c-38b62b653060","stationuuid":"98152a6d-9a3d-46d7-8019-c8c03f29be38","serveruuid":"0ecd401f-3ba9-4895-9c15-94ab0b81141c","name":"\tPolskie
+        Radio Bialystok","url":"http://stream4.nadaje.com:15476/radiobialystok","url_resolved":"http://stream4.nadaje.com:15476/radiobialystok","homepage":"http://www.radio.bialystok.pl/","favicon":"http://www.radio.bialystok.pl/favicon.ico","tags":"","country":"Poland","countrycode":"PL","iso_3166_2":"","state":"","language":"polish","languagecodes":"pl","votes":216,"lastchangetime":"2025-04-23
+        09:06:00","lastchangetime_iso8601":"2025-04-23T09:06:00Z","codec":"MP3","bitrate":160,"hls":0,"lastcheckok":1,"lastchecktime":"2025-06-06
+        02:49:50","lastchecktime_iso8601":"2025-06-06T02:49:50Z","lastcheckoktime":"2025-06-06
+        02:49:50","lastcheckoktime_iso8601":"2025-06-06T02:49:50Z","lastlocalchecktime":"2025-06-05
+        08:18:30","lastlocalchecktime_iso8601":"2025-06-05T08:18:30Z","clicktimestamp":"2025-06-06
+        03:46:01","clicktimestamp_iso8601":"2025-06-06T03:46:01Z","clickcount":43,"clicktrend":2,"ssl_error":0,"geo_lat":53.12895934801765,"geo_long":23.14600810575091,"geo_distance":null,"has_extended_info":false},{"changeuuid":"b1f5bbbc-3cb6-4637-a080-3a4a697d8251","stationuuid":"05eb782e-e789-4573-9771-27bfa417655c","serveruuid":"712332d8-d937-4fdb-8748-209273efe23a","name":"\tpsyradio
+        * fm - progressive","url":"http://streamer.psyradio.org:8010/;listen.mp3","url_resolved":"http://streamer.psyradio.org:8010/;listen.mp3","homepage":"http://psyradio.fm/","favicon":"https://lh6.ggpht.com/dU5W-XpgWgEgtIt3Ho990I9bre5IZTq7AK2ffSt_bXTDTNQ6eUkTG-WqERh6c_EHPb8=w300","tags":"progressive,psychedelic,psytrance","country":"Germany","countrycode":"DE","iso_3166_2":"","state":"","language":"","languagecodes":"","votes":227,"lastchangetime":"2025-04-22
+        21:02:33","lastchangetime_iso8601":"2025-04-22T21:02:33Z","codec":"MP3","bitrate":128,"hls":0,"lastcheckok":1,"lastchecktime":"2025-06-06
+        03:14:58","lastchecktime_iso8601":"2025-06-06T03:14:58Z","lastcheckoktime":"2025-06-06
+        03:14:58","lastcheckoktime_iso8601":"2025-06-06T03:14:58Z","lastlocalchecktime":"2025-06-06
+        03:14:58","lastlocalchecktime_iso8601":"2025-06-06T03:14:58Z","clicktimestamp":"2025-06-06
+        04:46:44","clicktimestamp_iso8601":"2025-06-06T04:46:44Z","clickcount":85,"clicktrend":1,"ssl_error":0,"geo_lat":null,"geo_long":null,"geo_distance":null,"has_extended_info":false},{"changeuuid":"e8166f4c-e1d5-4a25-b544-b6764c077c6f","stationuuid":"0c6860fd-dfec-469d-9ef7-48711c43d465","serveruuid":"cda23289-64b9-4618-9b3a-8e1d4b6a37ab","name":"\tRadio
+        Bruno Pentasport Fiorentina","url":"https://stream3.xdevel.com/audio6s975355-281/stream/icecast.audio","url_resolved":"https://stream3.xdevel.com/audio6s975355-281/stream/icecast.audio","homepage":"http://www.radiobrunotoscana.it/","favicon":"https://www.radiobruno.it/wp-content/uploads/2023/10/logo-148-90-black1.png","tags":"","country":"Italy","countrycode":"IT","iso_3166_2":"","state":"Toscana","language":"","languagecodes":"","votes":184,"lastchangetime":"2025-04-22
+        21:02:25","lastchangetime_iso8601":"2025-04-22T21:02:25Z","codec":"AAC+","bitrate":0,"hls":0,"lastcheckok":1,"lastchecktime":"2025-06-05
+        20:12:34","lastchecktime_iso8601":"2025-06-05T20:12:34Z","lastcheckoktime":"2025-06-05
+        20:12:34","lastcheckoktime_iso8601":"2025-06-05T20:12:34Z","lastlocalchecktime":"2025-06-05
+        10:27:41","lastlocalchecktime_iso8601":"2025-06-05T10:27:41Z","clicktimestamp":"2025-06-05
+        21:57:11","clicktimestamp_iso8601":"2025-06-05T21:57:11Z","clickcount":37,"clicktrend":4,"ssl_error":0,"geo_lat":null,"geo_long":null,"geo_distance":null,"has_extended_info":false},{"changeuuid":"82ad07c8-0022-4efa-8010-0fc61366a26e","stationuuid":"044acc55-255b-4382-af22-ccf28445bb3e","serveruuid":null,"name":"\tRadio
+        Capital","url":"https://4c4b867c89244861ac216426883d1ad0.msvdn.net/radiocapital/radiocapital/master_ma.m3u8","url_resolved":"https://StreamCdnF34-4c4b867c89244861ac216426883d1ad0.msvdn.net/radiocapital/radiocapital/master_ma.m3u8","homepage":"https://www.capital.it/","favicon":"https://www.capital.it/wp-content/themes/network-capital/favicon.ico","tags":"","country":"Italy","countrycode":"IT","iso_3166_2":"","state":"Lazio","language":"italian","languagecodes":"it","votes":76,"lastchangetime":"2025-04-23
+        06:14:49","lastchangetime_iso8601":"2025-04-23T06:14:49Z","codec":"AAC+","bitrate":122,"hls":1,"lastcheckok":1,"lastchecktime":"2025-06-05
+        18:00:03","lastchecktime_iso8601":"2025-06-05T18:00:03Z","lastcheckoktime":"2025-06-05
+        18:00:03","lastcheckoktime_iso8601":"2025-06-05T18:00:03Z","lastlocalchecktime":"2025-06-05
+        17:27:12","lastlocalchecktime_iso8601":"2025-06-05T17:27:12Z","clicktimestamp":"2025-06-06
+        03:32:11","clicktimestamp_iso8601":"2025-06-06T03:32:11Z","clickcount":49,"clicktrend":8,"ssl_error":0,"geo_lat":null,"geo_long":null,"geo_distance":null,"has_extended_info":false},{"changeuuid":"35d999b7-8513-45a7-969b-4aacab0c4a9e","stationuuid":"259504da-522f-4668-8f0f-9746756959cf","serveruuid":"95ffc6a8-a9f6-4b72-94f2-2fa78694c74b","name":"\tRadio
+        Margherita ","url":"https://streaming.radiomargherita.com/stream/radiomargherita","url_resolved":"https://streaming.radiomargherita.com/stream/radiomargherita","homepage":"http://www.radiomargherita.com/","favicon":"http://www.radiomargherita.com/favicon.ico","tags":"","country":"Italy","countrycode":"IT","iso_3166_2":"","state":"Sicilia","language":"italian","languagecodes":"it","votes":95,"lastchangetime":"2025-04-23
+        09:52:58","lastchangetime_iso8601":"2025-04-23T09:52:58Z","codec":"MP3","bitrate":320,"hls":0,"lastcheckok":1,"lastchecktime":"2025-06-06
+        03:21:30","lastchecktime_iso8601":"2025-06-06T03:21:30Z","lastcheckoktime":"2025-06-06
+        03:21:30","lastcheckoktime_iso8601":"2025-06-06T03:21:30Z","lastlocalchecktime":"2025-06-05
+        09:18:14","lastlocalchecktime_iso8601":"2025-06-05T09:18:14Z","clicktimestamp":"2025-06-06
+        04:20:36","clicktimestamp_iso8601":"2025-06-06T04:20:36Z","clickcount":27,"clicktrend":5,"ssl_error":0,"geo_lat":null,"geo_long":null,"geo_distance":null,"has_extended_info":false},{"changeuuid":"a5f44178-339a-4296-949a-39205646cff6","stationuuid":"4e285d46-4491-4df0-a6d8-974b8b9a49f8","serveruuid":"5200fccc-3939-494f-9d7d-260b62e41c2e","name":"\tRadio
+        Record - Russian Gold","url":"https://radiorecord.hostingradio.ru/russiangold96.aacp","url_resolved":"https://radiorecord.hostingradio.ru/russiangold96.aacp","homepage":"https://www.radiorecord.ru/","favicon":"https://www.radiorecord.ru/icons/apple-touch-icon.png","tags":"pop,russian","country":"The
+        Russian Federation","countrycode":"RU","iso_3166_2":"","state":"","language":"russian","languagecodes":"ru","votes":486,"lastchangetime":"2025-04-23
+        05:14:38","lastchangetime_iso8601":"2025-04-23T05:14:38Z","codec":"AAC","bitrate":0,"hls":0,"lastcheckok":1,"lastchecktime":"2025-06-05
+        19:31:38","lastchecktime_iso8601":"2025-06-05T19:31:38Z","lastcheckoktime":"2025-06-05
+        19:31:38","lastcheckoktime_iso8601":"2025-06-05T19:31:38Z","lastlocalchecktime":"2025-06-05
+        10:38:41","lastlocalchecktime_iso8601":"2025-06-05T10:38:41Z","clicktimestamp":"2025-06-06
+        05:00:49","clicktimestamp_iso8601":"2025-06-06T05:00:49Z","clickcount":195,"clicktrend":-11,"ssl_error":0,"geo_lat":null,"geo_long":null,"geo_distance":null,"has_extended_info":false}]'
+    headers:
+      Access-Control-Allow-Headers:
+      - origin, x-requested-with, content-type, User-Agent
+      Access-Control-Allow-Methods:
+      - GET,POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '11987'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 06 Jun 2025 05:01:41 GMT
+      Server:
+      - nginx/1.24.0 (Ubuntu)
+    status:
+      code: 200
+      message: OK
+version: 1
